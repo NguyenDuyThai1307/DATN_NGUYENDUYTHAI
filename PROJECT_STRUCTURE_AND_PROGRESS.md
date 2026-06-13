@@ -297,9 +297,9 @@ Tien do hien tai:
 ```text
 [x] 01. Tao project Next.js
 [x] 02. Cai thu vien can thiet
-[ ] 03. Setup Prisma + SQLite
-[ ] 04. Tao schema User
-[ ] 05. Lam JWT auth
+[x] 03. Setup Prisma + SQLite
+[x] 04. Tao schema User
+[x] 05. Lam JWT auth
 [ ] 06. Lam layout co ban
 [ ] 07. Lam Product, Category, Brand
 [ ] 08. Lam trang danh sach va chi tiet san pham
