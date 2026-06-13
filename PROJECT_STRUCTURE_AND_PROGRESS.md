@@ -39,6 +39,7 @@ PostgreSQL local
 NextAuth/Auth.js
 OAuth Google/Facebook
 Session-based authentication
+Backend/Client split neu chua that su can
 ```
 
 ## 3. Bao Mat Chot
@@ -48,7 +49,7 @@ Chi dung JWT cho authentication.
 ```text
 JWT duoc luu trong httpOnly cookie.
 Mat khau duoc hash bang bcryptjs.
-Middleware bao ve /account, /checkout, /admin.
+Proxy bao ve /account, /cart, /checkout, /admin.
 Phan quyen bang role: CUSTOMER, STAFF, ADMIN.
 ```
 
@@ -83,182 +84,175 @@ personal data khong can thiet
 
 ## 4. Structure Code Chot
 
+Du an giu huong Next.js full-stack. Khong tach rieng `Backend/` va `Client/` nhu mot so project khac.
+
 ```text
 figure-shop/
-├── prisma/
-│   ├── schema.prisma
-│   └── seed.ts
-│
-├── public/
-│   ├── images/
-│   └── logo.png
-│
-├── src/
-│   ├── app/
-│   │   ├── layout.tsx
-│   │   ├── page.tsx
-│   │   ├── globals.css
-│   │   │
-│   │   ├── (store)/
-│   │   │   ├── products/
-│   │   │   │   ├── page.tsx
-│   │   │   │   └── [slug]/
-│   │   │   │       └── page.tsx
-│   │   │   ├── preorder/
-│   │   │   │   └── page.tsx
-│   │   │   ├── categories/
-│   │   │   │   └── [slug]/
-│   │   │   │       └── page.tsx
-│   │   │   ├── brands/
-│   │   │   │   └── [slug]/
-│   │   │   │       └── page.tsx
-│   │   │   ├── search/
-│   │   │   │   └── page.tsx
-│   │   │   ├── cart/
-│   │   │   │   └── page.tsx
-│   │   │   └── checkout/
-│   │   │       └── page.tsx
-│   │   │
-│   │   ├── account/
-│   │   │   ├── profile/
-│   │   │   │   └── page.tsx
-│   │   │   ├── orders/
-│   │   │   │   ├── page.tsx
-│   │   │   │   └── [id]/
-│   │   │   │       └── page.tsx
-│   │   │   ├── addresses/
-│   │   │   │   └── page.tsx
-│   │   │   └── wishlist/
-│   │   │       └── page.tsx
-│   │   │
-│   │   ├── admin/
-│   │   │   ├── layout.tsx
-│   │   │   ├── page.tsx
-│   │   │   ├── products/
-│   │   │   │   ├── page.tsx
-│   │   │   │   ├── create/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   └── [id]/
-│   │   │   │       └── edit/
-│   │   │   │           └── page.tsx
-│   │   │   ├── orders/
-│   │   │   │   ├── page.tsx
-│   │   │   │   └── [id]/
-│   │   │   │       └── page.tsx
-│   │   │   ├── preorders/
-│   │   │   │   └── page.tsx
-│   │   │   ├── categories/
-│   │   │   │   └── page.tsx
-│   │   │   ├── brands/
-│   │   │   │   └── page.tsx
-│   │   │   ├── users/
-│   │   │   │   └── page.tsx
-│   │   │   ├── coupons/
-│   │   │   │   └── page.tsx
-│   │   │   └── reports/
-│   │   │       └── page.tsx
-│   │   │
-│   │   ├── login/
-│   │   │   └── page.tsx
-│   │   ├── register/
-│   │   │   └── page.tsx
-│   │   │
-│   │   └── api/
-│   │       ├── auth/
-│   │       │   ├── login/route.ts
-│   │       │   ├── register/route.ts
-│   │       │   ├── logout/route.ts
-│   │       │   └── me/route.ts
-│   │       ├── products/
-│   │       │   ├── route.ts
-│   │       │   └── [id]/route.ts
-│   │       ├── cart/
-│   │       │   ├── route.ts
-│   │       │   └── items/
-│   │       │       ├── route.ts
-│   │       │       └── [id]/route.ts
-│   │       ├── orders/
-│   │       │   ├── route.ts
-│   │       │   └── [id]/route.ts
-│   │       ├── payment/
-│   │       │   └── route.ts
-│   │       ├── upload/
-│   │       │   └── route.ts
-│   │       └── admin/
-│   │           ├── dashboard/route.ts
-│   │           ├── products/route.ts
-│   │           ├── orders/route.ts
-│   │           ├── orders/[id]/route.ts
-│   │           ├── orders/[id]/status/route.ts
-│   │           └── reports/route.ts
-│   │
-│   ├── components/
-│   │   ├── ui/
-│   │   ├── layout/
-│   │   │   ├── Header.tsx
-│   │   │   ├── Footer.tsx
-│   │   │   └── AdminSidebar.tsx
-│   │   ├── product/
-│   │   │   ├── ProductCard.tsx
-│   │   │   ├── ProductGrid.tsx
-│   │   │   ├── ProductFilter.tsx
-│   │   │   ├── ProductPrice.tsx
-│   │   │   └── PreorderInfo.tsx
-│   │   ├── cart/
-│   │   │   ├── CartItem.tsx
-│   │   │   └── CartSummary.tsx
-│   │   ├── checkout/
-│   │   │   ├── CheckoutForm.tsx
-│   │   │   └── OrderSummary.tsx
-│   │   ├── order/
-│   │   │   └── OrderStatusBadge.tsx
-│   │   └── admin/
-│   │       ├── ProductForm.tsx
-│   │       ├── OrderStatusSelect.tsx
-│   │       └── DashboardStats.tsx
-│   │
-│   ├── lib/
-│   │   ├── prisma.ts
-│   │   ├── jwt.ts
-│   │   ├── auth.ts
-│   │   ├── password.ts
-│   │   ├── permissions.ts
-│   │   ├── payment.ts
-│   │   ├── upload.ts
-│   │   └── utils.ts
-│   │
-│   ├── services/
-│   │   ├── product.service.ts
-│   │   ├── cart.service.ts
-│   │   ├── order.service.ts
-│   │   ├── preorder.service.ts
-│   │   ├── payment.service.ts
-│   │   └── user.service.ts
-│   │
-│   ├── validations/
-│   │   ├── auth.schema.ts
-│   │   ├── product.schema.ts
-│   │   ├── order.schema.ts
-│   │   ├── address.schema.ts
-│   │   ├── review.schema.ts
-│   │   └── coupon.schema.ts
-│   │
-│   ├── types/
-│   │   ├── user.ts
-│   │   ├── product.ts
-│   │   ├── order.ts
-│   │   ├── cart.ts
-│   │   └── payment.ts
-│   │
-│   └── middleware.ts
-│
-├── .env
-├── .env.example
-├── .gitignore
-├── package.json
-├── next.config.ts
-├── tsconfig.json
-└── README.md
+|-- prisma/
+|   |-- schema.prisma
+|   |-- seed.ts
+|   `-- migrations/
+|
+|-- public/
+|   `-- images/
+|       `-- products/
+|
+|-- src/
+|   |-- app/
+|   |   |-- (store)/
+|   |   |   |-- products/
+|   |   |   |   |-- page.tsx
+|   |   |   |   `-- [slug]/
+|   |   |   |       `-- page.tsx
+|   |   |   |-- preorder/
+|   |   |   |   `-- page.tsx
+|   |   |   |-- categories/
+|   |   |   |   `-- [slug]/
+|   |   |   |       `-- page.tsx
+|   |   |   |-- brands/
+|   |   |   |   `-- [slug]/
+|   |   |   |       `-- page.tsx
+|   |   |   |-- search/
+|   |   |   |   `-- page.tsx
+|   |   |   |-- cart/
+|   |   |   |   `-- page.tsx
+|   |   |   `-- checkout/
+|   |   |       `-- page.tsx
+|   |   |
+|   |   |-- account/
+|   |   |   |-- page.tsx
+|   |   |   |-- profile/
+|   |   |   |-- orders/
+|   |   |   |-- addresses/
+|   |   |   `-- wishlist/
+|   |   |
+|   |   |-- admin/
+|   |   |   |-- layout.tsx
+|   |   |   |-- page.tsx
+|   |   |   |-- products/
+|   |   |   |-- orders/
+|   |   |   |-- preorders/
+|   |   |   |-- categories/
+|   |   |   |-- brands/
+|   |   |   |-- users/
+|   |   |   |-- coupons/
+|   |   |   `-- reports/
+|   |   |
+|   |   |-- login/
+|   |   |   `-- page.tsx
+|   |   |-- register/
+|   |   |   `-- page.tsx
+|   |   |
+|   |   |-- api/
+|   |   |   |-- auth/
+|   |   |   |   |-- login/route.ts
+|   |   |   |   |-- register/route.ts
+|   |   |   |   |-- logout/route.ts
+|   |   |   |   `-- me/route.ts
+|   |   |   |-- cart/
+|   |   |   |   |-- route.ts
+|   |   |   |   `-- items/
+|   |   |   |       |-- route.ts
+|   |   |   |       `-- [id]/route.ts
+|   |   |   |-- products/
+|   |   |   |-- orders/
+|   |   |   |-- payment/
+|   |   |   |-- upload/
+|   |   |   `-- admin/
+|   |   |
+|   |   |-- layout.tsx
+|   |   |-- page.tsx
+|   |   |-- globals.css
+|   |   `-- favicon.ico
+|   |
+|   |-- components/
+|   |   |-- ui/
+|   |   |-- layout/
+|   |   |   |-- Header.tsx
+|   |   |   |-- Footer.tsx
+|   |   |   `-- AdminSidebar.tsx
+|   |   |-- product/
+|   |   |   |-- ProductCard.tsx
+|   |   |   |-- ProductGrid.tsx
+|   |   |   |-- ProductFilter.tsx
+|   |   |   |-- ProductPrice.tsx
+|   |   |   `-- PreorderInfo.tsx
+|   |   |-- cart/
+|   |   |   |-- CartItem.tsx
+|   |   |   `-- CartSummary.tsx
+|   |   |-- checkout/
+|   |   |   |-- CheckoutForm.tsx
+|   |   |   `-- OrderSummary.tsx
+|   |   |-- order/
+|   |   |   `-- OrderStatusBadge.tsx
+|   |   `-- admin/
+|   |       |-- ProductForm.tsx
+|   |       |-- OrderStatusSelect.tsx
+|   |       `-- DashboardStats.tsx
+|   |
+|   |-- constants/
+|   |   `-- auth.ts
+|   |
+|   |-- hooks/
+|   |
+|   |-- lib/
+|   |   |-- prisma.ts
+|   |   |-- jwt.ts
+|   |   |-- auth.ts
+|   |   |-- password.ts
+|   |   |-- permissions.ts
+|   |   |-- payment.ts
+|   |   |-- upload.ts
+|   |   `-- utils.ts
+|   |
+|   |-- services/
+|   |   |-- product.service.ts
+|   |   |-- cart.service.ts
+|   |   |-- order.service.ts
+|   |   |-- preorder.service.ts
+|   |   |-- payment.service.ts
+|   |   `-- user.service.ts
+|   |
+|   |-- validations/
+|   |   |-- auth.schema.ts
+|   |   |-- cart.schema.ts
+|   |   |-- product.schema.ts
+|   |   |-- order.schema.ts
+|   |   |-- address.schema.ts
+|   |   |-- review.schema.ts
+|   |   `-- coupon.schema.ts
+|   |
+|   |-- types/
+|   |   |-- user.ts
+|   |   |-- product.ts
+|   |   |-- order.ts
+|   |   |-- cart.ts
+|   |   `-- payment.ts
+|   |
+|   `-- proxy.ts
+|
+|-- docs/
+|   `-- notes.md
+|
+|-- .env
+|-- .env.example
+|-- .gitignore
+|-- package.json
+|-- next.config.ts
+|-- prisma.config.ts
+|-- tsconfig.json
+`-- README.md
+```
+
+Ghi chu structure:
+
+```text
+API backend nam trong src/app/api.
+src/constants/ chua hang so dung chung, vi du ten auth cookie.
+src/hooks/ de danh cho client hooks khi can UI tuong tac.
+docs/ de ghi chu do an, quyet dinh ky thuat, tai lieu trien khai.
+Khong them React Query, i18n, jobs, plugins neu chua that su can.
+Dung src/proxy.ts thay cho middleware.ts theo convention Next.js moi.
 ```
 
 ## 5. Database Models Chot
@@ -317,5 +311,7 @@ Tien do hien tai:
 - Neu project nam trong `figure-shop/`, thao tac trong folder do.
 - Khong them NextAuth, OAuth, session auth vi da chot JWT only.
 - Khong doi SQLite sang PostgreSQL local.
-- Khong day `.env`, `node_modules`, `.next`, `prisma/dev.db` len GitHub.
+- Khong tach rieng `Backend/` va `Client/` neu chua co ly do bat buoc.
+- Khong day `.env`, `node_modules`, `.next`, `dev.db`, `dev.db-journal`, `prisma/dev.db` len GitHub.
 - Khi hoan thanh mot buoc, cap nhat tien do trong file nay.
+- Truoc khi commit nen chay `npm.cmd exec tsc -- --noEmit` va `npm.cmd run lint` trong `figure-shop/`.
