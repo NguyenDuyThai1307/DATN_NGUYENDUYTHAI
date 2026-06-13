@@ -303,7 +303,7 @@ Tien do hien tai:
 [x] 06. Lam layout co ban
 [x] 07. Lam Product, Category, Brand
 [x] 08. Lam trang danh sach va chi tiet san pham
-[ ] 09. Lam cart
+[x] 09. Lam cart
 [ ] 10. Lam checkout va order
 [ ] 11. Lam admin dashboard
 [ ] 12. Lam preorder

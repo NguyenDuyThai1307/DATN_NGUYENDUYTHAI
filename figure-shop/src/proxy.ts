@@ -3,7 +3,7 @@ import { verifyJwt } from "@/lib/jwt";
 
 const AUTH_COOKIE_NAME = "figure_shop_token";
 
-const protectedRoutes = ["/account", "/checkout"];
+const protectedRoutes = ["/account", "/checkout", "/cart"];
 const staffRoutes = ["/admin"];
 
 function isProtectedPath(pathname: string) {
