@@ -301,8 +301,8 @@ Tien do hien tai:
 [x] 04. Tao schema User
 [x] 05. Lam JWT auth
 [x] 06. Lam layout co ban
-[ ] 07. Lam Product, Category, Brand
-[ ] 08. Lam trang danh sach va chi tiet san pham
+[x] 07. Lam Product, Category, Brand
+[x] 08. Lam trang danh sach va chi tiet san pham
 [ ] 09. Lam cart
 [ ] 10. Lam checkout va order
 [ ] 11. Lam admin dashboard

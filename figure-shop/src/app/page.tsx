@@ -1,3 +1,4 @@
+import Link from "next/link";
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-zinc-50 text-zinc-950">
@@ -16,19 +17,18 @@ export default function HomePage() {
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <a
+          <Link
             href="/products"
             className="rounded-md bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800"
           >
             Xem san pham
-          </a>
-
-          <a
+          </Link>
+          <Link
             href="/preorder"
             className="rounded-md border border-zinc-300 bg-white px-5 py-3 text-sm font-medium text-zinc-950 transition hover:bg-zinc-100"
           >
             Pre-order
-          </a>
+          </Link>
         </div>
       </section>
     </main>
