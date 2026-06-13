@@ -300,7 +300,7 @@ Tien do hien tai:
 [x] 03. Setup Prisma + SQLite
 [x] 04. Tao schema User
 [x] 05. Lam JWT auth
-[ ] 06. Lam layout co ban
+[x] 06. Lam layout co ban
 [ ] 07. Lam Product, Category, Brand
 [ ] 08. Lam trang danh sach va chi tiet san pham
 [ ] 09. Lam cart
