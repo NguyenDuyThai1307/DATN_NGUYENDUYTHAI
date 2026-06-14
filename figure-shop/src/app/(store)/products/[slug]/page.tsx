@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { AddToCartButton } from "@/components/cart/AddToCartButton";
+
 import { notFound } from "next/navigation";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { getProductBySlug } from "@/services/product.service";
@@ -65,9 +67,7 @@ export default async function ProductDetailPage({
           ) : null}
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <button className="rounded-md bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800">
-              Them vao gio hang
-            </button>
+            <AddToCartButton productId={product.id} />
 
             {product.type === "PREORDER" ? (
               <button className="rounded-md border border-zinc-300 bg-white px-5 py-3 text-sm font-medium transition hover:bg-zinc-100">

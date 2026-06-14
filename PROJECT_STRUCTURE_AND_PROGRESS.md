@@ -298,7 +298,7 @@ Tien do hien tai:
 [x] 07. Lam Product, Category, Brand
 [x] 08. Lam trang danh sach va chi tiet san pham
 [x] 09. Lam cart
-[ ] 10. Lam checkout va order
+[x] 10. Lam checkout va order
 [ ] 11. Lam admin dashboard
 [ ] 12. Lam preorder
 [ ] 13. Lam payment demo

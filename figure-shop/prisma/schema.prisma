@@ -29,6 +29,28 @@ enum ProductType {
   PREORDER
 }
 
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  COD
+  BANK_TRANSFER
+  DEMO
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  FAILED
+  REFUNDED
+}
+
 model User {
   id           String    @id @default(cuid())
   email        String    @unique
@@ -38,6 +60,7 @@ model User {
   role         Role      @default(CUSTOMER)
   addresses    Address[]
   cart         Cart?
+  orders       Order[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -95,10 +118,11 @@ model Product {
   categoryId String?
   brandId    String?
 
-  category  Category?      @relation(fields: [categoryId], references: [id])
-  brand     Brand?         @relation(fields: [brandId], references: [id])
-  images    ProductImage[]
-  cartItems CartItem[]
+  category   Category?      @relation(fields: [categoryId], references: [id])
+  brand      Brand?         @relation(fields: [brandId], references: [id])
+  images     ProductImage[]
+  cartItems  CartItem[]
+  orderItems OrderItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -139,4 +163,63 @@ model CartItem {
   updatedAt DateTime @updatedAt
 
   @@unique([cartId, productId])
+}
+
+model Order {
+  id            String        @id @default(cuid())
+  orderNumber   String        @unique
+  userId        String
+  status        OrderStatus   @default(PENDING)
+  paymentMethod PaymentMethod @default(COD)
+  paymentStatus PaymentStatus @default(UNPAID)
+
+  subtotal    Int
+  shippingFee Int     @default(0)
+  total       Int
+  note        String?
+
+  receiverName  String
+  receiverPhone String
+  province      String
+  district      String
+  ward          String
+  addressDetail String
+
+  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items   OrderItem[]
+  payment Payment?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String?
+
+  productName  String
+  productPrice Int
+  quantity     Int
+  total        Int
+
+  order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  orderId         String        @unique
+  amount          Int
+  method          PaymentMethod
+  status          PaymentStatus @default(UNPAID)
+  transactionCode String?
+  paidAt          DateTime?
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
