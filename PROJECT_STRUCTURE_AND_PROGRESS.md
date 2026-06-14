@@ -299,7 +299,7 @@ Tien do hien tai:
 [x] 08. Lam trang danh sach va chi tiet san pham
 [x] 09. Lam cart
 [x] 10. Lam checkout va order
-[ ] 11. Lam admin dashboard
+[x] 11. Lam admin dashboard
 [ ] 12. Lam preorder
 [ ] 13. Lam payment demo
 [ ] 14. Polish UI va chuan bi bao cao
