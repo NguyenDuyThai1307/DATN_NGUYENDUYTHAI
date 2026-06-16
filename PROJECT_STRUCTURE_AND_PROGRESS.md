@@ -302,7 +302,7 @@ Tien do hien tai:
 [x] 11. Lam admin dashboard
 [x] 12. Lam preorder
 [x] 13. Lam payment demo
-[ ] 14. Polish UI va chuan bi bao cao
+[x] 14. Polish UI va chuan bi bao cao
 ```
 
 ## 7. Quy Tac Lam Viec

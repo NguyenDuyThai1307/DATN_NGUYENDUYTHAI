@@ -2,8 +2,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { verifyJwt } from "@/lib/jwt";
 import { prisma } from "@/lib/prisma";
-
-const AUTH_COOKIE_NAME = "figure_shop_token";
+import { AUTH_COOKIE_NAME } from "@/constants/auth";
 
 export async function GET() {
   const cookieStore = await cookies();

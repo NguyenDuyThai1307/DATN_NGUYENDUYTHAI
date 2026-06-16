@@ -3,8 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { signJwt } from "@/lib/jwt";
 import { verifyPassword } from "@/lib/password";
 import { loginSchema } from "@/validations/auth.schema";
-
-const AUTH_COOKIE_NAME = "figure_shop_token";
+import { AUTH_COOKIE_NAME } from "@/constants/auth";
 
 export async function POST(request: Request) {
   const body = await request.json();

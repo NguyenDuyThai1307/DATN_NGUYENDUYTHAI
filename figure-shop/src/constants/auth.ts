@@ -1,0 +1,1 @@
+export const AUTH_COOKIE_NAME = "figure_shop_token";

@@ -1,7 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { verifyJwt } from "@/lib/jwt";
-
-const AUTH_COOKIE_NAME = "figure_shop_token";
+import { AUTH_COOKIE_NAME } from "@/constants/auth";
 
 const protectedRoutes = ["/account", "/checkout", "/cart"];
 const staffRoutes = ["/admin"];

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-
-const AUTH_COOKIE_NAME = "figure_shop_token";
+import { AUTH_COOKIE_NAME } from "@/constants/auth";
 
 export async function POST() {
   const response = NextResponse.json({
