@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
-
+import { PreorderInfo } from "@/components/product/PreorderInfo";
 import { notFound } from "next/navigation";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { getProductBySlug } from "@/services/product.service";
@@ -65,7 +65,7 @@ export default async function ProductDetailPage({
               {product.description}
             </p>
           ) : null}
-
+            <PreorderInfo isPreorder={product.type === "PREORDER"} />
           <div className="mt-8 flex flex-wrap gap-3">
             <AddToCartButton productId={product.id} />
 
