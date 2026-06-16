@@ -2,6 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
+import { Textarea } from "@/components/ui/Textarea";
 
 export function CheckoutForm() {
   const router = useRouter();
@@ -53,20 +57,20 @@ export function CheckoutForm() {
     <form onSubmit={handleSubmit} className="mt-5 grid gap-4">
       <div>
         <label className="text-sm font-medium">Ho ten nguoi nhan</label>
-        <input
+        <Input
           name="receiverName"
           required
-          className="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-950"
+          className="mt-2"
           placeholder="Nguyen Van A"
         />
       </div>
 
       <div>
         <label className="text-sm font-medium">So dien thoai</label>
-        <input
+        <Input
           name="receiverPhone"
           required
-          className="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-950"
+          className="mt-2"
           placeholder="0909123456"
         />
       </div>
@@ -74,30 +78,30 @@ export function CheckoutForm() {
       <div className="grid gap-4 md:grid-cols-3">
         <div>
           <label className="text-sm font-medium">Tinh/Thanh</label>
-          <input
+          <Input
             name="province"
             required
-            className="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-950"
+            className="mt-2"
             placeholder="Ho Chi Minh"
           />
         </div>
 
         <div>
           <label className="text-sm font-medium">Quan/Huyen</label>
-          <input
+          <Input
             name="district"
             required
-            className="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-950"
+            className="mt-2"
             placeholder="Quan 1"
           />
         </div>
 
         <div>
           <label className="text-sm font-medium">Phuong/Xa</label>
-          <input
+          <Input
             name="ward"
             required
-            className="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-950"
+            className="mt-2"
             placeholder="Ben Nghe"
           />
         </div>
@@ -105,35 +109,31 @@ export function CheckoutForm() {
 
       <div>
         <label className="text-sm font-medium">Dia chi chi tiet</label>
-        <input
+        <Input
           name="addressDetail"
           required
-          className="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-950"
+          className="mt-2"
           placeholder="123 Le Loi"
         />
       </div>
 
       <div>
         <label className="text-sm font-medium">Ghi chu</label>
-        <textarea
+        <Textarea
           name="note"
           rows={4}
-          className="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-950"
+          className="mt-2"
           placeholder="Ghi chu cho don hang"
         />
       </div>
 
       <div>
         <label className="text-sm font-medium">Phuong thuc thanh toan</label>
-        <select
-          name="paymentMethod"
-          defaultValue="COD"
-          className="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-950"
-        >
+        <Select name="paymentMethod" defaultValue="COD" className="mt-2">
           <option value="COD">COD</option>
           <option value="BANK_TRANSFER">Chuyen khoan</option>
           <option value="DEMO">Demo payment</option>
-        </select>
+        </Select>
       </div>
 
       {error ? (
@@ -142,13 +142,9 @@ export function CheckoutForm() {
         </p>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="rounded-md bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
-      >
+      <Button type="submit" disabled={isSubmitting} size="lg">
         {isSubmitting ? "Dang dat hang..." : "Dat hang"}
-      </button>
+      </Button>
     </form>
   );
 }

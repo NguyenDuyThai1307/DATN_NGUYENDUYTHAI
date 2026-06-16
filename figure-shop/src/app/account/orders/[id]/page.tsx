@@ -4,6 +4,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { getOrderByIdForUser } from "@/services/order.service";
 import { DemoPaymentButton } from "@/components/checkout/DemoPaymentButton";
+import { OrderStatusBadge } from "@/components/order/OrderStatusBadge";
+import { PaymentStatusBadge } from "@/components/order/PaymentStatusBadge";
 
 type AccountOrderDetailPageProps = {
   params: Promise<{
@@ -41,9 +43,10 @@ export default async function AccountOrderDetailPage({
           <h1 className="text-3xl font-bold tracking-tight">
             Don hang {order.orderNumber}
           </h1>
-          <p className="mt-2 text-sm text-zinc-500">
-            Trang thai: {order.status} - Thanh toan: {order.paymentStatus}
-          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <OrderStatusBadge status={order.status} />
+            <PaymentStatusBadge status={order.paymentStatus} />
+          </div>
         </div>
 
         <ProductPrice price={order.total} />
@@ -93,7 +96,10 @@ export default async function AccountOrderDetailPage({
 
             <div className="mt-4 space-y-2 text-sm text-zinc-600">
               <p>Phuong thuc: {order.paymentMethod}</p>
-              <p>Trang thai: {order.paymentStatus}</p>
+              <div className="flex flex-wrap gap-2">
+                <span>Trang thai:</span>
+                <PaymentStatusBadge status={order.paymentStatus} />
+              </div>
               <div className="flex items-center justify-between border-t border-zinc-200 pt-3">
                 <span>Tong cong</span>
                 <ProductPrice price={order.total} />

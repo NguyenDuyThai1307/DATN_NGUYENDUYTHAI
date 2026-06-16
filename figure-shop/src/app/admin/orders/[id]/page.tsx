@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { prisma } from "@/lib/prisma";
+import { OrderStatusBadge } from "@/components/order/OrderStatusBadge";
+import { PaymentStatusBadge } from "@/components/order/PaymentStatusBadge";
 
 type AdminOrderDetailPageProps = {
   params: Promise<{
@@ -86,8 +88,14 @@ export default async function AdminOrderDetailPage({
             <h2 className="font-semibold">Trang thai</h2>
 
             <div className="mt-4 space-y-2 text-sm text-zinc-600">
-              <p>Don hang: {order.status}</p>
-              <p>Thanh toan: {order.paymentStatus}</p>
+              <div className="flex items-center gap-2">
+                <span>Don hang:</span>
+                <OrderStatusBadge status={order.status} />
+              </div>
+              <div className="flex items-center gap-2">
+                <span>Thanh toan:</span>
+                <PaymentStatusBadge status={order.paymentStatus} />
+              </div>
               <p>Phuong thuc: {order.paymentMethod}</p>
 
               {order.payment?.transactionCode ? (

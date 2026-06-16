@@ -2,6 +2,8 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 
 export function LoginForm() {
   const router = useRouter();
@@ -43,24 +45,24 @@ export function LoginForm() {
     <form onSubmit={handleSubmit} className="mt-6 space-y-4">
       <div>
         <label className="text-sm font-medium">Email</label>
-        <input
+        <Input
           name="email"
           type="email"
           required
-          className="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-950"
+          className="mt-2"
           placeholder="admin@example.com"
         />
       </div>
 
       <div>
         <label className="text-sm font-medium">Mat khau</label>
-        <input
-          name="password"
-          type="password"
-          required
-          className="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-950"
-          placeholder="123456"
-        />
+          <Input
+            name="password"
+            type="password"
+            required
+            className="mt-2"
+            placeholder="123456"
+          />
       </div>
 
       {error ? (
@@ -69,13 +71,14 @@ export function LoginForm() {
         </p>
       ) : null}
 
-      <button
+      <Button
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-md bg-zinc-950 px-4 py-3 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full"
+        size="lg"
       >
         {isSubmitting ? "Dang dang nhap..." : "Dang nhap"}
-      </button>
+      </Button>
     </form>
   );
 }

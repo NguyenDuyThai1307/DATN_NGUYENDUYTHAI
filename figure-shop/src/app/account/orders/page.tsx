@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { getOrdersByUserId } from "@/services/order.service";
+import { OrderStatusBadge } from "@/components/order/OrderStatusBadge";
+import { PaymentStatusBadge } from "@/components/order/PaymentStatusBadge";
 
 export default async function AccountOrdersPage() {
   const user = await getCurrentUser();
@@ -28,10 +30,10 @@ export default async function AccountOrdersPage() {
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <p className="font-semibold">{order.orderNumber}</p>
-                  <p className="mt-1 text-sm text-zinc-500">
-                    Trang thai: {order.status} - Thanh toan:{" "}
-                    {order.paymentStatus}
-                  </p>
+                 <div className="mt-2 flex flex-wrap gap-2">
+                  <OrderStatusBadge status={order.status} />
+                  <PaymentStatusBadge status={order.paymentStatus} />
+                </div>
                   <p className="mt-1 text-sm text-zinc-500">
                     So san pham: {order.items.length}
                   </p>

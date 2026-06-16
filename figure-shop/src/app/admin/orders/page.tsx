@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { prisma } from "@/lib/prisma";
+import { OrderStatusBadge } from "@/components/order/OrderStatusBadge";
+import { PaymentStatusBadge } from "@/components/order/PaymentStatusBadge";
 
 export default async function AdminOrdersPage() {
   const orders = await prisma.order.findMany({
@@ -48,9 +50,9 @@ export default async function AdminOrdersPage() {
                   <p>{order.user.email}</p>
                 </div>
 
-                <div className="text-sm text-zinc-600">
-                  <p>{order.status}</p>
-                  <p>{order.paymentStatus}</p>
+                <div className="flex flex-wrap gap-2">
+                  <OrderStatusBadge status={order.status} />
+                  <PaymentStatusBadge status={order.paymentStatus} />
                 </div>
 
                 <div className="lg:text-right">
