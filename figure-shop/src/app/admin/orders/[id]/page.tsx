@@ -89,6 +89,14 @@ export default async function AdminOrderDetailPage({
               <p>Don hang: {order.status}</p>
               <p>Thanh toan: {order.paymentStatus}</p>
               <p>Phuong thuc: {order.paymentMethod}</p>
+
+              {order.payment?.transactionCode ? (
+                <p>Ma giao dich: {order.payment.transactionCode}</p>
+              ) : null}
+
+              {order.payment?.paidAt ? (
+                <p>Da thanh toan luc: {order.payment.paidAt.toLocaleString("vi-VN")}</p>
+              ) : null}
             </div>
           </section>
 

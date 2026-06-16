@@ -301,7 +301,7 @@ Tien do hien tai:
 [x] 10. Lam checkout va order
 [x] 11. Lam admin dashboard
 [x] 12. Lam preorder
-[ ] 13. Lam payment demo
+[x] 13. Lam payment demo
 [ ] 14. Polish UI va chuan bi bao cao
 ```
 

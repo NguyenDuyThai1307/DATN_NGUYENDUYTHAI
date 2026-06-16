@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { getOrderByIdForUser } from "@/services/order.service";
+import { DemoPaymentButton } from "@/components/checkout/DemoPaymentButton";
 
 type AccountOrderDetailPageProps = {
   params: Promise<{
@@ -96,8 +97,14 @@ export default async function AccountOrderDetailPage({
               <div className="flex items-center justify-between border-t border-zinc-200 pt-3">
                 <span>Tong cong</span>
                 <ProductPrice price={order.total} />
-              </div>
+             </div>
             </div>
+
+            {order.paymentMethod === "DEMO" && order.paymentStatus !== "PAID" ? (
+              <div className="mt-4">
+                <DemoPaymentButton orderId={order.id} />
+              </div>
+            ) : null}
           </section>
         </aside>
       </div>
