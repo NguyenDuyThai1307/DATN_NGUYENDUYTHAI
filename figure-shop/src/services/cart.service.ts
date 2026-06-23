@@ -30,6 +30,7 @@ export async function getCartByUserId(userId: string) {
         include: {
           product: {
             include: {
+              promotion: true,
               images: {
                 orderBy: {
                   sortOrder: "asc",

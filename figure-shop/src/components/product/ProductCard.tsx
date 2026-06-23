@@ -1,6 +1,10 @@
-
 import Link from "next/link";
+import {
+  calculateLinePricing,
+  isPromotionActive,
+} from "@/services/pricing.service";
 import { ProductPrice } from "@/components/product/ProductPrice";
+import { Badge } from "@/components/ui/Badge";
 
 type ProductCardProps = {
   product: {
@@ -12,6 +16,13 @@ type ProductCardProps = {
     brand?: {
       name: string;
     } | null;
+    promotion?: {
+      type: "PERCENTAGE" | "FIXED_AMOUNT";
+      value: number;
+      startsAt: Date;
+      endsAt: Date;
+      isActive: boolean;
+    } | null;
     images: {
       url: string;
       alt: string | null;
@@ -22,6 +33,17 @@ type ProductCardProps = {
 export function ProductCard({ product }: ProductCardProps) {
   const firstImage = product.images[0];
 
+  const activePromotion =
+    product.promotion && isPromotionActive(product.promotion)
+      ? product.promotion
+      : null;
+
+  const linePricing = calculateLinePricing({
+    unitPrice: product.price,
+    quantity: 1,
+    promotion: activePromotion,
+  });
+
   return (
     <Link
       href={`/products/${product.slug}`}
@@ -29,12 +51,26 @@ export function ProductCard({ product }: ProductCardProps) {
     >
       <div className="relative aspect-square bg-zinc-100">
         <div className="flex h-full items-center justify-center bg-zinc-100 px-6 text-center text-sm font-medium text-zinc-500">
-        {firstImage?.alt ?? product.name}
+          {firstImage?.alt ?? product.name}
         </div>
 
-        <span className="absolute left-3 top-3 rounded bg-white px-2 py-1 text-xs font-medium text-zinc-700 shadow-sm">
+        <Badge
+          variant={product.type === "PREORDER" ? "warning" : "success"}
+          className="absolute left-3 top-3 bg-white shadow-sm"
+        >
           {product.type === "PREORDER" ? "Pre-order" : "Co san"}
-        </span>
+        </Badge>
+
+        {activePromotion ? (
+          <Badge
+            variant="danger"
+            className="absolute right-3 top-3 shadow-sm"
+          >
+            {activePromotion.type === "PERCENTAGE"
+              ? `-${activePromotion.value}%`
+              : `-${activePromotion.value.toLocaleString("vi-VN")} d`}
+          </Badge>
+        ) : null}
       </div>
 
       <div className="space-y-2 p-4">
@@ -49,7 +85,10 @@ export function ProductCard({ product }: ProductCardProps) {
         </h3>
 
         <div className="flex items-center justify-between gap-3">
-          <ProductPrice price={product.price} />
+          <ProductPrice
+            price={linePricing.finalUnitPrice}
+            originalPrice={activePromotion ? product.price : undefined}
+          />
 
           <span className="text-xs text-zinc-500">
             {product.type === "PREORDER" ? "Dat truoc" : `Con ${product.stock}`}

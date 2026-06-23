@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getCartByUserId } from "@/services/cart.service";
 import { CartItem } from "@/components/cart/CartItem";
 import { CartSummary } from "@/components/cart/CartSummary";
+import { calculateOrderPricing } from "@/services/pricing.service";
 
 export default async function CartPage() {
   const user = await getCurrentUser();
@@ -15,9 +16,13 @@ export default async function CartPage() {
   const cart = await getCartByUserId(user.id);
   const items = cart?.items ?? [];
 
-  const subtotal = items.reduce((total, item) => {
-    return total + item.product.price * item.quantity;
-  }, 0);
+  const pricing = calculateOrderPricing(
+  items.map((item) => ({
+    unitPrice: item.product.price,
+    quantity: item.quantity,
+    promotion: item.product.promotion,
+  })),
+);
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-10">
@@ -31,7 +36,12 @@ export default async function CartPage() {
           ))}
         </div>
 
-        <CartSummary subtotal={subtotal} />
+        <CartSummary
+          subtotal={pricing.subtotal}
+          discountAmount={pricing.discountAmount}
+          shippingFee={pricing.shippingFee}
+          total={pricing.total}
+        />
       </div>
       ) : (
         <div className="mt-8 rounded-md border border-zinc-200 bg-white p-8 text-center">

@@ -72,7 +72,7 @@ async function main() {
   });
 
   await prisma.product.upsert({
-    where: { slug: "luffy-gear-5-figure" },
+  where: { slug: "luffy-gear-5-figure" },
     update: {},
     create: {
       name: "Luffy Gear 5 Figure",

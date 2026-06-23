@@ -315,3 +315,166 @@ Tien do hien tai:
 - Khong day `.env`, `node_modules`, `.next`, `dev.db`, `dev.db-journal`, `prisma/dev.db` len GitHub.
 - Khi hoan thanh mot buoc, cap nhat tien do trong file nay.
 - Truoc khi commit nen chay `npm.cmd exec tsc -- --noEmit` va `npm.cmd run lint` trong `figure-shop/`.
+
+## 8. Ke Hoach Cai Thien Sau MVP
+
+Muc tieu: nang website tu khung chuc nang co ban thanh san pham dep hon, de dung hon, de bao tri hon va co them logic quan trong cho do an.
+
+### 8.1. UI / UX
+
+```text
+[x] Tao UI primitives co ban: Button, Input, Textarea, Select, Badge
+[x] Refactor CheckoutForm dung UI primitives
+[x] Refactor LoginForm dung UI primitives
+[x] Refactor ProductCard dung Badge
+[x] Tach CartItem va CartSummary
+[x] Tao OrderStatusBadge va PaymentStatusBadge
+[ ] Them anh that/placeholder dep cho san pham trong public/images/products
+[ ] Nang cap trang chu: hero banner, san pham moi, preorder hot, brand noi bat
+[ ] Nang cap product detail: gallery anh, thong so, chinh sach preorder, CTA ro hon
+[ ] Them mobile navbar/menu
+[ ] Cai thien footer voi thong tin lien he, chinh sach, lien ket nhanh
+```
+
+### 8.2. Frontend / Component Structure
+
+```text
+[ ] Tao ProductGrid
+[ ] Tao ProductGallery
+[x] Tao ProductFilter
+[x] Tao ProductSort
+[x] Tao CartQuantityControl
+[ ] Tao OrderSummary dung chung cho cart/checkout/order
+[ ] Tao status badges cho product/preorder neu can
+[ ] Giam code lap lai trong cac page admin/order/cart
+[ ] Them loading, empty state, error state dong bo
+```
+
+### 8.3. Cart Va Checkout UX
+
+```text
+[x] Them nut tang/giam so luong trong gio hang
+[x] Them nut xoa san pham khoi gio hang tren UI
+[x] Hien thi tam tinh, giam gia, phi ship, tong thanh toan ro rang
+[ ] Cai thien validation checkout: field-level error
+[ ] Tao trang order success sau khi checkout
+[x] Dam bao checkout khong tin gia tu client, server tu tinh lai gia
+```
+
+### 8.4. Admin Quan Ly San Pham
+
+Chuc nang can co:
+
+```text
+[x] Xem danh sach san pham dang co
+[x] Them san pham
+[x] Sua san pham
+[x] Xoa mem/Archive san pham
+[x] Quan ly danh muc: danh sach, them, sua
+[x] Quan ly thuong hieu: danh sach, them, sua
+[ ] Quan ly anh san pham
+[ ] Loc/tim san pham theo ten, brand, category, status, type
+```
+
+Truong san pham nen quan ly:
+
+```text
+name
+slug
+description
+price
+salePrice hoac compareAtPrice neu lam khuyen mai truc tiep
+categoryId
+brandId
+seriesId neu them Series sau nay
+stock
+images
+status: ACTIVE / DRAFT / ARCHIVED
+type: IN_STOCK / PREORDER
+```
+
+File/component/service can them hoac sua:
+
+```text
+src/validations/product.schema.ts
+src/components/admin/ProductForm.tsx
+src/components/admin/ProductTable.tsx
+src/components/admin/DeleteProductDialog.tsx
+src/services/admin-product.service.ts
+src/app/admin/products/page.tsx
+src/app/admin/products/create/page.tsx
+src/app/admin/products/[id]/edit/page.tsx
+src/app/api/admin/products/route.ts
+src/app/api/admin/products/[id]/route.ts
+```
+
+### 8.5. Logic Khuyen Mai
+
+Huong lam sau khi admin product CRUD on dinh:
+
+````text
+[x] Ho tro gia goc, gia sau giam, phan tram giam
+[x] Promotion theo san pham: admin tao, sua, tat, co thoi gian ap dung
+[ ] Promotion theo category/brand
+[ ] Ho tro coupon trong cart/checkout
+[x] Luu snapshot gia vao OrderItem de don cu khong bi sai khi gia san pham thay doi
+
+Model co the them:
+
+```text
+Promotion
+- id
+- name
+- type: PERCENTAGE / FIXED_AMOUNT / FLASH_SALE
+- value
+- startsAt
+- endsAt
+- isActive
+- productId optional
+- categoryId optional
+- brandId optional
+
+Coupon
+- id
+- code
+- type: PERCENTAGE / FIXED_AMOUNT
+- value
+- minOrderValue
+- maxDiscountAmount
+- usageLimit
+- usedCount
+- startsAt
+- endsAt
+- isActive
+````
+
+OrderItem nen mo rong khi lam khuyen mai:
+
+```text
+originalPrice
+finalPrice
+discountAmount
+quantity
+total
+```
+
+### 8.6. Thanh Toan That Sau Nay
+
+```text
+[ ] Giu payment demo cho bao cao hien tai
+[ ] Sau khi khung do an on dinh moi tich hop VNPay sandbox
+[ ] Neu them VNPay: them PaymentMethod VNPAY, env VNPAY_*, helper ky/verify, route create/return
+[ ] Secret thanh toan chi nam trong .env, khong dua ra client
+```
+
+### 8.7. Uu Tien Lan Lam Tiep Theo
+
+```text
+1. Cart quantity controls
+2. Admin Product CRUD
+3. Product filter/sort/search
+4. Pricing service
+5. Promotion/Coupon
+6. UI polish va anh san pham
+7. Chuan bi bao cao/screenshot/seed demo
+```

@@ -4,6 +4,10 @@ import { PreorderInfo } from "@/components/product/PreorderInfo";
 import { notFound } from "next/navigation";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { getProductBySlug } from "@/services/product.service";
+import {
+  calculateLinePricing,
+  isPromotionActive,
+} from "@/services/pricing.service";
 
 type ProductDetailPageProps = {
   params: Promise<{
@@ -22,6 +26,17 @@ export default async function ProductDetailPage({
   }
 
   const firstImage = product.images[0];
+
+  const activePromotion =
+  product.promotion && isPromotionActive(product.promotion)
+    ? product.promotion
+    : null;
+
+  const linePricing = calculateLinePricing({
+    unitPrice: product.price,
+    quantity: 1,
+    promotion: activePromotion,
+  });
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-10">
@@ -45,8 +60,19 @@ export default async function ProductDetailPage({
             {product.name}
           </h1>
 
-          <div className="mt-4 text-2xl">
-            <ProductPrice price={product.price} />
+          <div className="mt-4">
+            <ProductPrice
+              price={linePricing.finalUnitPrice}
+              originalPrice={activePromotion ? product.price : undefined}
+            />
+
+            {activePromotion ? (
+              <p className="mt-2 text-sm font-medium text-red-600">
+                {activePromotion.type === "PERCENTAGE"
+                  ? `Khuyen mai giam ${activePromotion.value}%`
+                  : `Khuyen mai giam ${activePromotion.value.toLocaleString("vi-VN")} d`}
+              </p>
+            ) : null}
           </div>
 
           <div className="mt-5 space-y-2 text-sm text-zinc-600">

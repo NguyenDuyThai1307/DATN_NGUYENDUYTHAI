@@ -29,6 +29,11 @@ enum ProductType {
   PREORDER
 }
 
+enum PromotionType {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
 enum OrderStatus {
   PENDING
   CONFIRMED
@@ -121,11 +126,30 @@ model Product {
   category   Category?      @relation(fields: [categoryId], references: [id])
   brand      Brand?         @relation(fields: [brandId], references: [id])
   images     ProductImage[]
+  promotion  Promotion?
   cartItems  CartItem[]
   orderItems OrderItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Promotion {
+  id        String        @id @default(cuid())
+  productId String        @unique
+  name      String
+  type      PromotionType
+  value     Int
+  startsAt  DateTime
+  endsAt    DateTime
+  isActive  Boolean       @default(true)
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive, startsAt, endsAt])
 }
 
 model ProductImage {
@@ -173,10 +197,11 @@ model Order {
   paymentMethod PaymentMethod @default(COD)
   paymentStatus PaymentStatus @default(UNPAID)
 
-  subtotal    Int
-  shippingFee Int     @default(0)
-  total       Int
-  note        String?
+  subtotal       Int
+  discountAmount Int     @default(0)
+  shippingFee    Int     @default(0)
+  total          Int
+  note           String?
 
   receiverName  String
   receiverPhone String
@@ -198,10 +223,13 @@ model OrderItem {
   orderId   String
   productId String?
 
-  productName  String
-  productPrice Int
-  quantity     Int
-  total        Int
+  productName    String
+  productPrice   Int
+  originalPrice  Int    @default(0)
+  finalPrice     Int    @default(0)
+  discountAmount Int    @default(0)
+  quantity       Int
+  total          Int
 
   order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)

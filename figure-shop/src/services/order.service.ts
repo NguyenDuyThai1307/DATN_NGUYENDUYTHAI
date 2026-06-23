@@ -1,5 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import type { CheckoutInput } from "@/validations/order.schema";
+import {
+  calculateLinePricing,
+  calculateOrderPricing,
+} from "@/services/pricing.service";
 
 function generateOrderNumber() {
   const timestamp = Date.now().toString(36).toUpperCase();
@@ -19,7 +23,11 @@ export async function createOrderFromCart(
     include: {
       items: {
         include: {
-          product: true,
+          product: {
+             include: {
+              promotion: true,
+            },
+          },
         },
       },
     },
@@ -29,12 +37,16 @@ export async function createOrderFromCart(
     throw new Error("Cart is empty");
   }
 
-  const subtotal = cart.items.reduce((total, item) => {
-    return total + item.product.price * item.quantity;
-  }, 0);
-
   const shippingFee = 0;
-  const total = subtotal + shippingFee;
+
+  const pricing = calculateOrderPricing(
+    cart.items.map((item) => ({
+      unitPrice: item.product.price,
+      quantity: item.quantity,
+      promotion: item.product.promotion,
+    })),
+    shippingFee,
+);
 
   return prisma.$transaction(async (tx) => {
     const order = await tx.order.create({
@@ -44,9 +56,10 @@ export async function createOrderFromCart(
         status: "PENDING",
         paymentMethod: input.paymentMethod,
         paymentStatus: "UNPAID",
-        subtotal,
-        shippingFee,
-        total,
+        subtotal: pricing.subtotal,
+        discountAmount: pricing.discountAmount,
+        shippingFee: pricing.shippingFee,
+        total: pricing.total,
         note: input.note,
         receiverName: input.receiverName,
         receiverPhone: input.receiverPhone,
@@ -55,17 +68,28 @@ export async function createOrderFromCart(
         ward: input.ward,
         addressDetail: input.addressDetail,
         items: {
-          create: cart.items.map((item) => ({
-            productId: item.productId,
-            productName: item.product.name,
-            productPrice: item.product.price,
-            quantity: item.quantity,
-            total: item.product.price * item.quantity,
-          })),
+          create: cart.items.map((item) => {
+              const linePricing = calculateLinePricing({
+                  unitPrice: item.product.price,
+                  quantity: item.quantity,
+                  promotion: item.product.promotion,
+                });
+
+              return {
+                productId: item.productId,
+                productName: item.product.name,
+                productPrice: linePricing.finalUnitPrice,
+                originalPrice: linePricing.unitPrice,
+                finalPrice: linePricing.finalUnitPrice,
+                discountAmount: linePricing.discountAmount,
+                quantity: item.quantity,
+                total: linePricing.finalTotal,
+              };
+}),
         },
         payment: {
           create: {
-            amount: total,
+            amount: pricing.total,
             method: input.paymentMethod,
             status: "UNPAID",
           },

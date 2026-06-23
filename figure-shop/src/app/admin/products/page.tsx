@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ProductPrice } from "@/components/product/ProductPrice";
-import { getProductsForAdmin } from "@/services/admin-product.service";
+import { getAdminProducts } from "@/services/admin-product.service";
+import { ArchiveProductButton } from "@/components/admin/ArchiveProductButton";
 
 export default async function AdminProductsPage() {
-  const products = await getProductsForAdmin();
+  const products = await getAdminProducts();
 
   return (
     <main>
@@ -48,11 +49,26 @@ export default async function AdminProductsPage() {
                   <p>{product.type}</p>
                 </div>
 
-                <div className="lg:text-right">
-                  <ProductPrice price={product.price} />
-                  <p className="mt-1 text-sm text-zinc-500">
-                    Ton kho: {product.stock}
-                  </p>
+                <div className="flex flex-col items-start gap-3 lg:items-end">
+                  <div className="lg:text-right">
+                    <ProductPrice price={product.price} />
+                    <p className="mt-1 text-sm text-zinc-500">
+                      Ton kho: {product.stock}
+                    </p>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Link
+                      href={`/admin/products/${product.id}/edit`}
+                      className="inline-flex rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-950 transition hover:bg-zinc-100"
+                    >
+                      Sua
+                    </Link>
+
+                    {product.status !== "ARCHIVED" ? (
+                      <ArchiveProductButton productId={product.id} />
+                    ) : null}
+                  </div>
                 </div>
               </div>
             ))}

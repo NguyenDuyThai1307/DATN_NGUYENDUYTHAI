@@ -57,22 +57,39 @@ export default async function AccountOrderDetailPage({
           <h2 className="font-semibold">San pham</h2>
 
           <div className="mt-4 space-y-4">
-            {order.items.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-start justify-between gap-4 border-b border-zinc-100 pb-4 last:border-0 last:pb-0"
-              >
-                <div>
-                  <p className="font-medium">{item.productName}</p>
-                  <p className="mt-1 text-sm text-zinc-500">
-                    {item.quantity} x{" "}
-                    <ProductPrice price={item.productPrice} />
-                  </p>
-                </div>
+            {order.items.map((item) => {
+                const originalPrice = item.originalPrice || item.productPrice;
+                const finalPrice = item.finalPrice || item.productPrice;
 
-                <ProductPrice price={item.total} />
-              </div>
-            ))}
+                return (
+                  <div
+                    key={item.id}
+                    className="flex items-start justify-between gap-4 border-b border-zinc-100 pb-4 last:border-0 last:pb-0"
+                  >
+                    <div>
+                      <p className="font-medium">{item.productName}</p>
+
+                      <p className="mt-1 text-sm text-zinc-500">
+                        {item.quantity} x{" "}
+                        <ProductPrice
+                          price={finalPrice}
+                          originalPrice={
+                            originalPrice > finalPrice ? originalPrice : undefined
+                          }
+                        />
+                      </p>
+
+                      {item.discountAmount > 0 ? (
+                        <p className="mt-1 text-xs font-medium text-red-600">
+                          Giam {item.discountAmount.toLocaleString("vi-VN")} d
+                        </p>
+                      ) : null}
+                    </div>
+
+                    <ProductPrice price={item.total} />
+                  </div>
+                );
+              })}
           </div>
         </section>
 
@@ -100,10 +117,35 @@ export default async function AccountOrderDetailPage({
                 <span>Trang thai:</span>
                 <PaymentStatusBadge status={order.paymentStatus} />
               </div>
-              <div className="flex items-center justify-between border-t border-zinc-200 pt-3">
-                <span>Tong cong</span>
-                <ProductPrice price={order.total} />
-             </div>
+              <div className="space-y-3 border-t border-zinc-200 pt-3">
+                <div className="flex items-center justify-between">
+                  <span>Tam tinh</span>
+                  <ProductPrice price={order.subtotal} />
+                </div>
+
+                {order.discountAmount > 0 ? (
+                  <div className="flex items-center justify-between">
+                    <span>Giam gia</span>
+                    <span className="font-medium text-red-600">
+                      -{order.discountAmount.toLocaleString("vi-VN")} d
+                    </span>
+                  </div>
+                ) : null}
+
+                <div className="flex items-center justify-between">
+                  <span>Phi giao hang</span>
+                  {order.shippingFee === 0 ? (
+                    <span className="font-medium text-emerald-700">Mien phi</span>
+                  ) : (
+                    <ProductPrice price={order.shippingFee} />
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between border-t border-zinc-200 pt-3 font-medium">
+                  <span>Tong cong</span>
+                  <ProductPrice price={order.total} />
+                </div>
+              </div>
             </div>
 
             {order.paymentMethod === "DEMO" && order.paymentStatus !== "PAID" ? (
