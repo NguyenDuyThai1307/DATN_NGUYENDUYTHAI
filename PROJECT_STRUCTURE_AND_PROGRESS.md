@@ -410,53 +410,15 @@ src/app/api/admin/products/[id]/route.ts
 
 ### 8.5. Logic Khuyen Mai
 
-Huong lam sau khi admin product CRUD on dinh:
-
 ````text
+[x] Them pricing.service.ts de tinh gia tap trung
 [x] Ho tro gia goc, gia sau giam, phan tram giam
 [x] Promotion theo san pham: admin tao, sua, tat, co thoi gian ap dung
 [ ] Promotion theo category/brand
-[ ] Ho tro coupon trong cart/checkout
-[x] Luu snapshot gia vao OrderItem de don cu khong bi sai khi gia san pham thay doi
-
-Model co the them:
-
-```text
-Promotion
-- id
-- name
-- type: PERCENTAGE / FIXED_AMOUNT / FLASH_SALE
-- value
-- startsAt
-- endsAt
-- isActive
-- productId optional
-- categoryId optional
-- brandId optional
-
-Coupon
-- id
-- code
-- type: PERCENTAGE / FIXED_AMOUNT
-- value
-- minOrderValue
-- maxDiscountAmount
-- usageLimit
-- usedCount
-- startsAt
-- endsAt
-- isActive
-````
-
-OrderItem nen mo rong khi lam khuyen mai:
-
-```text
-originalPrice
-finalPrice
-discountAmount
-quantity
-total
-```
+[x] Coupon: admin tao, sua, tat
+[x] Coupon: ap dung/go ma tai gio hang va hien thi o checkout
+[x] Coupon: server kiem tra lai khi tao order va cap nhat usedCount
+[x] Luu snapshot promotion/coupon vao Order va OrderItem
 
 ### 8.6. Thanh Toan That Sau Nay
 
@@ -465,7 +427,7 @@ total
 [ ] Sau khi khung do an on dinh moi tich hop VNPay sandbox
 [ ] Neu them VNPay: them PaymentMethod VNPAY, env VNPAY_*, helper ky/verify, route create/return
 [ ] Secret thanh toan chi nam trong .env, khong dua ra client
-```
+````
 
 ### 8.7. Uu Tien Lan Lam Tiep Theo
 

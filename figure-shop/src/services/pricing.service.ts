@@ -6,6 +6,18 @@ export type PromotionPricingInput = {
   isActive: boolean;
 };
 
+export type CouponPricingInput = {
+  type: "PERCENTAGE" | "FIXED_AMOUNT";
+  value: number;
+  minOrderValue: number;
+  maxDiscountAmount: number | null;
+  usageLimit: number | null;
+  usedCount: number;
+  startsAt: Date;
+  endsAt: Date;
+  isActive: boolean;
+};
+
 export type PricingItemInput = {
   unitPrice: number;
   quantity: number;
@@ -23,6 +35,8 @@ export type LinePricing = {
 
 export type OrderPricing = {
   subtotal: number;
+  productDiscountAmount: number;
+  couponDiscountAmount: number;
   discountAmount: number;
   shippingFee: number;
   total: number;
@@ -36,6 +50,21 @@ export function isPromotionActive(
     promotion.isActive &&
     promotion.startsAt <= now &&
     promotion.endsAt >= now
+  );
+}
+
+export function isCouponActive(
+  coupon: CouponPricingInput,
+  now = new Date(),
+) {
+  const hasRemainingUsage =
+    coupon.usageLimit === null || coupon.usedCount < coupon.usageLimit;
+
+  return (
+    coupon.isActive &&
+    hasRemainingUsage &&
+    coupon.startsAt <= now &&
+    coupon.endsAt >= now
   );
 }
 
@@ -54,6 +83,31 @@ function calculateDiscountPerUnit(
       : promotion.value;
 
   return Math.min(Math.max(discount, 0), unitPrice);
+}
+
+export function calculateCouponDiscount(
+  orderAmount: number,
+  coupon: CouponPricingInput | null | undefined,
+  now = new Date(),
+) {
+  if (!coupon || !isCouponActive(coupon, now)) {
+    return 0;
+  }
+
+  if (orderAmount < coupon.minOrderValue) {
+    return 0;
+  }
+
+  let discount =
+    coupon.type === "PERCENTAGE"
+      ? Math.floor((orderAmount * coupon.value) / 100)
+      : coupon.value;
+
+  if (coupon.maxDiscountAmount !== null) {
+    discount = Math.min(discount, coupon.maxDiscountAmount);
+  }
+
+  return Math.min(Math.max(discount, 0), orderAmount);
 }
 
 export function calculateLinePricing(
@@ -82,6 +136,7 @@ export function calculateLinePricing(
 export function calculateOrderPricing(
   items: PricingItemInput[],
   shippingFee = 0,
+  coupon?: CouponPricingInput | null,
   now = new Date(),
 ): OrderPricing {
   const lines = items.map((item) => calculateLinePricing(item, now));
@@ -90,12 +145,24 @@ export function calculateOrderPricing(
     return total + line.originalTotal;
   }, 0);
 
-  const discountAmount = lines.reduce((total, line) => {
+  const productDiscountAmount = lines.reduce((total, line) => {
     return total + line.discountAmount;
   }, 0);
 
+  const amountAfterProductDiscount = subtotal - productDiscountAmount;
+
+  const couponDiscountAmount = calculateCouponDiscount(
+    amountAfterProductDiscount,
+    coupon,
+    now,
+  );
+
+  const discountAmount = productDiscountAmount + couponDiscountAmount;
+
   return {
     subtotal,
+    productDiscountAmount,
+    couponDiscountAmount,
     discountAmount,
     shippingFee,
     total: subtotal - discountAmount + shippingFee,

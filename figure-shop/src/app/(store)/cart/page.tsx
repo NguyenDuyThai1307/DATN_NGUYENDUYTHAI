@@ -22,6 +22,8 @@ export default async function CartPage() {
     quantity: item.quantity,
     promotion: item.product.promotion,
   })),
+  0,
+  cart?.coupon,
 );
 
   return (
@@ -38,9 +40,12 @@ export default async function CartPage() {
 
         <CartSummary
           subtotal={pricing.subtotal}
+          productDiscountAmount={pricing.productDiscountAmount}
+          couponDiscountAmount={pricing.couponDiscountAmount}
           discountAmount={pricing.discountAmount}
           shippingFee={pricing.shippingFee}
           total={pricing.total}
+          coupon={cart?.coupon}
         />
       </div>
       ) : (

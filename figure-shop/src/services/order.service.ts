@@ -4,6 +4,10 @@ import {
   calculateLinePricing,
   calculateOrderPricing,
 } from "@/services/pricing.service";
+import {
+  CouponValidationError,
+  getCouponValidationError,
+} from "@/services/coupon.service";
 
 function generateOrderNumber() {
   const timestamp = Date.now().toString(36).toUpperCase();
@@ -21,10 +25,11 @@ export async function createOrderFromCart(
       userId,
     },
     include: {
+      coupon: true,
       items: {
         include: {
           product: {
-             include: {
+            include: {
               promotion: true,
             },
           },
@@ -39,16 +44,53 @@ export async function createOrderFromCart(
 
   const shippingFee = 0;
 
-  const pricing = calculateOrderPricing(
-    cart.items.map((item) => ({
-      unitPrice: item.product.price,
-      quantity: item.quantity,
-      promotion: item.product.promotion,
-    })),
+  const pricingItems = cart.items.map((item) => ({
+    unitPrice: item.product.price,
+    quantity: item.quantity,
+    promotion: item.product.promotion,
+  }));
+
+  const pricingWithoutCoupon = calculateOrderPricing(
+    pricingItems,
     shippingFee,
-);
+  );
+
+  const amountAfterProductDiscount =
+    pricingWithoutCoupon.subtotal -
+    pricingWithoutCoupon.productDiscountAmount;
 
   return prisma.$transaction(async (tx) => {
+    let coupon = cart.coupon;
+
+    if (coupon) {
+      const latestCoupon = await tx.coupon.findUnique({
+        where: {
+          id: coupon.id,
+        },
+      });
+
+      if (!latestCoupon) {
+        throw new CouponValidationError("Coupon not found");
+      }
+
+      const couponError = getCouponValidationError(
+        latestCoupon,
+        amountAfterProductDiscount,
+      );
+
+      if (couponError) {
+        throw new CouponValidationError(couponError);
+      }
+
+      coupon = latestCoupon;
+    }
+
+    const pricing = calculateOrderPricing(
+      pricingItems,
+      shippingFee,
+      coupon,
+    );
+
     const order = await tx.order.create({
       data: {
         orderNumber: generateOrderNumber(),
@@ -61,6 +103,9 @@ export async function createOrderFromCart(
         shippingFee: pricing.shippingFee,
         total: pricing.total,
         note: input.note,
+        couponId: coupon?.id,
+        couponCode: coupon?.code,
+        couponDiscountAmount: pricing.couponDiscountAmount,
         receiverName: input.receiverName,
         receiverPhone: input.receiverPhone,
         province: input.province,
@@ -69,23 +114,23 @@ export async function createOrderFromCart(
         addressDetail: input.addressDetail,
         items: {
           create: cart.items.map((item) => {
-              const linePricing = calculateLinePricing({
-                  unitPrice: item.product.price,
-                  quantity: item.quantity,
-                  promotion: item.product.promotion,
-                });
+            const linePricing = calculateLinePricing({
+              unitPrice: item.product.price,
+              quantity: item.quantity,
+              promotion: item.product.promotion,
+            });
 
-              return {
-                productId: item.productId,
-                productName: item.product.name,
-                productPrice: linePricing.finalUnitPrice,
-                originalPrice: linePricing.unitPrice,
-                finalPrice: linePricing.finalUnitPrice,
-                discountAmount: linePricing.discountAmount,
-                quantity: item.quantity,
-                total: linePricing.finalTotal,
-              };
-}),
+            return {
+              productId: item.productId,
+              productName: item.product.name,
+              productPrice: linePricing.finalUnitPrice,
+              originalPrice: linePricing.unitPrice,
+              finalPrice: linePricing.finalUnitPrice,
+              discountAmount: linePricing.discountAmount,
+              quantity: item.quantity,
+              total: linePricing.finalTotal,
+            };
+          }),
         },
         payment: {
           create: {
@@ -101,9 +146,31 @@ export async function createOrderFromCart(
       },
     });
 
+    if (coupon && pricing.couponDiscountAmount > 0) {
+      await tx.coupon.update({
+        where: {
+          id: coupon.id,
+        },
+        data: {
+          usedCount: {
+            increment: 1,
+          },
+        },
+      });
+    }
+
     await tx.cartItem.deleteMany({
       where: {
         cartId: cart.id,
+      },
+    });
+
+    await tx.cart.update({
+      where: {
+        id: cart.id,
+      },
+      data: {
+        couponId: null,
       },
     });
 

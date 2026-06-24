@@ -1,4 +1,6 @@
 import { prisma } from "@/lib/prisma";
+import { getCouponByCode, getCouponValidationError } from "@/services/coupon.service";
+import { calculateOrderPricing } from "@/services/pricing.service";
 
 export async function getOrCreateCart(userId: string) {
   const existingCart = await prisma.cart.findUnique({
@@ -26,6 +28,7 @@ export async function getCartByUserId(userId: string) {
       id: cart.id,
     },
     include: {
+      coupon: true,
       items: {
         include: {
           product: {
@@ -114,6 +117,65 @@ export async function removeCartItem(userId: string, itemId: string) {
     where: {
       id: itemId,
       cartId: cart.id,
+    },
+  });
+}
+
+export async function applyCouponToCart(userId: string, code: string) {
+  const cart = await getCartByUserId(userId);
+
+  if (!cart || cart.items.length === 0) {
+    throw new Error("Cart is empty");
+  }
+
+  const pricing = calculateOrderPricing(
+    cart.items.map((item) => ({
+      unitPrice: item.product.price,
+      quantity: item.quantity,
+      promotion: item.product.promotion,
+    })),
+  );
+
+  const amountAfterProductDiscount =
+    pricing.subtotal - pricing.productDiscountAmount;
+
+  const coupon = await getCouponByCode(code);
+
+  if (!coupon) {
+    throw new Error("Coupon not found");
+  }
+
+  const validationError = getCouponValidationError(
+    coupon,
+    amountAfterProductDiscount,
+  );
+
+  if (validationError) {
+    throw new Error(validationError);
+  }
+
+  return prisma.cart.update({
+    where: {
+      id: cart.id,
+    },
+    data: {
+      couponId: coupon.id,
+    },
+    include: {
+      coupon: true,
+    },
+  });
+}
+
+export async function removeCouponFromCart(userId: string) {
+  const cart = await getOrCreateCart(userId);
+
+  return prisma.cart.update({
+    where: {
+      id: cart.id,
+    },
+    data: {
+      couponId: null,
     },
   });
 }

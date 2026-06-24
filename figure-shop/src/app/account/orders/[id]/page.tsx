@@ -29,6 +29,9 @@ export default async function AccountOrderDetailPage({
     notFound();
   }
 
+  const productDiscountAmount =
+  order.discountAmount - order.couponDiscountAmount;
+
   return (
     <main className="mx-auto max-w-6xl px-6 py-10">
       <Link
@@ -123,11 +126,22 @@ export default async function AccountOrderDetailPage({
                   <ProductPrice price={order.subtotal} />
                 </div>
 
-                {order.discountAmount > 0 ? (
+                {productDiscountAmount > 0 ? (
                   <div className="flex items-center justify-between">
-                    <span>Giam gia</span>
+                    <span>Giam san pham</span>
                     <span className="font-medium text-red-600">
-                      -{order.discountAmount.toLocaleString("vi-VN")} d
+                      -{productDiscountAmount.toLocaleString("vi-VN")} d
+                    </span>
+                  </div>
+                ) : null}
+
+                {order.couponDiscountAmount > 0 ? (
+                  <div className="flex items-center justify-between">
+                    <span>
+                      Giam coupon {order.couponCode ? `(${order.couponCode})` : ""}
+                    </span>
+                    <span className="font-medium text-red-600">
+                      -{order.couponDiscountAmount.toLocaleString("vi-VN")} d
                     </span>
                   </div>
                 ) : null}

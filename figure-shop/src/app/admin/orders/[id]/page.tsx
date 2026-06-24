@@ -37,6 +37,9 @@ export default async function AdminOrderDetailPage({
     notFound();
   }
 
+  const productDiscountAmount =
+  order.discountAmount - order.couponDiscountAmount;
+
   return (
     <main>
       <Link
@@ -103,39 +106,6 @@ export default async function AdminOrderDetailPage({
         <aside className="space-y-5">
           <section className="rounded-md border border-zinc-200 bg-white p-5">
             <h2 className="font-semibold">Trang thai</h2>
-            <section className="rounded-md border border-zinc-200 bg-white p-5">
-                <h2 className="font-semibold">Tom tat thanh toan</h2>
-
-                <div className="mt-4 space-y-3 text-sm text-zinc-600">
-                  <div className="flex items-center justify-between">
-                    <span>Tam tinh</span>
-                    <ProductPrice price={order.subtotal} />
-                  </div>
-
-                  {order.discountAmount > 0 ? (
-                    <div className="flex items-center justify-between">
-                      <span>Giam gia</span>
-                      <span className="font-medium text-red-600">
-                        -{order.discountAmount.toLocaleString("vi-VN")} d
-                      </span>
-                    </div>
-                  ) : null}
-
-                  <div className="flex items-center justify-between">
-                    <span>Phi giao hang</span>
-                    {order.shippingFee === 0 ? (
-                      <span className="font-medium text-emerald-700">Mien phi</span>
-                    ) : (
-                      <ProductPrice price={order.shippingFee} />
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between border-t border-zinc-200 pt-3 font-medium text-zinc-950">
-                    <span>Tong cong</span>
-                    <ProductPrice price={order.total} />
-                  </div>
-                </div>
-              </section>
 
             <div className="mt-4 space-y-2 text-sm text-zinc-600">
               <div className="flex items-center gap-2">
@@ -155,6 +125,51 @@ export default async function AdminOrderDetailPage({
               {order.payment?.paidAt ? (
                 <p>Da thanh toan luc: {order.payment.paidAt.toLocaleString("vi-VN")}</p>
               ) : null}
+            </div>
+          </section>
+
+          <section className="rounded-md border border-zinc-200 bg-white p-5">
+            <h2 className="font-semibold">Tom tat thanh toan</h2>
+
+            <div className="mt-4 space-y-3 text-sm text-zinc-600">
+              <div className="flex items-center justify-between">
+                <span>Tam tinh</span>
+                <ProductPrice price={order.subtotal} />
+              </div>
+
+              {productDiscountAmount > 0 ? (
+                <div className="flex items-center justify-between">
+                  <span>Giam san pham</span>
+                  <span className="font-medium text-red-600">
+                    -{productDiscountAmount.toLocaleString("vi-VN")} d
+                  </span>
+                </div>
+              ) : null}
+
+              {order.couponDiscountAmount > 0 ? (
+                <div className="flex items-center justify-between">
+                  <span>
+                    Giam coupon {order.couponCode ? `(${order.couponCode})` : ""}
+                  </span>
+                  <span className="font-medium text-red-600">
+                    -{order.couponDiscountAmount.toLocaleString("vi-VN")} d
+                  </span>
+                </div>
+              ) : null}
+
+              <div className="flex items-center justify-between">
+                <span>Phi giao hang</span>
+                {order.shippingFee === 0 ? (
+                  <span className="font-medium text-emerald-700">Mien phi</span>
+                ) : (
+                  <ProductPrice price={order.shippingFee} />
+                )}
+              </div>
+
+              <div className="flex items-center justify-between border-t border-zinc-200 pt-3 font-medium text-zinc-950">
+                <span>Tong cong</span>
+                <ProductPrice price={order.total} />
+              </div>
             </div>
           </section>
 

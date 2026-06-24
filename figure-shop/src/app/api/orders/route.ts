@@ -5,6 +5,7 @@ import {
   getOrdersByUserId,
 } from "@/services/order.service";
 import { checkoutSchema } from "@/validations/order.schema";
+import { CouponValidationError } from "@/services/coupon.service";
 
 export async function GET() {
   const user = await getCurrentUser();
@@ -57,6 +58,12 @@ export async function POST(request: Request) {
       { status: 201 },
     );
   } catch (error) {
+    if (error instanceof CouponValidationError) {
+      return NextResponse.json(
+        { message: error.message },
+        { status: 400 },
+      );
+    }
     if (error instanceof Error && error.message === "Cart is empty") {
       return NextResponse.json(
         { message: "Cart is empty" },

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { CheckoutForm } from "@/components/checkout/CheckoutForm";
 import { redirect } from "next/navigation";
+import { CheckoutForm } from "@/components/checkout/CheckoutForm";
 import { getCurrentUser } from "@/lib/auth";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { getCartByUserId } from "@/services/cart.service";
@@ -28,7 +28,9 @@ export default async function CheckoutPage() {
       unitPrice: item.product.price,
       quantity: item.quantity,
       promotion: item.product.promotion,
-    }))
+    })),
+    0,
+    cart?.coupon,
   );
 
   return (
@@ -38,30 +40,43 @@ export default async function CheckoutPage() {
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
         <section className="rounded-md border border-zinc-200 bg-white p-5">
           <h2 className="font-semibold">Thong tin giao hang</h2>
-
-            <CheckoutForm />
+          <CheckoutForm />
         </section>
 
         <aside className="h-fit rounded-md border border-zinc-200 bg-white p-5">
           <h2 className="font-semibold">Don hang cua ban</h2>
 
           <div className="mt-4 space-y-4">
-            {items.map((item) => (
-              <div key={item.id} className="flex justify-between gap-4 text-sm">
-                <div>
-                  <p className="font-medium">{item.product.name}</p>
-                  <p className="mt-1 text-zinc-500">So luong: {item.quantity}</p>
+            {items.map((item) => {
+              const linePricing = calculateLinePricing({
+                unitPrice: item.product.price,
+                quantity: item.quantity,
+                promotion: item.product.promotion,
+              });
+
+              return (
+                <div
+                  key={item.id}
+                  className="flex justify-between gap-4 text-sm"
+                >
+                  <div>
+                    <p className="font-medium">{item.product.name}</p>
+                    <p className="mt-1 text-zinc-500">
+                      So luong: {item.quantity}
+                    </p>
+                  </div>
+
+                  <ProductPrice
+                    price={linePricing.finalTotal}
+                    originalPrice={
+                      linePricing.originalTotal > linePricing.finalTotal
+                        ? linePricing.originalTotal
+                        : undefined
+                    }
+                  />
                 </div>
-                <ProductPrice
-                  price={
-                    calculateLinePricing({
-                      unitPrice: item.product.price,
-                      quantity: item.quantity,
-                    }).finalTotal
-                  }
-                />
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="mt-5 space-y-3 border-t border-zinc-200 pt-4 text-sm">
@@ -70,12 +85,25 @@ export default async function CheckoutPage() {
               <ProductPrice price={pricing.subtotal} />
             </div>
 
-            <div className="flex items-center justify-between">
-              <span className="text-zinc-600">Giam gia</span>
-              <span className="font-medium text-zinc-950">
-                -{pricing.discountAmount.toLocaleString("vi-VN")} d
-              </span>
-            </div>
+            {pricing.productDiscountAmount > 0 ? (
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-600">Giam san pham</span>
+                <span className="font-medium text-red-600">
+                  -{pricing.productDiscountAmount.toLocaleString("vi-VN")} d
+                </span>
+              </div>
+            ) : null}
+
+            {pricing.couponDiscountAmount > 0 ? (
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-600">
+                  Giam coupon {cart?.coupon ? `(${cart.coupon.code})` : ""}
+                </span>
+                <span className="font-medium text-red-600">
+                  -{pricing.couponDiscountAmount.toLocaleString("vi-VN")} d
+                </span>
+              </div>
+            ) : null}
 
             <div className="flex items-center justify-between">
               <span className="text-zinc-600">Phi giao hang</span>
@@ -91,6 +119,7 @@ export default async function CheckoutPage() {
               <ProductPrice price={pricing.total} />
             </div>
           </div>
+
           <Link
             href="/cart"
             className="mt-4 inline-flex text-sm font-medium text-zinc-600 hover:text-zinc-950"

@@ -34,6 +34,11 @@ enum PromotionType {
   FIXED_AMOUNT
 }
 
+enum CouponType {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
 enum OrderStatus {
   PENDING
   CONFIRMED
@@ -152,6 +157,29 @@ model Promotion {
   @@index([isActive, startsAt, endsAt])
 }
 
+model Coupon {
+  id                String     @id @default(cuid())
+  code              String     @unique
+  name              String
+  type              CouponType
+  value             Int
+  minOrderValue     Int        @default(0)
+  maxDiscountAmount Int?
+  usageLimit        Int?
+  usedCount         Int        @default(0)
+  startsAt          DateTime
+  endsAt            DateTime
+  isActive          Boolean    @default(true)
+
+  orders Order[]
+  carts  Cart[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive, startsAt, endsAt])
+}
+
 model ProductImage {
   id        String  @id @default(cuid())
   productId String
@@ -165,9 +193,12 @@ model ProductImage {
 }
 
 model Cart {
-  id     String     @id @default(cuid())
-  userId String     @unique
+  id       String  @id @default(cuid())
+  userId   String  @unique
+  couponId String?
+
   user   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  coupon Coupon?    @relation(fields: [couponId], references: [id], onDelete: SetNull)
   items  CartItem[]
 
   createdAt DateTime @default(now())
@@ -197,11 +228,14 @@ model Order {
   paymentMethod PaymentMethod @default(COD)
   paymentStatus PaymentStatus @default(UNPAID)
 
-  subtotal       Int
-  discountAmount Int     @default(0)
-  shippingFee    Int     @default(0)
-  total          Int
-  note           String?
+  subtotal             Int
+  discountAmount       Int     @default(0)
+  shippingFee          Int     @default(0)
+  total                Int
+  note                 String?
+  couponId             String?
+  couponCode           String?
+  couponDiscountAmount Int     @default(0)
 
   receiverName  String
   receiverPhone String
@@ -211,6 +245,7 @@ model Order {
   addressDetail String
 
   user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  coupon  Coupon?     @relation(fields: [couponId], references: [id], onDelete: SetNull)
   items   OrderItem[]
   payment Payment?
 

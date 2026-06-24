@@ -5,6 +5,7 @@ const adminNavItems = [
   { href: "/admin/orders", label: "Don hang" },
   { href: "/admin/products", label: "San pham" },
   { href: "/admin/promotions", label: "Khuyen mai" },
+  { href: "/admin/coupons", label: "Coupon" },
   { href: "/admin/categories", label: "Danh muc" },
   { href: "/admin/brands", label: "Thuong hieu" },
   { href: "/admin/users", label: "Nguoi dung" },

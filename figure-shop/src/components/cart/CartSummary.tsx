@@ -1,18 +1,28 @@
 import Link from "next/link";
+import { CouponInput } from "@/components/cart/CouponInput";
 import { ProductPrice } from "@/components/product/ProductPrice";
 
 type CartSummaryProps = {
   subtotal: number;
+  productDiscountAmount: number;
+  couponDiscountAmount: number;
   discountAmount: number;
   shippingFee: number;
   total: number;
+  coupon?: {
+    code: string;
+    name: string;
+  } | null;
 };
 
 export function CartSummary({
   subtotal,
+  productDiscountAmount,
+  couponDiscountAmount,
   discountAmount,
   shippingFee,
   total,
+  coupon,
 }: CartSummaryProps) {
   return (
     <aside className="h-fit rounded-md border border-zinc-200 bg-white p-5">
@@ -24,12 +34,30 @@ export function CartSummary({
           <ProductPrice price={subtotal} />
         </div>
 
-        <div className="flex items-center justify-between">
-          <span className="text-zinc-600">Giam gia</span>
-          <span className="font-medium text-zinc-950">
-            -{discountAmount.toLocaleString("vi-VN")} d
-          </span>
-        </div>
+        {productDiscountAmount > 0 ? (
+          <div className="flex items-center justify-between">
+            <span className="text-zinc-600">Giam san pham</span>
+            <span className="font-medium text-red-600">
+              -{productDiscountAmount.toLocaleString("vi-VN")} d
+            </span>
+          </div>
+        ) : null}
+
+        {couponDiscountAmount > 0 ? (
+          <div className="flex items-center justify-between">
+            <span className="text-zinc-600">Giam coupon</span>
+            <span className="font-medium text-red-600">
+              -{couponDiscountAmount.toLocaleString("vi-VN")} d
+            </span>
+          </div>
+        ) : null}
+
+        {discountAmount === 0 ? (
+          <div className="flex items-center justify-between">
+            <span className="text-zinc-600">Giam gia</span>
+            <span className="font-medium text-zinc-950">-0 d</span>
+          </div>
+        ) : null}
 
         <div className="flex items-center justify-between">
           <span className="text-zinc-600">Phi giao hang</span>
@@ -39,6 +67,10 @@ export function CartSummary({
             <ProductPrice price={shippingFee} />
           )}
         </div>
+      </div>
+
+      <div className="mt-5 border-t border-zinc-200 pt-4">
+        <CouponInput coupon={coupon} />
       </div>
 
       <div className="mt-5 flex items-center justify-between border-t border-zinc-200 pt-4">
