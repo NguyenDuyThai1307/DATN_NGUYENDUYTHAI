@@ -440,3 +440,189 @@ src/app/api/admin/products/[id]/route.ts
 6. UI polish va anh san pham
 7. Chuan bi bao cao/screenshot/seed demo
 ```
+
+### 8.8. Roadmap Cai Thien Frontend Theo 4 Luot
+
+Nguyen tac lam viec:
+
+```text
+- Chi lam tung luot mot.
+- Khong lam 4 luot lien tiep trong cung mot lan neu chua co xac nhan.
+- Moi luot xong phai test toi thieu: typecheck, lint, route lien quan.
+- Neu co bug phat sinh trong luot hien tai thi sua truoc khi sang luot tiep theo.
+- Khong pha backend/API/admin logic da co; chi refactor khi cach moi hop ly hon va test duoc.
+```
+
+#### Luot 1 - UI Component System + Product Listing Foundation
+
+Muc tieu: tao nen mong UI dong bo cho storefront, de cac phan sau lap ghep nhanh va it lap code.
+
+```text
+[x] UI component system
+[x] ProductCard
+[x] ProductGrid
+[x] Empty state
+[x] Skeleton/loading state
+```
+
+Pham vi file du kien:
+
+```text
+src/components/ui/
+src/components/product/ProductCard.tsx
+src/components/product/ProductGrid.tsx
+src/components/product/ProductFilter.tsx
+src/components/product/ProductPrice.tsx
+src/components/product/ProductPagination.tsx
+src/app/(shop)/(store)/products/page.tsx
+src/app/(shop)/(store)/collections/[slug]/page.tsx
+src/app/globals.css
+```
+
+Checklist nghiem thu:
+
+```text
+[x] ProductCard co anh, badge sale/preorder, gia goc/gia sau giam, hover effect
+[x] ProductGrid responsive: mobile 2 cot, tablet 3 cot, desktop 4-5 cot
+[x] Empty state dep khi khong co san pham
+[x] Skeleton/loading state dung duoc cho danh sach san pham
+[x] Khong lam hong filter/sort/search hien co
+[x] npm.cmd exec tsc -- --noEmit pass
+[x] npm.cmd run lint pass
+[x] Test /products va /collections/scale-figure tra 200
+```
+
+#### Luot 2 - Product Detail + Cart + Checkout UX
+
+Muc tieu: nang trai nghiem mua hang tu trang chi tiet den gio hang va checkout.
+
+```text
+[ ] Product detail UX
+[ ] ProductGallery
+[ ] ProductInfoPanel
+[ ] PromoCodeBox
+[ ] ServiceCommitments
+[ ] ProductTabs
+[ ] Cart UX polish
+[ ] Checkout UX polish
+[ ] Order success page polish
+```
+
+Pham vi file du kien:
+
+```text
+src/app/(shop)/(store)/products/[slug]/page.tsx
+src/components/product/ProductGallery.tsx
+src/components/product/ProductPurchasePanel.tsx
+src/components/product/PromoCodeBox.tsx
+src/components/product/ServiceCommitments.tsx
+src/components/product/ProductTabs.tsx
+src/app/(shop)/(store)/cart/page.tsx
+src/components/cart/
+src/app/(shop)/(store)/checkout/page.tsx
+src/components/checkout/
+src/app/(shop)/(store)/checkout/success/page.tsx
+```
+
+Checklist nghiem thu:
+
+```text
+[ ] Chi tiet san pham co gallery, gia, sale, stock/preorder, CTA ro rang
+[ ] Nut Them vao gio va Mua ngay hoat dong
+[ ] Gio hang hien dung tam tinh, giam san pham, coupon, ship, tong tien
+[ ] Checkout validate ro rang, loi hien dung noi
+[ ] Dat hang xong sang trang success
+[ ] Coupon/promotion van duoc server tinh lai
+[ ] npm.cmd exec tsc -- --noEmit pass
+[ ] npm.cmd run lint pass
+```
+
+#### Luot 3 - Account/Order UX + Admin Dashboard/Table/Form Polish
+
+Muc tieu: lam ro trai nghiem sau mua hang va nang cap phan quan tri de phu hop demo do an.
+
+```text
+[ ] Account dashboard polish
+[ ] User order list polish
+[ ] User order detail polish
+[ ] Admin dashboard polish
+[ ] Admin table polish
+[ ] Admin form polish
+[ ] Admin empty/error states
+```
+
+Pham vi file du kien:
+
+```text
+src/app/(shop)/account/page.tsx
+src/app/(shop)/account/orders/page.tsx
+src/app/(shop)/account/orders/[id]/page.tsx
+src/app/(shop)/admin/page.tsx
+src/app/(shop)/admin/products/page.tsx
+src/app/(shop)/admin/orders/page.tsx
+src/app/(shop)/admin/coupons/page.tsx
+src/app/(shop)/admin/promotions/page.tsx
+src/components/admin/
+src/components/order/
+```
+
+Checklist nghiem thu:
+
+```text
+[ ] Account hien thong tin user va loi tat don hang
+[ ] Order list/detail de doc, status badge dong bo
+[ ] Admin dashboard co metric ro rang
+[ ] Bang admin de scan, co filter/search neu can
+[ ] Form admin co label, validation, button state ro rang
+[ ] Khong pha route/admin action da co
+[ ] npm.cmd exec tsc -- --noEmit pass
+[ ] npm.cmd run lint pass
+```
+
+#### Luot 4 - Test Admin CRUD + Fix Bug + Build/Lint/Typecheck
+
+Muc tieu: khoa chat chat luong sau khi UI/UX da cai thien.
+
+```text
+[ ] Test admin CRUD product
+[ ] Test admin CRUD category
+[ ] Test admin CRUD brand
+[ ] Test admin CRUD promotion
+[ ] Test admin CRUD coupon
+[ ] Test auth/cart/order/payment
+[ ] Fix bug phat hien trong qua trinh test
+[ ] Build/lint/typecheck cuoi
+```
+
+Pham vi test:
+
+```text
+Dang ky
+Dang nhap
+Dang xuat
+Xem san pham
+Loc/sap xep san pham
+Them gio hang
+Cap nhat gio hang
+Ap coupon
+Checkout
+Thanh toan demo
+Xem don hang user
+Admin tao/sua/archive san pham
+Admin tao/sua danh muc
+Admin tao/sua thuong hieu
+Admin tao/sua/tat promotion
+Admin tao/sua/tat coupon
+Admin xem don hang
+```
+
+Checklist nghiem thu:
+
+```text
+[ ] npm.cmd exec tsc -- --noEmit pass
+[ ] npm.cmd run lint pass
+[ ] npm.cmd run build pass
+[ ] Bao cao test ghi ro route/API nao da test
+[ ] Neu co data test tao ra thi ghi lai de biet
+[ ] Cap nhat file PROJECT_STRUCTURE_AND_PROGRESS.md truoc khi nghi/commit
+```

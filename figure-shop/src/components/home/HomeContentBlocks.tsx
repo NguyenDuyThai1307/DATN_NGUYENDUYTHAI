@@ -1,0 +1,165 @@
+import Image from "next/image";
+import Link from "next/link";
+import { CirclePlay, Copy, PackageCheck } from "lucide-react";
+import {
+  featuredSeries,
+  latestNews,
+  promoShortcuts,
+  serviceLinks,
+} from "@/data/home-content";
+
+type CategoryItem = {
+  id: string;
+  name: string;
+  slug: string;
+  productCount: number;
+  imageUrl?: string;
+};
+
+export function FeaturedSeries() {
+  return (
+    <section className="py-7 sm:py-10">
+      <div className="rounded-lg border border-zinc-200 bg-white p-5 sm:p-7">
+        <p className="text-sm font-bold uppercase text-zinc-950">Series noi bat</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {featuredSeries.map((series) => (
+            <Link key={series} href={`/products?q=${encodeURIComponent(series)}`} className="rounded-full border border-rose-100 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition hover:border-[var(--brand)] hover:bg-white hover:text-[var(--brand-strong)]">
+              {series}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function NewsHighlight() {
+  return (
+    <aside className="rounded-lg border border-zinc-200 bg-white p-5">
+      <p className="text-sm font-bold uppercase text-zinc-950">Tin tuc noi bat</p>
+      <div className="mt-4 divide-y divide-zinc-100">
+        {latestNews.map((article) => (
+          <Link key={article.title} href={article.href} className="block py-4 first:pt-0 last:pb-0">
+            <p className="text-xs font-bold text-[var(--brand-strong)]">{article.date}</p>
+            <p className="mt-1 font-semibold leading-5 text-zinc-900 transition hover:text-[var(--brand-strong)]">{article.title}</p>
+          </Link>
+        ))}
+      </div>
+    </aside>
+  );
+}
+
+export function PromoShortcutGrid() {
+  return (
+    <section className="grid gap-4 py-3 md:grid-cols-3">
+      {promoShortcuts.map((shortcut, index) => {
+        const Icon = shortcut.icon;
+
+        return (
+          <Link key={shortcut.title} href={shortcut.href} className="group relative min-h-52 overflow-hidden rounded-lg bg-zinc-900 p-6 text-white">
+            <Image src={shortcut.imageUrl} alt="" fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
+            <div className={`absolute inset-0 ${index === 1 ? "bg-zinc-950/60" : "bg-[var(--brand-strong)]/75"}`} />
+            <div className="relative z-10 flex h-full max-w-[60%] flex-col justify-between">
+              <Icon size={24} aria-hidden="true" />
+              <div>
+                <p className="text-xl font-black">{shortcut.title}</p>
+                <p className="mt-1 text-sm text-white/85">{shortcut.description}</p>
+                <span className="mt-4 inline-flex rounded-md bg-white px-3 py-2 text-xs font-bold text-zinc-950 transition group-hover:bg-rose-50">Xem ngay</span>
+              </div>
+            </div>
+          </Link>
+        );
+      })}
+    </section>
+  );
+}
+
+export function FeaturedCategoryGrid({ categories }: { categories: CategoryItem[] }) {
+  return (
+    <div className="grid overflow-hidden rounded-lg border border-zinc-200 bg-white sm:grid-cols-2 lg:grid-cols-4">
+      {categories.map((category) => (
+        <Link key={category.id} href={`/collections/${category.slug}`} className="group flex min-h-44 flex-col justify-between border-b border-r border-zinc-200 p-5 transition hover:bg-rose-50 sm:last:border-b-0 lg:border-b-0">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-base font-bold text-zinc-950">{category.name}</p>
+              <p className="mt-1 text-sm text-zinc-500">{category.productCount} san pham</p>
+            </div>
+            <PackageCheck size={20} className="text-[var(--brand)]" aria-hidden="true" />
+          </div>
+          {category.imageUrl ? (
+            <div className="relative mt-3 h-14 w-14 overflow-hidden rounded-md border border-zinc-200 bg-white">
+              <Image src={category.imageUrl} alt="" fill sizes="56px" className="object-cover transition group-hover:scale-110" />
+            </div>
+          ) : null}
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+export function ServiceBanners() {
+  return (
+    <section className="grid gap-4 py-7 sm:grid-cols-3 sm:py-10">
+      {serviceLinks.map((item) => {
+        const Icon = item.icon;
+
+        return (
+          <Link key={item.title} href="/products" className="group rounded-lg border border-rose-100 bg-rose-50 p-5 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm">
+            <Icon size={24} className="text-[var(--brand-strong)]" aria-hidden="true" />
+            <p className="mt-5 font-bold text-zinc-950">{item.title}</p>
+            <p className="mt-1 text-sm leading-6 text-zinc-600">{item.description}</p>
+          </Link>
+        );
+      })}
+    </section>
+  );
+}
+
+export function VideoReviewSection() {
+  const reviewCards = ["Mo hop va kiem tra figure", "Goc trung bay nho gon", "Cach bao quan figure"];
+
+  return (
+    <div className="grid gap-4 md:grid-cols-3">
+      {reviewCards.map((title, index) => (
+        <article key={title} className="overflow-hidden rounded-lg border border-zinc-200 bg-white">
+          <div className={`relative flex aspect-video items-center justify-center ${index === 1 ? "bg-zinc-900" : "bg-rose-100"}`}>
+            <CirclePlay size={42} className={index === 1 ? "text-white" : "text-[var(--brand-strong)]"} aria-hidden="true" />
+          </div>
+          <div className="p-4">
+            <p className="font-bold text-zinc-950">{title}</p>
+            <p className="mt-1 text-sm text-zinc-500">Video review va chia se cho nguoi moi suu tam.</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+export function BrandLogoCloud({ brands }: { brands: { id: string; name: string; slug: string }[] }) {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-3 rounded-lg border border-zinc-200 bg-white p-6 sm:p-8">
+      {brands.length > 0 ? brands.map((brand) => (
+        <Link key={brand.id} href={`/products?brandId=${brand.id}`} className="rounded-md border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm font-bold text-zinc-600 transition hover:border-rose-200 hover:bg-rose-50 hover:text-[var(--brand-strong)]">
+          {brand.name}
+        </Link>
+      )) : <p className="text-sm text-zinc-500">Thuong hieu se duoc cap nhat som.</p>}
+    </div>
+  );
+}
+
+export function LatestNewsSection() {
+  return (
+    <div className="grid gap-4 md:grid-cols-3">
+      {latestNews.map((article) => (
+        <article key={article.title} className="rounded-lg border border-zinc-200 bg-white p-5">
+          <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">{article.date}</p>
+          <h3 className="mt-3 text-lg font-bold text-zinc-950">{article.title}</h3>
+          <p className="mt-2 text-sm leading-6 text-zinc-600">{article.excerpt}</p>
+          <Link href={article.href} className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[var(--brand-strong)] hover:text-zinc-950">
+            Doc them <Copy size={14} aria-hidden="true" />
+          </Link>
+        </article>
+      ))}
+    </div>
+  );
+}

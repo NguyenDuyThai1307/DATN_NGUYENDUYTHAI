@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafafa;
-  --foreground: #18181b;
+  --background: #f7f7f8;
+  --foreground: #1d1d22;
+  --brand: #e75a63;
+  --brand-strong: #bc3440;
+  --brand-soft: #fff0f1;
+  --header-yellow: #ffc928;
+  --header-yellow-strong: #f4b400;
 }
 
 * {
@@ -17,4 +22,12 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }

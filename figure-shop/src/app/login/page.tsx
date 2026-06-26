@@ -1,17 +1,41 @@
+import Link from "next/link";
 import { Suspense } from "react";
+import { AuthPageShell } from "@/components/auth/AuthPageShell";
 import { LoginForm } from "@/components/auth/LoginForm";
 
-export default function LoginPage() {
-  return (
-    <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6">
-      <h1 className="text-3xl font-bold tracking-tight">Login</h1>
-      <p className="mt-3 text-zinc-600">
-        Dang nhap de quan ly tai khoan, gio hang va don hang.
-      </p>
+type LoginPageProps = {
+  searchParams: Promise<{
+    redirect?: string;
+  }>;
+};
 
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const { redirect } = await searchParams;
+
+  const registerHref =
+    redirect?.startsWith("/") && !redirect.startsWith("//")
+      ? `/register?redirect=${encodeURIComponent(redirect)}`
+      : "/register";
+
+  return (
+    <AuthPageShell
+      title="Dang nhap"
+      description="Dang nhap de quan ly tai khoan, gio hang va don hang."
+      footer={
+        <>
+          Chua co tai khoan?{" "}
+          <Link
+            href={registerHref}
+            className="font-medium text-zinc-950 underline underline-offset-4"
+          >
+            Dang ky
+          </Link>
+        </>
+      }
+    >
       <Suspense fallback={null}>
         <LoginForm />
       </Suspense>
-    </main>
+    </AuthPageShell>
   );
 }

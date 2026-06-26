@@ -1,8 +1,94 @@
 import { prisma } from "@/lib/prisma";
+import { readdir } from "node:fs/promises";
+import { join } from "node:path";
 import type { AdminProductInput } from "@/validations/product.schema";
 
-export async function getAdminProducts() {
+const PRODUCT_IMAGE_FILE_PATTERN = /\.(jpe?g|png|webp|avif)$/i;
+
+export type AdminProductFilters = {
+  query?: string;
+  categoryId?: string;
+  brandId?: string;
+  status?: "ACTIVE" | "DRAFT" | "ARCHIVED";
+  type?: "IN_STOCK" | "PREORDER";
+};
+
+async function getLocalProductImageOptions() {
+  try {
+    const imageDirectory = join(
+      process.cwd(),
+      "public",
+      "images",
+      "products",
+    );
+
+    const fileNames = await readdir(imageDirectory);
+
+    return fileNames
+      .filter((fileName) => PRODUCT_IMAGE_FILE_PATTERN.test(fileName))
+      .sort()
+      .map((fileName) => ({
+        label: fileName,
+        url: `/images/products/${fileName}`,
+      }));
+  } catch (error) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      error.code === "ENOENT"
+    ) {
+      return [];
+    }
+
+    throw error;
+  }
+}
+
+export async function getAdminProducts(
+  filters: AdminProductFilters = {},
+) {
+  const query = filters.query?.trim();
+
   return prisma.product.findMany({
+    where: {
+      ...(query
+        ? {
+            OR: [
+              {
+                name: {
+                  contains: query,
+                },
+              },
+              {
+                slug: {
+                  contains: query,
+                },
+              },
+            ],
+          }
+        : {}),
+      ...(filters.categoryId
+        ? {
+            categoryId: filters.categoryId,
+          }
+        : {}),
+      ...(filters.brandId
+        ? {
+            brandId: filters.brandId,
+          }
+        : {}),
+      ...(filters.status
+        ? {
+            status: filters.status,
+          }
+        : {}),
+      ...(filters.type
+        ? {
+            type: filters.type,
+          }
+        : {}),
+    },
     orderBy: {
       createdAt: "desc",
     },
@@ -16,6 +102,26 @@ export async function getAdminProducts() {
       },
     },
   });
+}
+
+export async function getAdminProductFilterOptions() {
+  const [categories, brands] = await Promise.all([
+    prisma.category.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    }),
+    prisma.brand.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    }),
+  ]);
+
+  return {
+    categories,
+    brands,
+  };
 }
 
 export async function getAdminProductById(id: string) {
@@ -36,7 +142,7 @@ export async function getAdminProductById(id: string) {
 }
 
 export async function getProductFormOptions() {
-  const [categories, brands] = await Promise.all([
+  const [categories, brands, imageOptions] = await Promise.all([
     prisma.category.findMany({
       orderBy: {
         name: "asc",
@@ -47,11 +153,13 @@ export async function getProductFormOptions() {
         name: "asc",
       },
     }),
+    getLocalProductImageOptions(),
   ]);
 
   return {
     categories,
     brands,
+    imageOptions,
   };
 }
 
@@ -98,6 +206,18 @@ export async function updateAdminProduct(
       brandId: input.brandId,
       status: input.status,
       type: input.type,
+      images: {
+        deleteMany: {},
+        ...(input.imageUrl
+          ? {
+              create: {
+                url: input.imageUrl,
+                alt: input.imageAlt || input.name,
+                sortOrder: 0,
+              },
+            }
+          : {}),
+      },
     },
   });
 }

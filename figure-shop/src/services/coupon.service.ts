@@ -48,3 +48,28 @@ export function getCouponValidationError(
 
   return null;
 }
+
+export async function getFeaturedCoupon() {
+  const now = new Date();
+  const coupons = await prisma.coupon.findMany({
+    where: {
+      isActive: true,
+      startsAt: {
+        lte: now,
+      },
+      endsAt: {
+        gte: now,
+      },
+    },
+    orderBy: {
+      value: "desc",
+    },
+  });
+
+  return (
+    coupons.find(
+      (coupon) =>
+        coupon.usageLimit === null || coupon.usedCount < coupon.usageLimit,
+    ) ?? null
+  );
+}

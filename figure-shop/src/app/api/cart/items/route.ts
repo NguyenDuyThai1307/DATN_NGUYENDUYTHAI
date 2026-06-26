@@ -26,7 +26,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const item = await addProductToCart(user.id, parsed.data.productId);
+  const item = await addProductToCart(
+    user.id,
+    parsed.data.productId,
+    parsed.data.quantity,
+  );
 
   return NextResponse.json(
     {

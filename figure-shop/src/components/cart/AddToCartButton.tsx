@@ -2,12 +2,23 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 type AddToCartButtonProps = {
   productId: string;
+  quantity?: number;
+  label?: string;
+  className?: string;
+  onSuccess?: () => void;
 };
 
-export function AddToCartButton({ productId }: AddToCartButtonProps) {
+export function AddToCartButton({
+  productId,
+  quantity = 1,
+  label = "Them vao gio hang",
+  className,
+  onSuccess,
+}: AddToCartButtonProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
@@ -23,6 +34,7 @@ export function AddToCartButton({ productId }: AddToCartButtonProps) {
       },
       body: JSON.stringify({
         productId,
+        quantity,
       }),
     });
 
@@ -40,6 +52,7 @@ export function AddToCartButton({ productId }: AddToCartButtonProps) {
 
     setMessage("Da them vao gio hang");
     router.refresh();
+    onSuccess?.();
   }
 
   return (
@@ -48,9 +61,12 @@ export function AddToCartButton({ productId }: AddToCartButtonProps) {
         type="button"
         onClick={handleAddToCart}
         disabled={isSubmitting}
-        className="rounded-md bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
+        className={cn(
+          "rounded-md bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60",
+          className,
+        )}
       >
-        {isSubmitting ? "Dang them..." : "Them vao gio hang"}
+        {isSubmitting ? "Dang them..." : label}
       </button>
 
       {message ? <p className="mt-2 text-sm text-zinc-600">{message}</p> : null}

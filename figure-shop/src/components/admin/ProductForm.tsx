@@ -14,6 +14,10 @@ type ProductFormProps = {
     id: string;
     name: string;
   }[];
+    imageOptions: {
+    label: string;
+    url: string;
+  }[];
   product?: {
     name: string;
     slug: string;
@@ -36,6 +40,7 @@ export function ProductForm({
   submitLabel,
   categories,
   brands,
+  imageOptions,
   product,
 }: ProductFormProps) {
   const firstImage = product?.images?.[0];
@@ -156,14 +161,20 @@ export function ProductForm({
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="text-sm font-medium">Anh san pham URL</label>
-          <Input
-            name="imageUrl"
-            defaultValue={firstImage?.url}
-            placeholder="/images/products/demo.jpg"
-          />
-        </div>
+            <label className="text-sm font-medium">Anh san pham</label>
+            <Select
+              name="imageUrl"
+              defaultValue={firstImage?.url ?? ""}
+            >
+              <option value="">Khong chon anh</option>
 
+              {imageOptions.map((image) => (
+                <option key={image.url} value={image.url}>
+                  {image.label}
+                </option>
+              ))}
+            </Select>
+          </div>
         <div>
           <label className="text-sm font-medium">Alt anh</label>
           <Input

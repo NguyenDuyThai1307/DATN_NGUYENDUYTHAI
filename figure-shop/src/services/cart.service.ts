@@ -51,7 +51,11 @@ export async function getCartByUserId(userId: string) {
   });
 }
 
-export async function addProductToCart(userId: string, productId: string) {
+export async function addProductToCart(
+  userId: string,
+  productId: string,
+  quantity = 1,
+) {
   const cart = await getOrCreateCart(userId);
 
   const existingItem = await prisma.cartItem.findUnique({
@@ -69,7 +73,7 @@ export async function addProductToCart(userId: string, productId: string) {
         id: existingItem.id,
       },
       data: {
-        quantity: existingItem.quantity + 1,
+        quantity: existingItem.quantity + quantity,
       },
     });
   }
@@ -78,7 +82,7 @@ export async function addProductToCart(userId: string, productId: string) {
     data: {
       cartId: cart.id,
       productId,
-      quantity: 1,
+      quantity,
     },
   });
 }
