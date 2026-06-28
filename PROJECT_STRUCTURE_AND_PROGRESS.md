@@ -626,3 +626,39 @@ Checklist nghiem thu:
 [ ] Neu co data test tao ra thi ghi lai de biet
 [ ] Cap nhat file PROJECT_STRUCTURE_AND_PROGRESS.md truoc khi nghi/commit
 ```
+
+Role and Tech Stack:
+Act as an expert Front-end Developer specializing in Next.js 16 (App Router), React 19, Tailwind CSS 4, and UI/UX design. You are tasked with refactoring and upgrading an e-commerce website that sells anime figures and collectibles.
+
+General Guidelines:
+
+Integrate and use shadcn/ui for consistent, accessible components (Buttons, Dropdowns, Modals, Drawers).
+
+Use framer-motion for smooth, subtle interactions (e.g., hover effects, page transitions).
+
+Implement sonner for modern toast notifications (e.g., successful "Add to Cart" actions).
+
+Always use Next.js <Image/> for optimized asset loading.
+
+Task 1: Homepage Refactoring
+
+Navbar Contrast: Ensure text on the primary yellow background is dark (e.g., text-slate-800 or text-black) for optimal readability. Soften the background color of the active/hovered dropdown menus to avoid harsh contrast.
+
+Hero Section: Make the main promotional banner full-width or implement a carousel slider. Move the "Outstanding News" (Tin tức nổi bật) section further down the page, closer to the footer, to prioritize product imagery above the fold.
+
+Product Cards: Refactor the product card component. Make the entire card clickable. Change the bulky black "Add to Cart" button into a minimal outline button or a sleek cart icon. Add a scale effect to the product image on hover (group-hover:scale-105 transition-transform duration-300).
+
+Category Cards: Fill the empty white spaces in the category cards (Action Figure, Nendoroid) by placing a low-opacity product image in the bottom right corner of each card.
+
+Video Reviews: Replace the empty colored placeholder blocks with actual video thumbnail images fetched dynamically.
+
+Task 2: Product Listing Page Refactoring
+
+Filter Layout (Desktop): Move the horizontal filter bar (Search, Category, Brand, Sort, Price) into a left-side sticky Sidebar taking up roughly 25% of the screen width. Maximize the right-side space for the product grid.
+
+Filter Layout (Mobile): Hide the filters behind a "Filter" button that triggers a slide-out Drawer or Modal.
+
+URL State Synchronization: Sync all active filter states with URL search parameters using Next.js useSearchParams and useRouter. For example, selecting "Bandai" should update the URL to ?brand=bandai without causing a full page reload, allowing users to share exact filtered links.
+
+Execution:
+Please start by providing the refactored code for the ProductCard component and the main Navbar component applying these exact rules.

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { ShoppingCart } from "lucide-react";
 import {
   calculateLinePricing,
   isPromotionActive,
@@ -48,23 +49,27 @@ export function ProductCard({ product }: ProductCardProps) {
   });
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-lg border border-zinc-200 bg-white transition duration-200 hover:-translate-y-0.5 hover:shadow-md">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-zinc-200 bg-white transition duration-200 hover:-translate-y-0.5 hover:shadow-md">
+      <Link
+        href={`/products/${product.slug}`}
+        className="absolute inset-0 z-10"
+        aria-label={`Xem chi tiet ${product.name}`}
+      />
+
       <div className="relative aspect-square bg-zinc-100">
-        <Link href={`/products/${product.slug}`} className="block h-full">
-          {firstImage ? (
-            <Image
-              src={firstImage.url}
-              alt={firstImage.alt ?? product.name}
-              fill
-              sizes="(min-width: 1280px) 20vw, (min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
-              className="object-cover transition duration-300 group-hover:scale-105"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center bg-zinc-100 px-4 text-center text-xs font-semibold leading-5 text-zinc-500 sm:px-6 sm:text-sm">
-              Chua co anh cho {product.name}
-            </div>
-          )}
-        </Link>
+        {firstImage ? (
+          <Image
+            src={firstImage.url}
+            alt={firstImage.alt ?? product.name}
+            fill
+            sizes="(min-width: 1280px) 20vw, (min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center bg-zinc-100 px-4 text-center text-xs font-semibold leading-5 text-zinc-500 sm:px-6 sm:text-sm">
+            Chua co anh cho {product.name}
+          </div>
+        )}
 
         <Badge
           variant={product.type === "PREORDER" ? "warning" : "success"}
@@ -85,18 +90,16 @@ export function ProductCard({ product }: ProductCardProps) {
         ) : null}
       </div>
 
-      <div className="space-y-2 p-3.5 sm:p-4">
+      <div className="flex flex-1 flex-col space-y-2 p-3.5 sm:p-4">
         {product.brand ? (
           <p className="text-xs font-medium uppercase text-zinc-500">
             {product.brand.name}
           </p>
         ) : null}
 
-        <Link href={`/products/${product.slug}`} className="block">
-          <h3 className="line-clamp-2 min-h-10 text-sm font-bold leading-5 text-zinc-950 transition group-hover:text-[var(--brand-strong)]">
-            {product.name}
-          </h3>
-        </Link>
+        <h3 className="line-clamp-2 min-h-10 text-sm font-bold leading-5 text-zinc-950 transition group-hover:text-[var(--brand-strong)]">
+          {product.name}
+        </h3>
 
         <div className="flex min-h-12 flex-col justify-between gap-1">
           <ProductPrice
@@ -109,18 +112,22 @@ export function ProductCard({ product }: ProductCardProps) {
           </span>
         </div>
 
-        <div className="mt-auto flex items-center gap-2 pt-1">
-          <Link
-            href={`/products/${product.slug}`}
-            className="text-xs font-bold text-zinc-600 transition hover:text-[var(--brand-strong)]"
-          >
-            Chi tiet
-          </Link>
-          <AddToCartButton
-            productId={product.id}
-            label="Them gio"
-            className="ml-auto px-2.5 py-1.5 text-xs"
-          />
+        <div className="mt-auto flex items-center justify-between gap-2 pt-2">
+          <span className="text-xs font-bold text-zinc-600 transition group-hover:text-[var(--brand-strong)]">
+            Xem chi tiet
+          </span>
+
+          <div className="relative z-20">
+            <AddToCartButton
+              productId={product.id}
+              label="Them gio"
+              ariaLabel={`Them ${product.name} vao gio hang`}
+              showMessage={false}
+              className="grid size-9 place-items-center rounded-full border border-zinc-300 bg-white p-0 text-zinc-900 shadow-sm hover:border-[var(--brand-strong)] hover:bg-[var(--brand-soft)] hover:text-[var(--brand-strong)]"
+            >
+              <ShoppingCart size={17} aria-hidden="true" />
+            </AddToCartButton>
+          </div>
         </div>
       </div>
     </article>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CheckoutForm } from "@/components/checkout/CheckoutForm";
 import { getCurrentUser } from "@/lib/auth";
+import { Breadcrumbs } from "@/components/product/Breadcrumbs";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { OrderSummary } from "@/components/order/OrderSummary";
 import { getCartByUserId } from "@/services/cart.service";
@@ -35,17 +36,48 @@ export default async function CheckoutPage() {
   );
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-10">
-      <h1 className="text-3xl font-bold tracking-tight">Thanh toan</h1>
+    <main className="mx-auto max-w-[1500px] px-4 py-7 sm:px-6 sm:py-10">
+      <Breadcrumbs
+        items={[
+          { label: "Trang chu", href: "/" },
+          { label: "Gio hang", href: "/cart" },
+          { label: "Thanh toan" },
+        ]}
+      />
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
-        <section className="rounded-md border border-zinc-200 bg-white p-5">
-          <h2 className="font-semibold">Thong tin giao hang</h2>
+      <div className="mt-6">
+        <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
+          Buoc cuoi cung
+        </p>
+        <h1 className="mt-1 text-3xl font-black tracking-tight text-zinc-950">
+          Thanh toan don hang
+        </h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
+          Dien thong tin giao hang va chon phuong thuc thanh toan phu hop.
+          Tong tien se duoc tinh tu gia sau khuyen mai va coupon hien tai.
+        </p>
+      </div>
+
+      <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_390px]">
+        <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+          <div>
+            <p className="text-xs font-bold uppercase text-zinc-500">
+              Dia chi nhan hang
+            </p>
+            <h2 className="mt-1 text-lg font-bold text-zinc-950">
+              Thong tin giao hang
+            </h2>
+          </div>
           <CheckoutForm />
         </section>
 
-        <aside className="h-fit rounded-md border border-zinc-200 bg-white p-5">
-          <h2 className="font-semibold">Don hang cua ban</h2>
+        <aside className="h-fit rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm lg:sticky lg:top-36">
+          <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
+            Xac nhan
+          </p>
+          <h2 className="mt-1 text-lg font-bold text-zinc-950">
+            Don hang cua ban
+          </h2>
 
           <div className="mt-4 space-y-4">
             {items.map((item) => {
@@ -60,7 +92,7 @@ export default async function CheckoutPage() {
                   key={item.id}
                   className="flex justify-between gap-4 text-sm"
                 >
-                  <div>
+                  <div className="min-w-0">
                     <p className="font-medium">{item.product.name}</p>
                     <p className="mt-1 text-zinc-500">
                       So luong: {item.quantity}
@@ -91,7 +123,7 @@ export default async function CheckoutPage() {
 
           <Link
             href="/cart"
-            className="mt-4 inline-flex text-sm font-medium text-zinc-600 hover:text-zinc-950"
+            className="mt-5 inline-flex text-sm font-semibold text-zinc-600 hover:text-[var(--brand-strong)]"
           >
             Quay lai gio hang
           </Link>

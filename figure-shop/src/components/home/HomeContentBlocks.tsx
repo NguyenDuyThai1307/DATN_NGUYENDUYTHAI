@@ -6,6 +6,7 @@ import {
   latestNews,
   promoShortcuts,
   serviceLinks,
+  videoReviews,
 } from "@/data/home-content";
 
 type CategoryItem = {
@@ -78,19 +79,34 @@ export function FeaturedCategoryGrid({ categories }: { categories: CategoryItem[
   return (
     <div className="grid overflow-hidden rounded-lg border border-zinc-200 bg-white sm:grid-cols-2 lg:grid-cols-4">
       {categories.map((category) => (
-        <Link key={category.id} href={`/collections/${category.slug}`} className="group flex min-h-44 flex-col justify-between border-b border-r border-zinc-200 p-5 transition hover:bg-rose-50 sm:last:border-b-0 lg:border-b-0">
-          <div className="flex items-start justify-between gap-3">
+        <Link
+          key={category.id}
+          href={`/collections/${category.slug}`}
+          className="group relative min-h-44 overflow-hidden border-b border-r border-zinc-200 p-5 transition hover:bg-rose-50 sm:last:border-b-0 lg:border-b-0"
+        >
+          {category.imageUrl ? (
+            <div className="pointer-events-none absolute bottom-3 right-3 h-24 w-24 overflow-hidden rounded-2xl opacity-20 transition duration-300 group-hover:scale-110 group-hover:opacity-35">
+              <Image
+                src={category.imageUrl}
+                alt=""
+                fill
+                sizes="96px"
+                className="object-cover"
+              />
+            </div>
+          ) : null}
+
+          <div className="relative z-10 flex items-start justify-between gap-3">
             <div>
               <p className="text-base font-bold text-zinc-950">{category.name}</p>
               <p className="mt-1 text-sm text-zinc-500">{category.productCount} san pham</p>
             </div>
             <PackageCheck size={20} className="text-[var(--brand)]" aria-hidden="true" />
           </div>
-          {category.imageUrl ? (
-            <div className="relative mt-3 h-14 w-14 overflow-hidden rounded-md border border-zinc-200 bg-white">
-              <Image src={category.imageUrl} alt="" fill sizes="56px" className="object-cover transition group-hover:scale-110" />
-            </div>
-          ) : null}
+
+          <span className="relative z-10 mt-12 inline-flex text-xs font-bold text-[var(--brand-strong)]">
+            Xem danh muc
+          </span>
         </Link>
       ))}
     </div>
@@ -116,18 +132,33 @@ export function ServiceBanners() {
 }
 
 export function VideoReviewSection() {
-  const reviewCards = ["Mo hop va kiem tra figure", "Goc trung bay nho gon", "Cach bao quan figure"];
-
   return (
     <div className="grid gap-4 md:grid-cols-3">
-      {reviewCards.map((title, index) => (
-        <article key={title} className="overflow-hidden rounded-lg border border-zinc-200 bg-white">
-          <div className={`relative flex aspect-video items-center justify-center ${index === 1 ? "bg-zinc-900" : "bg-rose-100"}`}>
-            <CirclePlay size={42} className={index === 1 ? "text-white" : "text-[var(--brand-strong)]"} aria-hidden="true" />
+      {videoReviews.map((review) => (
+        <article
+          key={review.title}
+          className="group overflow-hidden rounded-lg border border-zinc-200 bg-white"
+        >
+          <div className="relative aspect-video overflow-hidden bg-zinc-100">
+            <Image
+              src={review.thumbnailUrl}
+              alt={review.title}
+              fill
+              sizes="(min-width: 768px) 33vw, 100vw"
+              className="object-cover transition duration-300 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-zinc-950/25 transition group-hover:bg-zinc-950/15" />
+            <div className="absolute inset-0 grid place-items-center">
+              <span className="grid size-12 place-items-center rounded-full bg-white/90 text-[var(--brand-strong)] shadow-sm">
+                <CirclePlay size={30} aria-hidden="true" />
+              </span>
+            </div>
           </div>
           <div className="p-4">
-            <p className="font-bold text-zinc-950">{title}</p>
-            <p className="mt-1 text-sm text-zinc-500">Video review va chia se cho nguoi moi suu tam.</p>
+            <p className="font-bold text-zinc-950">{review.title}</p>
+            <p className="mt-1 text-sm leading-6 text-zinc-500">
+              {review.description}
+            </p>
           </div>
         </article>
       ))}

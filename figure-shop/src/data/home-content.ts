@@ -92,3 +92,21 @@ export const latestNews = [
     href: "/preorder",
   },
 ];
+
+export const videoReviews = [
+  {
+    title: "Mo hop Luffy Gear 5",
+    description: "Goc nhin nhanh ve do hoan thien, mau sac va cach trung bay.",
+    thumbnailUrl: "/images/products/luffy-gear-5.jpg",
+  },
+  {
+    title: "Setup goc trung bay Miku",
+    description: "Goi y phoi mau va anh sang cho ke figure nho.",
+    thumbnailUrl: "/images/products/miku-sakura.jpg",
+  },
+  {
+    title: "Pre-order figure can luu y gi",
+    description: "Checklist ngan truoc khi dat truoc cac phien ban moi.",
+    thumbnailUrl: "/images/products/yasuo-figure-riot.jpg",
+  },
+];

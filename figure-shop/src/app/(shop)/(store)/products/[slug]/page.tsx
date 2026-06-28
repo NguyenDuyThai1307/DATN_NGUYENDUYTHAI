@@ -68,8 +68,8 @@ export default async function ProductDetailPage({
       <div className="mt-7 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(380px,0.86fr)] lg:gap-12">
         <ProductGallery productName={product.name} images={product.images} />
 
-        <section>
-          <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
+        <section className="h-fit rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm lg:sticky lg:top-36">
+          <p className="inline-flex rounded-full bg-rose-50 px-3 py-1 text-xs font-bold uppercase text-[var(--brand-strong)]">
             {product.type === "PREORDER" ? "Pre-order" : "Co san"}
           </p>
           <h1 className="mt-2 text-3xl font-black tracking-tight text-zinc-950 sm:text-4xl">
@@ -90,25 +90,31 @@ export default async function ProductDetailPage({
             ) : null}
           </div>
 
-          <div className="mt-6 grid gap-2 rounded-lg border border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-600">
+          <div className="mt-6 grid gap-2 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-600">
             {product.brand ? (
-              <p>
-                Thuong hieu: <span className="font-semibold text-zinc-900">{product.brand.name}</span>
-              </p>
+              <div className="flex items-center justify-between gap-4">
+                <span>Thuong hieu</span>
+                <span className="font-semibold text-zinc-900">
+                  {product.brand.name}
+                </span>
+              </div>
             ) : null}
             {product.category ? (
-              <p>
-                Danh muc: <span className="font-semibold text-zinc-900">{product.category.name}</span>
-              </p>
+              <div className="flex items-center justify-between gap-4">
+                <span>Danh muc</span>
+                <span className="font-semibold text-zinc-900">
+                  {product.category.name}
+                </span>
+              </div>
             ) : null}
-            <p>
-              Tinh trang: {" "}
+            <div className="flex items-center justify-between gap-4">
+              <span>Tinh trang</span>
               <span className="font-semibold text-zinc-900">
                 {product.type === "PREORDER"
                   ? "Dang nhan dat truoc"
                   : `Con ${product.stock} san pham`}
               </span>
-            </p>
+            </div>
           </div>
 
           {product.description ? (

@@ -1,23 +1,31 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type AddToCartButtonProps = {
   productId: string;
   quantity?: number;
   label?: string;
+  children?: ReactNode;
+  ariaLabel?: string;
   className?: string;
   onSuccess?: () => void;
+  showMessage?: boolean;
+  disabled?: boolean;
 };
 
 export function AddToCartButton({
   productId,
   quantity = 1,
   label = "Them vao gio hang",
+  children,
+  ariaLabel,
   className,
   onSuccess,
+  showMessage = true,
+  disabled = false,
 }: AddToCartButtonProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -60,16 +68,19 @@ export function AddToCartButton({
       <button
         type="button"
         onClick={handleAddToCart}
-        disabled={isSubmitting}
+        disabled={disabled || isSubmitting}
+        aria-label={ariaLabel ?? label}
         className={cn(
           "rounded-md bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60",
           className,
         )}
       >
-        {isSubmitting ? "Dang them..." : label}
+        {isSubmitting ? "Dang them..." : (children ?? label)}
       </button>
 
-      {message ? <p className="mt-2 text-sm text-zinc-600">{message}</p> : null}
+      {showMessage && message ? (
+        <p className="mt-2 text-sm text-zinc-600">{message}</p>
+      ) : null}
     </div>
   );
 }

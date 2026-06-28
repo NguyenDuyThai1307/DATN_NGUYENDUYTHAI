@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   calculateLinePricing,
@@ -25,6 +26,7 @@ type CartItemProps = {
         isActive: boolean;
       } | null;
       images: {
+        url: string;
         alt: string | null;
       }[];
     };
@@ -44,9 +46,19 @@ export function CartItem({ item }: CartItemProps) {
   });
 
   return (
-    <div className="grid gap-4 rounded-md border border-zinc-200 bg-white p-4 sm:grid-cols-[120px_1fr]">
-      <div className="flex aspect-square items-center justify-center rounded bg-zinc-100 px-4 text-center text-xs font-medium text-zinc-500">
-        {item.product.images[0]?.alt ?? item.product.name}
+    <div className="grid gap-4 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm transition hover:border-zinc-300 sm:grid-cols-[124px_1fr]">
+      <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-zinc-100 px-4 text-center text-xs font-medium text-zinc-500">
+        {item.product.images[0]?.url ? (
+          <Image
+            src={item.product.images[0].url}
+            alt={item.product.images[0].alt ?? item.product.name}
+            fill
+            sizes="124px"
+            className="object-cover"
+          />
+        ) : (
+          item.product.images[0]?.alt ?? item.product.name
+        )}
       </div>
 
       <div className="flex flex-col justify-between gap-4">

@@ -1,4 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import { SlidersHorizontal, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
@@ -25,6 +30,7 @@ type ProductFilterProps = {
   layout?: "toolbar" | "sidebar";
   resetHref?: string;
   showCategory?: boolean;
+  onApplied?: () => void;
 };
 
 export function ProductFilter({
@@ -35,13 +41,48 @@ export function ProductFilter({
   layout = "toolbar",
   resetHref = action,
   showCategory = true,
+  onApplied,
 }: ProductFilterProps) {
+  const router = useRouter();
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const nextParams = new URLSearchParams();
+    const fields = [
+      "q",
+      "categoryId",
+      "brandId",
+      "sort",
+      "type",
+      "minPrice",
+      "maxPrice",
+    ];
+
+    for (const field of fields) {
+      const value = String(formData.get(field) ?? "").trim();
+
+      if (value) {
+        nextParams.set(field, value);
+      }
+    }
+
+    const query = nextParams.toString();
+
+    router.push(query ? `${action}?${query}` : action);
+    onApplied?.();
+  }
+
   return (
     <form
       action={action}
       method="get"
+      onSubmit={handleSubmit}
       className={`grid gap-4 rounded-lg border border-zinc-200 bg-white p-4 ${
-        layout === "toolbar" ? "mt-8 md:grid-cols-2 lg:grid-cols-6" : ""
+        layout === "toolbar"
+          ? "mt-8 md:grid-cols-2 lg:grid-cols-6"
+          : "content-start"
       }`}
     >
       <div className={layout === "toolbar" ? "lg:col-span-2" : ""}>
@@ -168,7 +209,7 @@ export function ProductFilter({
       </div>
 
       <div
-        className={`flex items-end gap-2 ${
+        className={`flex items-center gap-2 ${
           layout === "toolbar" ? "lg:col-span-2" : ""
         }`}
       >
@@ -182,5 +223,62 @@ export function ProductFilter({
         </Link>
       </div>
     </form>
+  );
+}
+
+export function ProductFilterMobileDrawer(props: ProductFilterProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="lg:hidden">
+      <Button
+        type="button"
+        variant="secondary"
+        className="w-full gap-2"
+        onClick={() => setIsOpen(true)}
+      >
+        <SlidersHorizontal size={17} aria-hidden="true" />
+        Bo loc va sap xep
+      </Button>
+
+      {isOpen ? (
+        <div className="fixed inset-0 z-50">
+          <button
+            type="button"
+            aria-label="Dong bo loc"
+            className="absolute inset-0 bg-zinc-950/45"
+            onClick={() => setIsOpen(false)}
+          />
+
+          <aside className="absolute inset-y-0 left-0 w-[min(88vw,360px)] overflow-y-auto bg-white p-4 shadow-2xl">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <div>
+                <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
+                  Bo loc
+                </p>
+                <h2 className="text-lg font-black text-zinc-950">
+                  Tim san pham
+                </h2>
+              </div>
+
+              <button
+                type="button"
+                className="grid size-9 place-items-center rounded-full border border-zinc-200 text-zinc-700 transition hover:bg-zinc-100"
+                onClick={() => setIsOpen(false)}
+                aria-label="Dong bo loc"
+              >
+                <X size={18} aria-hidden="true" />
+              </button>
+            </div>
+
+            <ProductFilter
+              {...props}
+              layout="sidebar"
+              onApplied={() => setIsOpen(false)}
+            />
+          </aside>
+        </div>
+      ) : null}
+    </div>
   );
 }

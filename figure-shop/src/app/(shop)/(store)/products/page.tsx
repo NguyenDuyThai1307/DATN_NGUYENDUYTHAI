@@ -1,5 +1,8 @@
 import { Breadcrumbs } from "@/components/product/Breadcrumbs";
-import { ProductFilter } from "@/components/product/ProductFilter";
+import {
+  ProductFilter,
+  ProductFilterMobileDrawer,
+} from "@/components/product/ProductFilter";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { ProductPagination } from "@/components/product/ProductPagination";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -72,7 +75,7 @@ export default async function ProductsPage({
   ]);
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10">
+    <main className="mx-auto max-w-[1500px] px-4 py-7 sm:px-6 sm:py-10">
       <Breadcrumbs
         items={[{ label: "Trang chu", href: "/" }, { label: "San pham" }]}
       />
@@ -88,44 +91,77 @@ export default async function ProductsPage({
         </p>
       </div>
 
-      <ProductFilter
-        categories={options.categories}
-        brands={options.brands}
-        values={{
-          query: params.q,
-          categoryId: params.categoryId,
-          brandId: params.brandId,
-          type,
-          sort,
-          minPrice: params.minPrice,
-          maxPrice: params.maxPrice,
-        }}
-      />
-
-      <p className="mt-6 text-sm text-zinc-600">
-        Tim thay {result.total} san pham.
-      </p>
-
-      {result.products.length > 0 ? (
-        <>
-          <div className="mt-4">
-            <ProductGrid products={result.products} />
-          </div>
-          <ProductPagination
-            pathname="/products"
-            currentPage={result.currentPage}
-            pageCount={result.pageCount}
-            searchParams={params}
-          />
-        </>
-      ) : (
-        <EmptyState
-          className="mt-4"
-          title="Khong tim thay san pham"
-          description="Thu doi tu khoa, bo bot bo loc hoac quay lai danh sach san pham de xem tat ca figure hien co."
-          action={{ href: "/products", label: "Xem tat ca san pham" }}
+      <div className="mt-8">
+        <ProductFilterMobileDrawer
+          categories={options.categories}
+          brands={options.brands}
+          values={{
+            query: params.q,
+            categoryId: params.categoryId,
+            brandId: params.brandId,
+            type,
+            sort,
+            minPrice: params.minPrice,
+            maxPrice: params.maxPrice,
+          }}
         />
-      )}
+      </div>
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(250px,25%)_minmax(0,1fr)]">
+        <aside className="hidden lg:block">
+          <div className="sticky top-36">
+            <div className="mb-3">
+              <p className="text-sm font-bold text-zinc-950">Bo loc san pham</p>
+              <p className="mt-1 text-xs leading-5 text-zinc-500">
+                Chon thuong hieu, danh muc, gia va tinh trang hang.
+              </p>
+            </div>
+            <ProductFilter
+              layout="sidebar"
+              categories={options.categories}
+              brands={options.brands}
+              values={{
+                query: params.q,
+                categoryId: params.categoryId,
+                brandId: params.brandId,
+                type,
+                sort,
+                minPrice: params.minPrice,
+                maxPrice: params.maxPrice,
+              }}
+            />
+          </div>
+        </aside>
+
+        <section>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm text-zinc-600">
+              Tim thay {result.total} san pham.
+            </p>
+            <p className="text-xs font-semibold uppercase text-zinc-500">
+              Sap xep: {sort.replace("_", " ")}
+            </p>
+          </div>
+
+          {result.products.length > 0 ? (
+            <>
+              <ProductGrid products={result.products} />
+              <ProductPagination
+                pathname="/products"
+                currentPage={result.currentPage}
+                pageCount={result.pageCount}
+                searchParams={params}
+              />
+            </>
+          ) : (
+            <EmptyState
+              title="Khong tim thay san pham"
+              description="Thu doi tu khoa, bo bot bo loc hoac quay lai danh sach san pham de xem tat ca figure hien co."
+              action={{ href: "/products", label: "Xem tat ca san pham" }}
+            />
+          )}
+        </section>
+      </div>
     </main>
   );
 }

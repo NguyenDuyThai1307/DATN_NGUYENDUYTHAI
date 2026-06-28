@@ -46,12 +46,12 @@ async function HomePageContent() {
 
   return (
     <main className="bg-[var(--background)]">
-      <div className="mx-auto max-w-7xl px-4 pb-4 sm:px-6">
-        <div className="grid gap-4 pt-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:pt-6">
+      <div className="mx-auto max-w-[1500px] px-0 pb-4 sm:px-6">
+        <div className="pt-0 sm:pt-5">
           <HomeHero />
-          <NewsHighlight />
         </div>
 
+        <div className="px-4 sm:px-0">
         <FeaturedSeries />
         <PromoShortcutGrid />
 
@@ -90,9 +90,14 @@ async function HomePageContent() {
           <BrandLogoCloud brands={options.brands} />
         </HomeSection>
 
+        <HomeSection title="Tin tuc noi bat" eyebrow="Su kien va huong dan">
+          <NewsHighlight />
+        </HomeSection>
+
         <HomeSection title="Tin tuc moi nhat" href="/products">
           <LatestNewsSection />
         </HomeSection>
+        </div>
       </div>
     </main>
   );

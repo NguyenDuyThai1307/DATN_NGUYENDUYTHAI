@@ -25,8 +25,15 @@ export function CartSummary({
   coupon,
 }: CartSummaryProps) {
   return (
-    <aside className="h-fit rounded-md border border-zinc-200 bg-white p-5">
-      <h2 className="font-semibold">Tom tat don hang</h2>
+    <aside className="h-fit rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+      <div>
+        <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
+          Buoc tiep theo
+        </p>
+        <h2 className="mt-1 text-lg font-bold text-zinc-950">
+          Tom tat don hang
+        </h2>
+      </div>
 
       <div className="mt-4 space-y-3 text-sm">
         <div className="flex items-center justify-between">
@@ -80,10 +87,14 @@ export function CartSummary({
 
       <Link
         href="/checkout"
-        className="mt-5 block rounded-md bg-zinc-950 px-4 py-3 text-center text-sm font-medium text-white transition hover:bg-zinc-800"
+        className="mt-5 block rounded-md bg-zinc-950 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-zinc-800"
       >
         Thanh toan
       </Link>
+
+      <p className="mt-3 text-center text-xs leading-5 text-zinc-500">
+        Coupon se duoc giu trong gio hang va tinh lai khi dat hang.
+      </p>
     </aside>
   );
 }

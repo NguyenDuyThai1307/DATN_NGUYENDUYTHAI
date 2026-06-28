@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { Plus, PackageSearch } from "lucide-react";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { ArchiveProductButton } from "@/components/admin/ArchiveProductButton";
 import Image from "next/image";
 import { AdminProductFilter } from "@/components/admin/AdminProductFilter";
+import { EmptyState } from "@/components/ui/EmptyState";
 import {
   getAdminProductFilterOptions,
   getAdminProducts,
@@ -53,7 +55,12 @@ export default async function AdminProductsPage({
     <main>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">San pham</h1>
+          <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
+            Kho hang
+          </p>
+          <h1 className="mt-1 text-3xl font-black tracking-tight text-zinc-950">
+            San pham
+          </h1>
           <p className="mt-2 text-zinc-600">
             Quan ly san pham co san va pre-order.
           </p>
@@ -61,8 +68,9 @@ export default async function AdminProductsPage({
 
         <Link
           href="/admin/products/create"
-          className="rounded-md bg-zinc-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800"
+          className="inline-flex items-center gap-2 rounded-md bg-zinc-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-zinc-800"
         >
+          <Plus size={16} aria-hidden="true" />
           Them san pham
         </Link>
       </div>
@@ -72,13 +80,13 @@ export default async function AdminProductsPage({
         values={filters}
       />
 
-      <section className="mt-6 overflow-hidden rounded-md border border-zinc-200 bg-white">
+      <section className="mt-6 overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
         {products.length > 0 ? (
           <div className="divide-y divide-zinc-100">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="grid gap-4 px-5 py-4 sm:grid-cols-[72px_1.4fr_1fr_1fr_1fr]"
+                className="grid gap-4 px-5 py-4 transition hover:bg-amber-50/50 sm:grid-cols-[72px_1.4fr_1fr_1fr_1fr]"
               >
                 <div className="relative aspect-square overflow-hidden rounded-md border border-zinc-200 bg-zinc-100">
                   {product.images[0] ? (
@@ -96,7 +104,7 @@ export default async function AdminProductsPage({
                   )}
                 </div>
                 <div>
-                  <p className="font-medium">{product.name}</p>
+                  <p className="font-semibold text-zinc-950">{product.name}</p>
                   <p className="mt-1 text-sm text-zinc-500">
                     {product.slug}
                   </p>
@@ -137,9 +145,13 @@ export default async function AdminProductsPage({
             ))}
           </div>
         ) : (
-          <div className="px-5 py-8 text-center text-zinc-600">
-            Chua co san pham nao.
-          </div>
+          <EmptyState
+            className="m-5"
+            title="Chua co san pham nao"
+            description="Tao san pham dau tien de hien thi tren trang cua hang."
+            icon={<PackageSearch size={22} aria-hidden="true" />}
+            action={{ href: "/admin/products/create", label: "Them san pham" }}
+          />
         )}
       </section>
     </main>

@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ClipboardList, LogOut, ShoppingBag, UserRound } from "lucide-react";
+import { LogoutButton } from "@/components/auth/LogoutButton";
+import { AccountProfileForm } from "@/components/account/AccountProfileForm";
 import { getCurrentUser } from "@/lib/auth";
+import { Breadcrumbs } from "@/components/product/Breadcrumbs";
 
 export default async function AccountPage() {
   const user = await getCurrentUser();
@@ -9,39 +13,81 @@ export default async function AccountPage() {
     redirect("/login?redirect=/account");
   }
 
+  const canViewRole = user.role === "STAFF" || user.role === "ADMIN";
+
   return (
-    <main className="mx-auto max-w-6xl px-6 py-10">
-      <h1 className="text-3xl font-bold tracking-tight">Tai khoan</h1>
-      <p className="mt-2 text-zinc-600">
-        Quan ly thong tin ca nhan, don hang va dia chi giao hang.
-      </p>
+    <main className="mx-auto max-w-[1500px] px-4 py-7 sm:px-6 sm:py-10">
+      <Breadcrumbs
+        items={[
+          { label: "Trang chu", href: "/" },
+          { label: "Tai khoan" },
+        ]}
+      />
+
+      <div className="mt-6 rounded-3xl bg-gradient-to-br from-amber-100 via-white to-rose-50 p-6 ring-1 ring-zinc-200">
+        <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
+          Khu vuc khach hang
+        </p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight text-zinc-950">
+          Xin chao, {user.name ?? user.email}
+        </h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
+          Quan ly thong tin ca nhan, theo doi don hang va quay lai mua sam
+          nhanh hon trong nhung lan tiep theo.
+        </p>
+      </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
-        <section className="rounded-md border border-zinc-200 bg-white p-5">
-          <h2 className="font-semibold">Thong tin ca nhan</h2>
-
-          <div className="mt-4 space-y-2 text-sm text-zinc-600">
-            <p>Email: {user.email}</p>
-            <p>Ho ten: {user.name ?? "Chua cap nhat"}</p>
-            <p>So dien thoai: {user.phone ?? "Chua cap nhat"}</p>
-            <p>Vai tro: {user.role}</p>
+        <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+          <div className="flex items-center gap-3">
+            <span className="grid size-11 place-items-center rounded-full bg-rose-50 text-[var(--brand-strong)]">
+              <UserRound size={21} aria-hidden="true" />
+            </span>
+            <div>
+              <p className="text-xs font-bold uppercase text-zinc-500">
+                Ho so
+              </p>
+              <h2 className="text-lg font-bold text-zinc-950">
+                Thong tin ca nhan
+              </h2>
+            </div>
           </div>
+
+          <AccountProfileForm
+            user={{
+              email: user.email,
+              name: user.name,
+              phone: user.phone,
+              role: user.role,
+            }}
+            canViewRole={canViewRole}
+          />
         </section>
 
         <aside className="space-y-3">
           <Link
             href="/account/orders"
-            className="block rounded-md border border-zinc-200 bg-white p-4 font-medium transition hover:border-zinc-300 hover:shadow-sm"
+            className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-white p-4 font-semibold transition hover:border-zinc-300 hover:shadow-sm"
           >
+            <ClipboardList size={20} className="text-[var(--brand-strong)]" />
             Don hang cua toi
           </Link>
 
           <Link
             href="/products"
-            className="block rounded-md border border-zinc-200 bg-white p-4 font-medium transition hover:border-zinc-300 hover:shadow-sm"
+            className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-white p-4 font-semibold transition hover:border-zinc-300 hover:shadow-sm"
           >
+            <ShoppingBag size={20} className="text-[var(--brand-strong)]" />
             Tiep tuc mua sam
           </Link>
+
+          <div className="rounded-2xl border border-zinc-200 bg-white p-4">
+            <div className="mb-3 flex items-center gap-3 font-semibold">
+              <LogOut size={20} className="text-[var(--brand-strong)]" />
+              Dang xuat tai khoan
+            </div>
+            <LogoutButton />
+          </div>
         </aside>
       </div>
     </main>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { DashboardStats } from "@/components/admin/DashboardStats";
 import {
   getAdminDashboardStats,
@@ -14,29 +15,48 @@ export default async function AdminDashboardPage() {
 
   return (
     <main>
-      <div className="flex flex-wrap items-start justify-between gap-4">
+      <div className="rounded-3xl bg-gradient-to-br from-zinc-950 to-zinc-800 p-6 text-white">
+        <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="mt-2 text-zinc-600">
+          <p className="text-xs font-bold uppercase text-amber-300">
+            Admin center
+          </p>
+          <h1 className="mt-2 text-3xl font-black tracking-tight">
+            Dashboard
+          </h1>
+          <p className="mt-2 text-zinc-300">
             Tong quan san pham, don hang va doanh thu.
           </p>
         </div>
 
         <Link
           href="/admin/products"
-          className="rounded-md bg-zinc-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800"
+          className="inline-flex items-center gap-2 rounded-md bg-white px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-amber-100"
         >
           Quan ly san pham
+          <ArrowRight size={16} aria-hidden="true" />
         </Link>
+        </div>
       </div>
 
       <div className="mt-8">
         <DashboardStats stats={stats} />
       </div>
 
-      <section className="mt-8 rounded-md border border-zinc-200 bg-white">
-        <div className="border-b border-zinc-200 px-5 py-4">
-          <h2 className="font-semibold">Don hang moi</h2>
+      <section className="mt-8 overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+        <div className="flex items-center justify-between gap-4 border-b border-zinc-200 px-5 py-4">
+          <div>
+            <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
+              Theo doi nhanh
+            </p>
+            <h2 className="mt-1 font-bold text-zinc-950">Don hang moi</h2>
+          </div>
+          <Link
+            href="/admin/orders"
+            className="text-sm font-semibold text-zinc-600 hover:text-[var(--brand-strong)]"
+          >
+            Xem tat ca
+          </Link>
         </div>
 
         {recentOrders.length > 0 ? (
@@ -45,7 +65,7 @@ export default async function AdminDashboardPage() {
               <Link
                 key={order.id}
                 href={`/admin/orders/${order.id}`}
-                className="flex flex-wrap items-center justify-between gap-4 px-5 py-4 transition hover:bg-zinc-50"
+                className="flex flex-wrap items-center justify-between gap-4 px-5 py-4 transition hover:bg-amber-50/60"
               >
                 <div>
                   <p className="font-medium">{order.orderNumber}</p>

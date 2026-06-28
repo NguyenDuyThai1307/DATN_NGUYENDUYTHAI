@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 type FlashSaleCountdownProps = {
   endsAt: string;
@@ -17,13 +17,24 @@ function getRemainingTime(endsAt: string) {
 }
 
 export function FlashSaleCountdown({ endsAt }: FlashSaleCountdownProps) {
-  const initial = useMemo(() => getRemainingTime(endsAt), [endsAt]);
-  const [remaining, setRemaining] = useState(initial);
+  const [remaining, setRemaining] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
   useEffect(() => {
-    const timer = window.setInterval(() => setRemaining(getRemainingTime(endsAt)), 1_000);
+    function updateRemainingTime() {
+      setRemaining(getRemainingTime(endsAt));
+    }
 
-    return () => window.clearInterval(timer);
+    const initialTimer = window.setTimeout(updateRemainingTime, 0);
+    const timer = window.setInterval(updateRemainingTime, 1_000);
+
+    return () => {
+      window.clearTimeout(initialTimer);
+      window.clearInterval(timer);
+    };
   }, [endsAt]);
 
   return (

@@ -1,6 +1,9 @@
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/product/Breadcrumbs";
-import { ProductFilter } from "@/components/product/ProductFilter";
+import {
+  ProductFilter,
+  ProductFilterMobileDrawer,
+} from "@/components/product/ProductFilter";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { ProductPagination } from "@/components/product/ProductPagination";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -79,7 +82,7 @@ export default async function CollectionPage({
   const pathname = `/collections/${category.slug}`;
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10">
+    <main className="mx-auto max-w-[1500px] px-4 py-7 sm:px-6 sm:py-10">
       <Breadcrumbs
         items={[
           { label: "Trang chu", href: "/" },
@@ -102,10 +105,30 @@ export default async function CollectionPage({
         ) : null}
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-[250px_minmax(0,1fr)]">
-        <aside>
-          <p className="mb-3 text-sm font-bold text-zinc-950">Loc san pham</p>
-          <ProductFilter
+      <div className="mt-8">
+        <ProductFilterMobileDrawer
+          action={pathname}
+          resetHref={pathname}
+          showCategory={false}
+          categories={options.categories}
+          brands={options.brands}
+          values={{
+            query: query.q,
+            categoryId: category.id,
+            brandId: query.brandId,
+            type,
+            sort,
+            minPrice: query.minPrice,
+            maxPrice: query.maxPrice,
+          }}
+        />
+      </div>
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(250px,25%)_minmax(0,1fr)]">
+        <aside className="hidden lg:block">
+          <div className="sticky top-36">
+            <p className="mb-3 text-sm font-bold text-zinc-950">Loc san pham</p>
+            <ProductFilter
             action={pathname}
             layout="sidebar"
             resetHref={pathname}
@@ -122,6 +145,7 @@ export default async function CollectionPage({
               maxPrice: query.maxPrice,
             }}
           />
+          </div>
         </aside>
 
         <section>

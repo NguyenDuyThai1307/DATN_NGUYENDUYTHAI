@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireStaff } from "@/lib/permissions";
+import { isRecordNotFoundError } from "@/lib/prisma-error";
 import { deactivateAdminPromotion } from "@/services/admin-promotion.service";
 
 type AdminPromotionRouteProps = {
@@ -15,7 +16,18 @@ export async function DELETE(
   await requireStaff();
 
   const { id } = await params;
-  await deactivateAdminPromotion(id);
+  try {
+    await deactivateAdminPromotion(id);
+  } catch (error) {
+    if (isRecordNotFoundError(error)) {
+      return NextResponse.json(
+        { message: "Promotion not found" },
+        { status: 404 },
+      );
+    }
+
+    throw error;
+  }
 
   return NextResponse.json({
     message: "Promotion deactivated",

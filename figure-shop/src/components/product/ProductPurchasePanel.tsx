@@ -19,11 +19,22 @@ export function ProductPurchasePanel({
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const maximum = isPreorder ? 99 : Math.max(stock, 1);
+  const isUnavailable = !isPreorder && stock <= 0;
 
   return (
-    <div className="mt-7 border-y border-zinc-200 py-5">
-      <div className="flex flex-wrap items-center gap-4">
-        <span className="text-sm font-semibold text-zinc-800">So luong</span>
+    <div className="mt-7 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <span className="text-sm font-semibold text-zinc-900">So luong</span>
+          <p className="mt-1 text-xs text-zinc-500">
+            {isPreorder
+              ? "Co the dat truoc nhieu san pham trong mot don."
+              : stock > 0
+                ? `Con ${stock} san pham trong kho.`
+                : "San pham hien dang het hang."}
+          </p>
+        </div>
+
         <div className="inline-flex h-10 items-center overflow-hidden rounded-md border border-zinc-300 bg-white">
           <button
             type="button"
@@ -45,7 +56,6 @@ export function ProductPurchasePanel({
             <Plus size={16} aria-hidden="true" />
           </button>
         </div>
-        {!isPreorder ? <span className="text-xs text-zinc-500">Con {stock} san pham</span> : null}
       </div>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
@@ -53,12 +63,14 @@ export function ProductPurchasePanel({
           productId={productId}
           quantity={quantity}
           label="Them vao gio"
+          disabled={isUnavailable}
           className="w-full border border-[var(--brand-strong)] bg-white text-[var(--brand-strong)] hover:bg-rose-50"
         />
         <AddToCartButton
           productId={productId}
           quantity={quantity}
           label={isPreorder ? "Dat truoc ngay" : "Mua ngay"}
+          disabled={isUnavailable}
           className="w-full bg-[var(--brand-strong)] hover:bg-[#982934]"
           onSuccess={() => router.push("/cart")}
         />
