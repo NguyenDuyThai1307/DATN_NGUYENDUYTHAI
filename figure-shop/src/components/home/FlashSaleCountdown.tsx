@@ -38,7 +38,7 @@ export function FlashSaleCountdown({ endsAt }: FlashSaleCountdownProps) {
   }, [endsAt]);
 
   return (
-    <div className="flex items-center gap-1.5" aria-label="Thoi gian ket thuc flash sale">
+    <div className="flex items-center gap-1.5" aria-label="Thời gian kết thúc flash sale">
       {[remaining.hours, remaining.minutes, remaining.seconds].map((value, index) => (
         <span key={index} className="rounded bg-zinc-950 px-2 py-1 text-xs font-bold text-white">
           {String(value).padStart(2, "0")}

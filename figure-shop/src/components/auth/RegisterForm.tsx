@@ -45,19 +45,19 @@ export function RegisterForm() {
     const nextErrors: FieldErrors = {};
 
     if (name.length < 2) {
-      nextErrors.name = "Ho ten phai co it nhat 2 ky tu.";
+      nextErrors.name = "Họ tên phải có ít nhất 2 ký tự.";
     }
 
     if (!email.includes("@")) {
-      nextErrors.email = "Vui long nhap email hop le.";
+      nextErrors.email = "Vui lòng nhập email hợp lệ.";
     }
 
     if (password.length < 6) {
-      nextErrors.password = "Mat khau phai co it nhat 6 ky tu.";
+      nextErrors.password = "Mật khẩu phải có ít nhất 6 ký tự.";
     }
 
     if (password !== confirmPassword) {
-      nextErrors.confirmPassword = "Xac nhan mat khau khong khop.";
+      nextErrors.confirmPassword = "Xác nhận mật khẩu không khớp.";
     }
 
     if (Object.keys(nextErrors).length > 0) {
@@ -84,7 +84,7 @@ export function RegisterForm() {
 
       if (response.status === 409) {
         setFieldErrors({
-          email: "Email nay da duoc dang ky.",
+          email: "Email này đã được đăng ký.",
         });
         return;
       }
@@ -102,14 +102,14 @@ export function RegisterForm() {
           });
         }
 
-        setError(data?.message ?? "Khong the tao tai khoan. Vui long thu lai.");
+        setError(data?.message ?? "Không thể tạo tài khoản. Vui lòng thử lại.");
         return;
       }
 
       router.push(redirectTo);
       router.refresh();
     } catch {
-      setError("Khong the ket noi den server. Vui long thu lai.");
+      setError("Không thể kết nối đến máy chủ. Vui lòng thử lại.");
     } finally {
       setIsSubmitting(false);
     }
@@ -119,14 +119,14 @@ export function RegisterForm() {
     <form onSubmit={handleSubmit} noValidate className="mt-6 space-y-4">
       <div>
         <label htmlFor="name" className="text-sm font-medium">
-          Ho ten
+          Họ tên
         </label>
         <Input
           id="name"
           name="name"
           autoComplete="name"
           className="mt-2"
-          placeholder="Nguyen Van A"
+          placeholder="Nguyễn Văn A"
           aria-invalid={Boolean(fieldErrors.name)}
         />
         <FieldError message={fieldErrors.name} />
@@ -150,7 +150,7 @@ export function RegisterForm() {
 
       <div>
         <label htmlFor="password" className="text-sm font-medium">
-          Mat khau
+          Mật khẩu
         </label>
         <Input
           id="password"
@@ -158,7 +158,7 @@ export function RegisterForm() {
           type="password"
           autoComplete="new-password"
           className="mt-2"
-          placeholder="Toi thieu 6 ky tu"
+          placeholder="Tối thiểu 6 ký tự"
           aria-invalid={Boolean(fieldErrors.password)}
         />
         <FieldError message={fieldErrors.password} />
@@ -166,7 +166,7 @@ export function RegisterForm() {
 
       <div>
         <label htmlFor="confirmPassword" className="text-sm font-medium">
-          Xac nhan mat khau
+          Xác nhận mật khẩu
         </label>
         <Input
           id="confirmPassword"
@@ -174,7 +174,7 @@ export function RegisterForm() {
           type="password"
           autoComplete="new-password"
           className="mt-2"
-          placeholder="Nhap lai mat khau"
+          placeholder="Nhập lại mật khẩu"
           aria-invalid={Boolean(fieldErrors.confirmPassword)}
         />
         <FieldError message={fieldErrors.confirmPassword} />
@@ -187,7 +187,7 @@ export function RegisterForm() {
       ) : null}
 
       <Button type="submit" disabled={isSubmitting} className="w-full" size="lg">
-        {isSubmitting ? "Dang tao tai khoan..." : "Tao tai khoan"}
+        {isSubmitting ? "Đang tạo tài khoản..." : "Tạo tài khoản"}
       </Button>
     </form>
   );

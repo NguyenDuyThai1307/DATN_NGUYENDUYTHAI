@@ -10,14 +10,14 @@ type MobileNavProps = {
 };
 
 const navigationItems = [
-  { href: "/products", label: "San pham" },
+  { href: "/products", label: "Sản phẩm" },
   { href: "/preorder", label: "Pre-order" },
-  { href: "/collections", label: "Danh muc" },
-  { href: "/brands", label: "Thuong hieu" },
-  { href: "/guide", label: "Huong dan" },
-  { href: "/news", label: "Tin tuc" },
-  { href: "/contact", label: "Lien he" },
-  { href: "/cart", label: "Gio hang" },
+  { href: "/collections", label: "Danh mục" },
+  { href: "/brands", label: "Thương hiệu" },
+  { href: "/guide", label: "Hướng dẫn" },
+  { href: "/news", label: "Tin tức" },
+  { href: "/contact", label: "Liên hệ" },
+  { href: "/cart", label: "Giỏ hàng" },
 ];
 
 export function MobileNav({ isAuthenticated }: MobileNavProps) {
@@ -56,9 +56,9 @@ export function MobileNav({ isAuthenticated }: MobileNavProps) {
         type="button"
         onClick={() => setIsOpen((current) => !current)}
         className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-zinc-300 text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-950"
-        aria-label={isOpen ? "Dong menu" : "Mo menu"}
+        aria-label={isOpen ? "Đóng menu" : "Mở menu"}
         aria-expanded={isOpen}
-        title={isOpen ? "Dong menu" : "Mo menu"}
+        title={isOpen ? "Đóng menu" : "Mở menu"}
       >
         {isOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
       </button>
@@ -67,21 +67,21 @@ export function MobileNav({ isAuthenticated }: MobileNavProps) {
         <div className="absolute right-0 top-full z-50 mt-2 w-60 rounded-md border border-zinc-200 bg-white p-2 shadow-lg">
           <form action="/products" method="get" className="mb-2">
             <label htmlFor="mobile-site-search" className="sr-only">
-              Tim san pham
+              Tìm sản phẩm
             </label>
             <div className="relative">
               <input
                 id="mobile-site-search"
                 name="q"
                 type="search"
-                placeholder="Tim san pham"
+                placeholder="Tìm sản phẩm"
                 className="h-10 w-full rounded-md border border-zinc-300 px-3 pr-9 text-sm outline-none transition placeholder:text-zinc-400 focus:border-[var(--brand)] focus:ring-2 focus:ring-rose-100"
               />
               <button
                 type="submit"
                 className="absolute inset-y-0 right-0 grid w-9 place-items-center text-zinc-500"
-                aria-label="Tim kiem"
-                title="Tim kiem"
+                aria-label="Tìm kiếm"
+                title="Tìm kiếm"
               >
                 <Search size={17} aria-hidden="true" />
               </button>
@@ -109,7 +109,7 @@ export function MobileNav({ isAuthenticated }: MobileNavProps) {
                   onClick={() => setIsOpen(false)}
                   className="rounded px-3 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-950"
                 >
-                  Tai khoan
+                  Tài khoản
                 </Link>
 
                 <div className="px-3 py-1">
@@ -123,7 +123,7 @@ export function MobileNav({ isAuthenticated }: MobileNavProps) {
                   onClick={() => setIsOpen(false)}
                   className="rounded px-3 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-950"
                 >
-                  Dang nhap
+                  Đăng nhập
                 </Link>
 
                 <Link
@@ -131,7 +131,7 @@ export function MobileNav({ isAuthenticated }: MobileNavProps) {
                   onClick={() => setIsOpen(false)}
                   className="rounded px-3 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-950"
                 >
-                  Dang ky
+                  Đăng ký
                 </Link>
               </div>
             )}

@@ -1,4 +1,5 @@
 export type PromotionPricingInput = {
+  id?: string;
   type: "PERCENTAGE" | "FIXED_AMOUNT";
   value: number;
   startsAt: Date;
@@ -83,6 +84,26 @@ function calculateDiscountPerUnit(
       : promotion.value;
 
   return Math.min(Math.max(discount, 0), unitPrice);
+}
+
+export function selectBestPromotion<T extends PromotionPricingInput>(
+  unitPrice: number,
+  promotions: T[],
+  now = new Date(),
+): T | null {
+  let bestPromotion: T | null = null;
+  let bestDiscount = 0;
+
+  for (const promotion of promotions) {
+    const discount = calculateDiscountPerUnit(unitPrice, promotion, now);
+
+    if (discount > bestDiscount) {
+      bestPromotion = promotion;
+      bestDiscount = discount;
+    }
+  }
+
+  return bestPromotion;
 }
 
 export function calculateCouponDiscount(

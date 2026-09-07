@@ -56,13 +56,13 @@ export default async function AdminProductsPage({
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-            Kho hang
+            Kho hàng
           </p>
           <h1 className="mt-1 text-3xl font-black tracking-tight text-zinc-950">
-            San pham
+            Sản phẩm
           </h1>
           <p className="mt-2 text-zinc-600">
-            Quan ly san pham co san va pre-order.
+            Quản lý sản phẩm có sẵn và pre-order.
           </p>
         </div>
 
@@ -71,7 +71,7 @@ export default async function AdminProductsPage({
           className="inline-flex items-center gap-2 rounded-md bg-zinc-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-zinc-800"
         >
           <Plus size={16} aria-hidden="true" />
-          Them san pham
+          Thêm sản phẩm
         </Link>
       </div>
       <AdminProductFilter
@@ -99,7 +99,7 @@ export default async function AdminProductsPage({
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center px-2 text-center text-xs text-zinc-500">
-                      No image
+                      Chưa có ảnh
                     </div>
                   )}
                 </div>
@@ -111,8 +111,14 @@ export default async function AdminProductsPage({
                 </div>
 
                 <div className="text-sm text-zinc-600">
-                  <p>{product.brand?.name ?? "Chua co brand"}</p>
-                  <p>{product.category?.name ?? "Chua co danh muc"}</p>
+                  <p>{product.brand?.name ?? "Chưa có brand"}</p>
+                  <p>
+                    {product.categories.length > 0
+                      ? product.categories
+                          .map((item) => item.category.name)
+                          .join(", ")
+                      : product.category?.name ?? "Chưa có danh mục"}
+                  </p>
                 </div>
 
                 <div className="text-sm text-zinc-600">
@@ -124,7 +130,7 @@ export default async function AdminProductsPage({
                   <div className="lg:text-right">
                     <ProductPrice price={product.price} />
                     <p className="mt-1 text-sm text-zinc-500">
-                      Ton kho: {product.stock}
+                      Tồn kho: {product.stock}
                     </p>
                   </div>
 
@@ -133,7 +139,7 @@ export default async function AdminProductsPage({
                       href={`/admin/products/${product.id}/edit`}
                       className="inline-flex rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-950 transition hover:bg-zinc-100"
                     >
-                      Sua
+                      Sửa
                     </Link>
 
                     {product.status !== "ARCHIVED" ? (
@@ -147,10 +153,10 @@ export default async function AdminProductsPage({
         ) : (
           <EmptyState
             className="m-5"
-            title="Chua co san pham nao"
-            description="Tao san pham dau tien de hien thi tren trang cua hang."
+            title="Chưa có sản phẩm nào"
+            description="Tạo sản phẩm đầu tiên để hiển thị trên trang cửa hàng."
             icon={<PackageSearch size={22} aria-hidden="true" />}
-            action={{ href: "/admin/products/create", label: "Them san pham" }}
+            action={{ href: "/admin/products/create", label: "Thêm sản phẩm" }}
           />
         )}
       </section>

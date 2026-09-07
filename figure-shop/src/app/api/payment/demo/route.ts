@@ -4,7 +4,7 @@ import { markDemoPaymentAsPaid } from "@/services/payment.service";
 import { z } from "zod";
 
 const demoPaymentSchema = z.object({
-  orderId: z.string().min(1, "Order is required"),
+  orderId: z.string().min(1, "Vui lòng chọn đơn hàng"),
 });
 
 export async function POST(request: Request) {
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
   if (!parsed.success) {
     return NextResponse.json(
       {
-        message: "Invalid payment data",
+        message: "Dữ liệu thanh toán không hợp lệ",
         errors: parsed.error.flatten().fieldErrors,
       },
       { status: 400 },
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     const order = await markDemoPaymentAsPaid(parsed.data.orderId, user.id);
 
     return NextResponse.json({
-      message: "Demo payment successfully",
+      message: "Thanh toán thử nghiệm thành công",
       order,
     });
   } catch (error) {

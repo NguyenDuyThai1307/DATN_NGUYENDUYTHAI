@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireStaff } from "@/lib/permissions";
+import { authorizeStaffApi } from "@/lib/api-auth";
 import { isRecordNotFoundError } from "@/lib/prisma-error";
 import { archiveAdminProduct } from "@/services/admin-product.service";
 
@@ -13,7 +13,11 @@ export async function DELETE(
   _request: Request,
   { params }: AdminProductRouteProps,
 ) {
-  await requireStaff();
+  const authorization = await authorizeStaffApi();
+
+  if (!authorization.ok) {
+    return authorization.response;
+  }
 
   const { id } = await params;
   try {
@@ -21,7 +25,7 @@ export async function DELETE(
   } catch (error) {
     if (isRecordNotFoundError(error)) {
       return NextResponse.json(
-        { message: "Product not found" },
+        { message: "Không tìm thấy sản phẩm" },
         { status: 404 },
       );
     }
@@ -30,6 +34,6 @@ export async function DELETE(
   }
 
   return NextResponse.json({
-    message: "Archived product",
+    message: "Đã lưu trữ sản phẩm",
   });
 }

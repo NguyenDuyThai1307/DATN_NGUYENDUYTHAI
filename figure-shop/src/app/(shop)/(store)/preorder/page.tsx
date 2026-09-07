@@ -11,11 +11,11 @@ export default async function PreorderPage() {
           Pre-order
         </p>
         <h1 className="text-3xl font-bold tracking-tight">
-          San pham dat truoc
+          Sản phẩm đặt trước
         </h1>
         <p className="max-w-2xl text-zinc-600">
-          Cac figure dang mo dat truoc. Gia va thoi gian ve hang co the thay doi
-          tuy theo nha phan phoi.
+          Các mô hình đang mở đặt trước. Giá và thời gian về hàng có thể thay đổi
+          tùy theo nhà phân phối.
         </p>
       </div>
 
@@ -27,7 +27,7 @@ export default async function PreorderPage() {
         </div>
       ) : (
         <div className="mt-8 rounded-md border border-zinc-200 bg-white p-8 text-center text-zinc-600">
-          Hien chua co san pham pre-order.
+          Hien chưa có sản phẩm pre-order.
         </div>
       )}
     </main>

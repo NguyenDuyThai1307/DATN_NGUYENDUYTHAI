@@ -13,12 +13,12 @@ type OrderStatusBadgeProps = {
 };
 
 const labels: Record<OrderStatus, string> = {
-  PENDING: "Cho xu ly",
-  CONFIRMED: "Da xac nhan",
-  PROCESSING: "Dang xu ly",
-  SHIPPED: "Dang giao",
-  COMPLETED: "Hoan thanh",
-  CANCELLED: "Da huy",
+  PENDING: "Chờ xử lý",
+  CONFIRMED: "Đã xác nhận",
+  PROCESSING: "Đang xử lý",
+  SHIPPED: "Đang giao",
+  COMPLETED: "Hoàn thành",
+  CANCELLED: "Đã hủy",
 };
 
 const variants: Record<

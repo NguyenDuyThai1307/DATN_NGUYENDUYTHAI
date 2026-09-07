@@ -14,7 +14,7 @@ export default function AdminCreateCategoryPage() {
     });
 
     if (!parsed.success) {
-      throw new Error("Invalid category data");
+      throw new Error("Dữ liệu danh mục không hợp lệ");
     }
 
     await createAdminCategory(parsed.data);
@@ -26,17 +26,17 @@ export default function AdminCreateCategoryPage() {
       <div>
         <p className="text-sm font-semibold uppercase text-red-600">Admin</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight">
-          Them danh muc
+          Thêm danh mục
         </h1>
         <p className="mt-2 text-zinc-600">
-          Tao danh muc moi de phan loai san pham.
+          Tạo danh mục mới để phân loại sản phẩm.
         </p>
       </div>
 
       <section className="mt-8 rounded-md border border-zinc-200 bg-white p-6">
         <TaxonomyForm
           action={createCategoryAction}
-          submitLabel="Them danh muc"
+          submitLabel="Thêm danh mục"
         />
       </section>
     </main>

@@ -10,20 +10,20 @@ export const couponSchema = z
     code: z
       .string()
       .trim()
-      .min(3, "Coupon code must have at least 3 characters")
-      .max(30, "Coupon code is too long")
+      .min(3, "Mã coupon phải có ít nhất 3 ký tự")
+      .max(30, "Mã coupon quá dài")
       .regex(
         /^[a-zA-Z0-9_-]+$/,
-        "Coupon code can only contain letters, numbers, _ and -",
+        "Mã coupon chỉ được chứa chữ cái, chữ số, dấu gạch dưới và dấu gạch ngang",
       )
       .transform((value) => value.toUpperCase()),
-    name: z.string().trim().min(1, "Coupon name is required"),
+    name: z.string().trim().min(1, "Vui lòng nhập tên coupon"),
     type: z.enum(["PERCENTAGE", "FIXED_AMOUNT"]),
-    value: z.coerce.number().int().positive("Value must be greater than 0"),
+    value: z.coerce.number().int().positive("Giá trị phải lớn hơn 0"),
     minOrderValue: z.coerce
       .number()
       .int()
-      .min(0, "Minimum order value cannot be negative"),
+      .min(0, "Giá trị đơn hàng tối thiểu không được âm"),
     maxDiscountAmount: optionalPositiveInt,
     usageLimit: optionalPositiveInt,
     startsAt: z.coerce.date(),
@@ -35,7 +35,7 @@ export const couponSchema = z
       context.addIssue({
         code: "custom",
         path: ["endsAt"],
-        message: "End date must be after start date",
+        message: "Ngày kết thúc phải sau ngày bắt đầu",
       });
     }
 
@@ -43,7 +43,7 @@ export const couponSchema = z
       context.addIssue({
         code: "custom",
         path: ["value"],
-        message: "Percentage cannot be greater than 100",
+        message: "Phần trăm không được lớn hơn 100",
       });
     }
   });
@@ -54,7 +54,7 @@ export const applyCouponSchema = z.object({
   code: z
     .string()
     .trim()
-    .min(3, "Coupon code must have at least 3 characters"),
+    .min(3, "Mã coupon phải có ít nhất 3 ký tự"),
 });
 
 export type ApplyCouponInput = z.infer<typeof applyCouponSchema>;

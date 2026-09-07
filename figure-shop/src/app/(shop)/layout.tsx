@@ -1,3 +1,4 @@
+import { AIChatWidget } from "@/components/ai/AIChatWidget";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingSupport } from "@/components/layout/FloatingSupport";
 import { Header } from "@/components/layout/Header";
@@ -17,6 +18,7 @@ export default async function ShopLayout({
       <div className="flex-1">{children}</div>
       <Footer />
       <FloatingSupport />
+      <AIChatWidget />
       <MobileBottomNav isAuthenticated={Boolean(user)} />
     </div>
   );

@@ -53,7 +53,7 @@ export function ProductCard({ product }: ProductCardProps) {
       <Link
         href={`/products/${product.slug}`}
         className="absolute inset-0 z-10"
-        aria-label={`Xem chi tiet ${product.name}`}
+        aria-label={`Xem chi tiết ${product.name}`}
       />
 
       <div className="relative aspect-square bg-zinc-100">
@@ -67,7 +67,7 @@ export function ProductCard({ product }: ProductCardProps) {
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-zinc-100 px-4 text-center text-xs font-semibold leading-5 text-zinc-500 sm:px-6 sm:text-sm">
-            Chua co anh cho {product.name}
+            Chưa có ảnh cho {product.name}
           </div>
         )}
 
@@ -75,7 +75,7 @@ export function ProductCard({ product }: ProductCardProps) {
           variant={product.type === "PREORDER" ? "warning" : "success"}
           className="absolute left-3 top-3 bg-white shadow-sm"
         >
-          {product.type === "PREORDER" ? "Pre-order" : "Co san"}
+          {product.type === "PREORDER" ? "Pre-order" : "Có sẵn"}
         </Badge>
 
         {activePromotion ? (
@@ -85,7 +85,7 @@ export function ProductCard({ product }: ProductCardProps) {
           >
             {activePromotion.type === "PERCENTAGE"
               ? `-${activePromotion.value}%`
-              : `-${activePromotion.value.toLocaleString("vi-VN")} d`}
+              : `-${activePromotion.value.toLocaleString("vi-VN")} đ`}
           </Badge>
         ) : null}
       </div>
@@ -108,20 +108,20 @@ export function ProductCard({ product }: ProductCardProps) {
           />
 
           <span className="text-xs text-zinc-500">
-            {product.type === "PREORDER" ? "Dat truoc" : `Con ${product.stock}`}
+            {product.type === "PREORDER" ? "Đặt trước" : `Còn ${product.stock}`}
           </span>
         </div>
 
         <div className="mt-auto flex items-center justify-between gap-2 pt-2">
           <span className="text-xs font-bold text-zinc-600 transition group-hover:text-[var(--brand-strong)]">
-            Xem chi tiet
+            Xem chi tiết
           </span>
 
           <div className="relative z-20">
             <AddToCartButton
               productId={product.id}
-              label="Them gio"
-              ariaLabel={`Them ${product.name} vao gio hang`}
+              label="Thêm giỏ"
+              ariaLabel={`Thêm ${product.name} vào giỏ hàng`}
               showMessage={false}
               className="grid size-9 place-items-center rounded-full border border-zinc-300 bg-white p-0 text-zinc-900 shadow-sm hover:border-[var(--brand-strong)] hover:bg-[var(--brand-soft)] hover:text-[var(--brand-strong)]"
             >

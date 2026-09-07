@@ -29,20 +29,20 @@ export function AdminProductFilter({
     >
       <div className="xl:col-span-2">
         <label htmlFor="query" className="text-sm font-medium">
-          Tim san pham
+          Tìm sản phẩm
         </label>
         <Input
           id="query"
           name="query"
           defaultValue={values.query ?? ""}
           className="mt-2"
-          placeholder="Ten hoac slug san pham"
+          placeholder="Tên hoặc slug sản phẩm"
         />
       </div>
 
       <div>
         <label htmlFor="categoryId" className="text-sm font-medium">
-          Danh muc
+          Danh mục
         </label>
         <Select
           id="categoryId"
@@ -50,7 +50,7 @@ export function AdminProductFilter({
           defaultValue={values.categoryId ?? ""}
           className="mt-2"
         >
-          <option value="">Tat ca danh muc</option>
+          <option value="">Tất cả danh mục</option>
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}
@@ -61,7 +61,7 @@ export function AdminProductFilter({
 
       <div>
         <label htmlFor="brandId" className="text-sm font-medium">
-          Thuong hieu
+          Thương hiệu
         </label>
         <Select
           id="brandId"
@@ -69,7 +69,7 @@ export function AdminProductFilter({
           defaultValue={values.brandId ?? ""}
           className="mt-2"
         >
-          <option value="">Tat ca thuong hieu</option>
+          <option value="">Tất cả thương hiệu</option>
           {brands.map((brand) => (
             <option key={brand.id} value={brand.id}>
               {brand.name}
@@ -80,7 +80,7 @@ export function AdminProductFilter({
 
       <div>
         <label htmlFor="status" className="text-sm font-medium">
-          Trang thai
+          Trạng thái
         </label>
         <Select
           id="status"
@@ -88,16 +88,16 @@ export function AdminProductFilter({
           defaultValue={values.status ?? ""}
           className="mt-2"
         >
-          <option value="">Tat ca trang thai</option>
-          <option value="ACTIVE">Dang hien thi</option>
-          <option value="DRAFT">Ban nhap</option>
-          <option value="ARCHIVED">Da an</option>
+          <option value="">Tất cả trạng thái</option>
+          <option value="ACTIVE">Đang hiển thị</option>
+          <option value="DRAFT">Bản nháp</option>
+          <option value="ARCHIVED">Đã ẩn</option>
         </Select>
       </div>
 
       <div>
         <label htmlFor="type" className="text-sm font-medium">
-          Loai san pham
+          Loại sản phẩm
         </label>
         <Select
           id="type"
@@ -105,20 +105,20 @@ export function AdminProductFilter({
           defaultValue={values.type ?? ""}
           className="mt-2"
         >
-          <option value="">Tat ca loai</option>
-          <option value="IN_STOCK">Co san</option>
+          <option value="">Tất cả loại</option>
+          <option value="IN_STOCK">Có sẵn</option>
           <option value="PREORDER">Pre-order</option>
         </Select>
       </div>
 
       <div className="flex items-end gap-3">
-        <Button type="submit">Ap dung</Button>
+        <Button type="submit">Áp dụng</Button>
 
         <Link
           href="/admin/products"
           className="inline-flex px-3 py-2 text-sm font-medium text-zinc-600 hover:text-zinc-950"
         >
-          Dat lai
+          Đặt lại
         </Link>
       </div>
     </form>

@@ -22,7 +22,7 @@ export async function POST(request: Request) {
   if (!parsed.success) {
     return NextResponse.json(
       {
-        message: "Invalid coupon code",
+        message: "Mã coupon không hợp lệ",
         errors: parsed.error.flatten().fieldErrors,
       },
       { status: 400 },
@@ -33,12 +33,12 @@ export async function POST(request: Request) {
     const cart = await applyCouponToCart(user.id, parsed.data.code);
 
     return NextResponse.json({
-      message: "Coupon applied",
+      message: "Áp dụng coupon thành công",
       coupon: cart.coupon,
     });
   } catch (error) {
     const message =
-      error instanceof Error ? error.message : "Cannot apply coupon";
+      error instanceof Error ? error.message : "Không thể áp dụng coupon";
 
     return NextResponse.json(
       { message },
@@ -60,6 +60,6 @@ export async function DELETE() {
   await removeCouponFromCart(user.id);
 
   return NextResponse.json({
-    message: "Coupon removed",
+    message: "Đã gỡ coupon",
   });
 }

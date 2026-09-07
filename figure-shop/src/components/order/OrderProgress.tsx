@@ -19,28 +19,28 @@ const steps: Array<{
 }> = [
   {
     status: "PENDING",
-    label: "Cho xu ly",
-    description: "Don hang da duoc ghi nhan",
+    label: "Chờ xử lý",
+    description: "Đơn hàng đã được ghi nhận",
   },
   {
     status: "CONFIRMED",
-    label: "Da xac nhan",
-    description: "Cua hang dang chuan bi don",
+    label: "Đã xác nhận",
+    description: "Cửa hàng đang chuẩn bị đơn",
   },
   {
     status: "PROCESSING",
-    label: "Dang xu ly",
-    description: "San pham dang duoc dong goi",
+    label: "Đang xử lý",
+    description: "Sản phẩm đang được đóng gói",
   },
   {
     status: "SHIPPED",
-    label: "Dang giao",
-    description: "Don hang dang tren duong giao",
+    label: "Đang giao",
+    description: "Đơn hàng đang trên đường giao",
   },
   {
     status: "COMPLETED",
-    label: "Hoan thanh",
-    description: "Don hang da hoan tat",
+    label: "Hoàn thành",
+    description: "Đơn hàng đã hoàn tất",
   },
 ];
 
@@ -62,9 +62,9 @@ export function OrderProgress({ status }: OrderProgressProps) {
             <Circle size={20} aria-hidden="true" />
           </span>
           <div>
-            <h2 className="font-bold text-red-700">Don hang da huy</h2>
+            <h2 className="font-bold text-red-700">Đơn hàng đã hủy</h2>
             <p className="mt-1 text-sm text-red-600">
-              Don hang nay khong con trong quy trinh xu ly.
+              Đơn hàng này không còn trong quy trình xử lý.
             </p>
           </div>
         </div>
@@ -78,7 +78,7 @@ export function OrderProgress({ status }: OrderProgressProps) {
     <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
       <div className="flex items-center gap-2">
         <PackageCheck size={19} className="text-[var(--brand-strong)]" />
-        <h2 className="font-bold text-zinc-950">Tien trinh don hang</h2>
+        <h2 className="font-bold text-zinc-950">Tien trinh đơn hàng</h2>
       </div>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-5">

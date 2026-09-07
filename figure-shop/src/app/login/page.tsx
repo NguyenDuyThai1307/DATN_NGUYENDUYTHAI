@@ -19,16 +19,16 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <AuthPageShell
-      title="Dang nhap"
-      description="Dang nhap de quan ly tai khoan, gio hang va don hang."
+      title="Đăng nhập"
+      description="Đăng nhập để quản lý tài khoản, giỏ hàng và đơn hàng."
       footer={
         <>
-          Chua co tai khoan?{" "}
+          Chưa có tài khoản?{" "}
           <Link
             href={registerHref}
             className="font-medium text-zinc-950 underline underline-offset-4"
           >
-            Dang ky
+            Đăng ký
           </Link>
         </>
       }

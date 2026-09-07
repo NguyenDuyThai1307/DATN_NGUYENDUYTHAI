@@ -48,5 +48,10 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/account/:path*", "/checkout/:path*", "/admin/:path*"],
+  matcher: [
+    "/account/:path*",
+    "/cart/:path*",
+    "/checkout/:path*",
+    "/admin/:path*",
+  ],
 };

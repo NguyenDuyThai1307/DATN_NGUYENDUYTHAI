@@ -16,7 +16,7 @@ export function DeactivatePromotionButton({
 
   async function handleDeactivate() {
     const confirmed = window.confirm(
-      "Ban co chac muon tat khuyen mai nay?",
+      "Bạn có chắc muốn tắt khuyến mãi này?",
     );
 
     if (!confirmed) {
@@ -44,7 +44,7 @@ export function DeactivatePromotionButton({
       disabled={isSubmitting}
       onClick={handleDeactivate}
     >
-      Tat
+      Tắt
     </Button>
   );
 }

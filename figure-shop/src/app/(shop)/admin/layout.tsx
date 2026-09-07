@@ -17,7 +17,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
         <header className="border-b border-zinc-200 bg-white">
           <div className="flex h-16 items-center justify-between px-6">
             <div>
-              <p className="text-sm text-zinc-500">Dang dang nhap</p>
+              <p className="text-sm text-zinc-500">Đang đăng nhập</p>
               <p className="text-sm font-medium">{user.email}</p>
             </div>
 
@@ -25,7 +25,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
               href="/"
               className="rounded-md border border-zinc-300 px-3 py-2 text-sm font-medium transition hover:bg-zinc-100"
             >
-              Ve cua hang
+              Ve cửa hàng
             </Link>
           </div>
         </header>

@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const taxonomySchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  slug: z.string().min(1, "Slug is required"),
+  name: z.string().min(1, "Vui lòng nhập tên"),
+  slug: z.string().min(1, "Vui lòng nhập slug"),
   description: z.string().optional(),
 });
 

@@ -24,22 +24,22 @@ export function getCouponValidationError(
   now = new Date(),
 ) {
   if (!coupon.isActive) {
-    return "Coupon is inactive";
+    return "Coupon đang không hoạt động";
   }
 
   if (coupon.startsAt > now) {
-    return "Coupon has not started yet";
+    return "Coupon chưa đến thời gian áp dụng";
   }
 
   if (coupon.endsAt < now) {
-    return "Coupon has expired";
+    return "Coupon đã hết hạn";
   }
 
   if (
     coupon.usageLimit !== null &&
     coupon.usedCount >= coupon.usageLimit
   ) {
-    return "Coupon usage limit reached";
+    return "Coupon đã đạt giới hạn sử dụng";
   }
 
   if (orderAmount < coupon.minOrderValue) {

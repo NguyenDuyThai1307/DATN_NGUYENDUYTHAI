@@ -22,37 +22,37 @@ type DashboardStatsProps = {
 export function DashboardStats({ stats }: DashboardStatsProps) {
   const items = [
     {
-      label: "San pham",
+      label: "Sản phẩm",
       value: stats.totalProducts,
-      helper: "Tong SKU trong he thong",
+      helper: "Tổng SKU trong hệ thống",
       icon: Boxes,
       tone: "bg-blue-50 text-blue-700",
     },
     {
-      label: "Don hang",
+      label: "Đơn hàng",
       value: stats.totalOrders,
-      helper: "Tat ca don da tao",
+      helper: "Tất cả đơn đã tạo",
       icon: ReceiptText,
       tone: "bg-violet-50 text-violet-700",
     },
     {
-      label: "Nguoi dung",
+      label: "Người dùng",
       value: stats.totalUsers,
-      helper: "Tai khoan khach hang va nhan su",
+      helper: "Tài khoản khách hàng và nhân sự",
       icon: UsersRound,
       tone: "bg-emerald-50 text-emerald-700",
     },
     {
-      label: "Cho xu ly",
+      label: "Chờ xử lý",
       value: stats.pendingOrders,
-      helper: "Can admin theo doi",
+      helper: "Cần admin theo dõi",
       icon: Clock3,
       tone: "bg-amber-50 text-amber-700",
     },
     {
-      label: "Hoan thanh",
+      label: "Hoàn thành",
       value: stats.completedOrders,
-      helper: "Don da ket thuc",
+      helper: "Đơn đã kết thúc",
       icon: CheckCircle2,
       tone: "bg-rose-50 text-rose-700",
     },
@@ -63,7 +63,7 @@ export function DashboardStats({ stats }: DashboardStatsProps) {
       <div className="rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-950 to-zinc-800 p-5 text-white shadow-sm sm:col-span-2 xl:col-span-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-sm text-zinc-300">Doanh thu da thanh toan</p>
+            <p className="text-sm text-zinc-300">Doanh thu đã thanh toán</p>
             <p className="mt-2 text-3xl font-black tracking-tight">
               <ProductPrice price={stats.paidRevenue} />
             </p>

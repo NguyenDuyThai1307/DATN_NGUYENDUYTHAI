@@ -3,30 +3,30 @@ import { Globe2, Mail, MapPin, MessageCircle, Phone, Send } from "lucide-react";
 
 const footerGroups = [
   {
-    title: "Ho tro khach hang",
+    title: "Hỗ trợ khách hàng",
     links: [
-      { label: "Huong dan mua hang", href: "/guide" },
-      { label: "Huong dan thanh toan", href: "/guide" },
-      { label: "Tra cuu don hang", href: "/account/orders" },
-      { label: "Cau hoi thuong gap", href: "/guide" },
+      { label: "Hướng dẫn mua hàng", href: "/guide" },
+      { label: "Hướng dẫn thanh toán", href: "/guide" },
+      { label: "Tra cứu đơn hàng", href: "/account/orders" },
+      { label: "Câu hỏi thường gặp", href: "/guide" },
     ],
   },
   {
-    title: "Chinh sach",
+    title: "Chính sách",
     links: [
-      { label: "Van chuyen", href: "/guide" },
-      { label: "Bao mat thong tin", href: "/guide" },
-      { label: "Kiem hang", href: "/guide" },
-      { label: "Doi tra", href: "/guide" },
+      { label: "Vận chuyển", href: "/guide" },
+      { label: "Bảo mật thông tin", href: "/guide" },
+      { label: "Kiểm hàng", href: "/guide" },
+      { label: "Đổi trả", href: "/guide" },
     ],
   },
   {
-    title: "Khuyen mai",
+    title: "Khuyến mãi",
     links: [
-      { label: "San pham moi", href: "/products" },
-      { label: "Uu dai trong thang", href: "/products?sort=price_asc" },
-      { label: "Hang dat truoc", href: "/preorder" },
-      { label: "Ma giam gia", href: "/products?sort=price_asc" },
+      { label: "Sản phẩm mới", href: "/products" },
+      { label: "Ưu đãi trong tháng", href: "/products?sort=price_asc" },
+      { label: "Hàng đặt trước", href: "/preorder" },
+      { label: "Mã giảm giá", href: "/products?sort=price_asc" },
     ],
   },
 ];
@@ -40,10 +40,10 @@ export function Footer() {
             <span className="grid h-9 w-9 place-items-center rounded-lg bg-[var(--brand-strong)] text-white">F</span>
             Figure Shop
           </Link>
-          <p className="mt-4 max-w-xs text-sm leading-6 text-zinc-600">Cua hang danh cho nguoi yeu figure va mo hinh suu tam. Chon hang ro rang, dong goi can than, ho tro nhanh.</p>
+          <p className="mt-4 max-w-xs text-sm leading-6 text-zinc-600">Cửa hàng dành cho người yêu mô hình sưu tầm. Chọn hàng rõ ràng, đóng gói cẩn thận, hỗ trợ nhanh.</p>
           <div className="mt-5 flex gap-2">
             {[Globe2, MessageCircle, Send].map((Icon, index) => (
-              <a key={index} href="#" aria-label="Kenh mang xa hoi Figure Shop" className="grid h-9 w-9 place-items-center rounded-md border border-zinc-200 text-zinc-600 transition hover:border-rose-200 hover:bg-rose-50 hover:text-[var(--brand-strong)]">
+              <a key={index} href="#" aria-label="Kênh mạng xã hội Figure Shop" className="grid h-9 w-9 place-items-center rounded-md border border-zinc-200 text-zinc-600 transition hover:border-rose-200 hover:bg-rose-50 hover:text-[var(--brand-strong)]">
                 <Icon size={17} aria-hidden="true" />
               </a>
             ))}
@@ -71,7 +71,7 @@ export function Footer() {
 
       <div className="border-t border-zinc-200">
         <div className="mx-auto grid max-w-7xl gap-4 px-6 py-7 text-sm text-zinc-600 md:grid-cols-3">
-          <p className="inline-flex items-start gap-2"><MapPin size={17} className="mt-0.5 shrink-0 text-[var(--brand-strong)]" aria-hidden="true" />Cua hang demo Figure Shop, Ha Noi</p>
+          <p className="inline-flex items-start gap-2"><MapPin size={17} className="mt-0.5 shrink-0 text-[var(--brand-strong)]" aria-hidden="true" />Cửa hàng demo Figure Shop, Hà Nội</p>
           <a href="mailto:hello@figureshop.vn" className="inline-flex items-center gap-2 hover:text-[var(--brand-strong)]"><Mail size={17} className="text-[var(--brand-strong)]" aria-hidden="true" />hello@figureshop.vn</a>
           <a href="tel:0900000000" className="inline-flex items-center gap-2 hover:text-[var(--brand-strong)]"><Phone size={17} className="text-[var(--brand-strong)]" aria-hidden="true" />0900 000 000</a>
         </div>

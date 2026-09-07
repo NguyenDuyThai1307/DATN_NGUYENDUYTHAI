@@ -36,7 +36,7 @@ export function ProductGallery({
   if (!selectedImage) {
     return (
       <div className="flex aspect-square items-center justify-center rounded-md border border-zinc-200 bg-zinc-100 px-8 text-center text-sm font-medium text-zinc-500">
-        Chua co anh cho {productName}
+        Chưa có ảnh cho {productName}
       </div>
     );
   }
@@ -67,7 +67,7 @@ export function ProductGallery({
                   ? "border-zinc-950 ring-1 ring-zinc-950"
                   : "border-zinc-200"
               }`}
-              aria-label={`Xem anh ${index + 1} cua ${productName}`}
+              aria-label={`Xem ảnh ${index + 1} của ${productName}`}
             >
               <Image
                 src={image.url}

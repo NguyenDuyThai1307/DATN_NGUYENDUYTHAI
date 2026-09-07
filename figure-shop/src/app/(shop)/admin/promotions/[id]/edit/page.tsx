@@ -2,7 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { PromotionForm } from "@/components/admin/PromotionForm";
 import {
   getAdminPromotionById,
-  getProductsForPromotionForm,
+  getPromotionFormOptions,
   updateAdminPromotion,
 } from "@/services/admin-promotion.service";
 import { promotionSchema } from "@/validations/promotion.schema";
@@ -23,13 +23,18 @@ export default async function AdminEditPromotionPage({
     notFound();
   }
 
-  const products = await getProductsForPromotionForm(promotion.productId);
+  const { products, categories, brands } = await getPromotionFormOptions(
+    promotion.productId ?? undefined,
+  );
 
   async function updatePromotionAction(formData: FormData) {
     "use server";
 
     const parsed = promotionSchema.safeParse({
+      scope: formData.get("scope"),
       productId: formData.get("productId"),
+      categoryId: formData.get("categoryId"),
+      brandId: formData.get("brandId"),
       name: formData.get("name"),
       type: formData.get("type"),
       value: formData.get("value"),
@@ -39,7 +44,7 @@ export default async function AdminEditPromotionPage({
     });
 
     if (!parsed.success) {
-      throw new Error("Invalid promotion data");
+      throw new Error("Dữ liệu khuyến mãi không hợp lệ");
     }
 
     await updateAdminPromotion(id, parsed.data);
@@ -51,18 +56,20 @@ export default async function AdminEditPromotionPage({
       <div>
         <p className="text-sm font-semibold uppercase text-red-600">Admin</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight">
-          Sua khuyen mai
+          Sửa khuyến mãi
         </h1>
         <p className="mt-2 text-zinc-600">
-          Cap nhat gia tri, thoi gian va trang thai khuyen mai.
+          Cập nhật giá trị, thời gian và trạng thái khuyến mãi.
         </p>
       </div>
 
       <section className="mt-8 rounded-md border border-zinc-200 bg-white p-6">
         <PromotionForm
           action={updatePromotionAction}
-          submitLabel="Luu thay doi"
+          submitLabel="Lưu thay đổi"
           products={products}
+          categories={categories}
+          brands={brands}
           promotion={promotion}
         />
       </section>

@@ -9,7 +9,7 @@ export function ProductShelf({ products }: ProductShelfProps) {
   if (products.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-zinc-300 bg-white p-8 text-center text-sm text-zinc-500">
-        Chua co san pham phu hop cho khu vuc nay.
+        Chưa có sản phẩm phù hợp cho khu vực này.
       </div>
     );
   }

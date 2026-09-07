@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
+import { StorefrontError } from "@/lib/storefront-error";
 import {
   createOrderFromCart,
   getOrdersByUserId,
@@ -40,7 +41,7 @@ export async function POST(request: Request) {
   if (!parsed.success) {
     return NextResponse.json(
       {
-        message: "Invalid checkout data",
+        message: "Thông tin thanh toán không hợp lệ",
         errors: parsed.error.flatten().fieldErrors,
       },
       { status: 400 },
@@ -52,25 +53,25 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       {
-        message: "Created order successfully",
+        message: "Tạo đơn hàng thành công",
         order,
       },
       { status: 201 },
     );
   } catch (error) {
+    if (error instanceof StorefrontError) {
+      return NextResponse.json(
+        { message: error.message },
+        { status: error.status },
+      );
+    }
+
     if (error instanceof CouponValidationError) {
       return NextResponse.json(
         { message: error.message },
         { status: 400 },
       );
     }
-    if (error instanceof Error && error.message === "Cart is empty") {
-      return NextResponse.json(
-        { message: "Cart is empty" },
-        { status: 400 },
-      );
-    }
-
     throw error;
   }
 }

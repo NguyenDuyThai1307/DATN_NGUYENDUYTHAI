@@ -39,22 +39,22 @@ export default async function CheckoutPage() {
     <main className="mx-auto max-w-[1500px] px-4 py-7 sm:px-6 sm:py-10">
       <Breadcrumbs
         items={[
-          { label: "Trang chu", href: "/" },
-          { label: "Gio hang", href: "/cart" },
-          { label: "Thanh toan" },
+          { label: "Trang chủ", href: "/" },
+          { label: "Giỏ hàng", href: "/cart" },
+          { label: "Thanh toán" },
         ]}
       />
 
       <div className="mt-6">
         <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-          Buoc cuoi cung
+          Bước cuối cùng
         </p>
         <h1 className="mt-1 text-3xl font-black tracking-tight text-zinc-950">
-          Thanh toan don hang
+          Thanh toán đơn hàng
         </h1>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
-          Dien thong tin giao hang va chon phuong thuc thanh toan phu hop.
-          Tong tien se duoc tinh tu gia sau khuyen mai va coupon hien tai.
+          Điền thông tin giao hàng và chọn phương thức thanh toán phù hợp.
+          Tổng tiền sẽ được tính từ giá sau khuyến mãi và coupon hiện tại.
         </p>
       </div>
 
@@ -62,10 +62,10 @@ export default async function CheckoutPage() {
         <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
           <div>
             <p className="text-xs font-bold uppercase text-zinc-500">
-              Dia chi nhan hang
+              Địa chỉ nhận hàng
             </p>
             <h2 className="mt-1 text-lg font-bold text-zinc-950">
-              Thong tin giao hang
+              Thông tin giao hàng
             </h2>
           </div>
           <CheckoutForm />
@@ -73,10 +73,10 @@ export default async function CheckoutPage() {
 
         <aside className="h-fit rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm lg:sticky lg:top-36">
           <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-            Xac nhan
+            Xác nhận
           </p>
           <h2 className="mt-1 text-lg font-bold text-zinc-950">
-            Don hang cua ban
+            Đơn hàng của bạn
           </h2>
 
           <div className="mt-4 space-y-4">
@@ -95,7 +95,7 @@ export default async function CheckoutPage() {
                   <div className="min-w-0">
                     <p className="font-medium">{item.product.name}</p>
                     <p className="mt-1 text-zinc-500">
-                      So luong: {item.quantity}
+                      Số lượng: {item.quantity}
                     </p>
                   </div>
 
@@ -125,7 +125,7 @@ export default async function CheckoutPage() {
             href="/cart"
             className="mt-5 inline-flex text-sm font-semibold text-zinc-600 hover:text-[var(--brand-strong)]"
           >
-            Quay lai gio hang
+            Quay lại giỏ hàng
           </Link>
         </aside>
       </div>

@@ -3,23 +3,23 @@ import { CheckCircle2, CreditCard, PackageCheck, Truck } from "lucide-react";
 
 const steps = [
   {
-    title: "Chon san pham",
-    description: "Tim figure theo danh muc, thuong hieu, tinh trang co san hoac pre-order.",
+    title: "Chọn sản phẩm",
+    description: "Tìm mô hình theo danh mục, thương hiệu, tình trạng có sẵn hoặc đặt trước.",
     icon: PackageCheck,
   },
   {
-    title: "Them vao gio",
-    description: "Kiem tra so luong, ma giam gia va tong thanh toan truoc khi dat hang.",
+    title: "Thêm vào giỏ",
+    description: "Kiểm tra số lượng, mã giảm giá và tổng thanh toán trước khi đặt hàng.",
     icon: CheckCircle2,
   },
   {
-    title: "Thanh toan",
-    description: "Ho tro COD, chuyen khoan va demo payment cho qua trinh bao cao.",
+    title: "Thanh toán",
+    description: "Hỗ trợ COD, chuyển khoản và thanh toán demo cho quá trình báo cáo.",
     icon: CreditCard,
   },
   {
-    title: "Nhan hang",
-    description: "Don hang duoc dong goi can than va cap nhat trang thai trong tai khoan.",
+    title: "Nhận hàng",
+    description: "Đơn hàng được đóng gói cẩn thận và cập nhật trạng thái trong tài khoản.",
     icon: Truck,
   },
 ];
@@ -28,14 +28,14 @@ export default function GuidePage() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
       <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-        Ho tro mua hang
+        Hỗ trợ mua hàng
       </p>
       <h1 className="mt-2 text-3xl font-black text-zinc-950">
-        Huong dan dat figure tai Figure Shop
+        Hướng dẫn đặt mô hình tại Figure Shop
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-600">
-        Quy trinh mua hang duoc thiet ke don gian de ban co the theo doi ro
-        gio hang, thanh toan va trang thai don hang.
+        Quy trình mua hàng được thiết kế đơn giản để bạn có thể theo dõi rõ
+        giỏ hàng, thanh toán và trạng thái đơn hàng.
       </p>
 
       <section className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -60,16 +60,16 @@ export default function GuidePage() {
       </section>
 
       <section className="mt-8 rounded-lg border border-rose-100 bg-rose-50 p-6">
-        <h2 className="font-bold text-zinc-950">Can xem san pham truoc?</h2>
+        <h2 className="font-bold text-zinc-950">Cần xem sản phẩm trước?</h2>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
-          Ban co the loc theo hang co san, pre-order, thuong hieu va khoang
-          gia de chon nhanh san pham phu hop.
+          Bạn có thể lọc theo hàng có sẵn, pre-order, thương hiệu và khoảng
+          giá để chọn nhanh sản phẩm phù hợp.
         </p>
         <Link
           href="/products"
           className="mt-5 inline-flex rounded-md bg-[var(--brand-strong)] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#982934]"
         >
-          Xem danh sach san pham
+          Xem danh sách sản phẩm
         </Link>
       </section>
     </main>

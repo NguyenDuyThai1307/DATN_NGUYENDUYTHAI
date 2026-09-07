@@ -1,5 +1,9 @@
 import { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import {
+  productPromotionInclude,
+  withEffectiveProductPromotion,
+} from "@/services/promotion.service";
 
 export type ProductSort =
   | "newest"
@@ -20,9 +24,7 @@ export type ActiveProductFilters = {
 };
 
 const productInclude = {
-  category: true,
-  brand: true,
-  promotion: true,
+  ...productPromotionInclude,
   images: {
     orderBy: {
       sortOrder: "asc",
@@ -74,18 +76,32 @@ function buildActiveProductWhere(
   const where: Prisma.ProductWhereInput = {
     status: "ACTIVE",
   };
+  const andConditions: Prisma.ProductWhereInput[] = [];
 
   const query = filters.query?.trim();
 
   if (query) {
-    where.OR = [
-      { name: { contains: query } },
-      { description: { contains: query } },
-    ];
+    andConditions.push({
+      OR: [
+        { name: { contains: query } },
+        { description: { contains: query } },
+      ],
+    });
   }
 
   if (filters.categoryId) {
-    where.categoryId = filters.categoryId;
+    andConditions.push({
+      OR: [
+        { categoryId: filters.categoryId },
+        {
+          categories: {
+            some: {
+              categoryId: filters.categoryId,
+            },
+          },
+        },
+      ],
+    });
   }
 
   if (filters.brandId) {
@@ -108,6 +124,10 @@ function buildActiveProductWhere(
     }
   }
 
+  if (andConditions.length > 0) {
+    where.AND = andConditions;
+  }
+
   return where;
 }
 
@@ -120,11 +140,14 @@ export async function getFilteredActiveProducts(
 ) {
   const where = buildActiveProductWhere(filters);
 
-  return prisma.product.findMany({
+  const products = await prisma.product.findMany({
     where,
     include: productInclude,
     orderBy: getProductOrderBy(filters.sort),
   });
+
+  const now = new Date();
+  return products.map((product) => withEffectiveProductPromotion(product, now));
 }
 
 export async function getPaginatedActiveProducts(
@@ -144,9 +167,12 @@ export async function getPaginatedActiveProducts(
     skip: (currentPage - 1) * pageSize,
     take: pageSize,
   });
+  const now = new Date();
 
   return {
-    products,
+    products: products.map((product) =>
+      withEffectiveProductPromotion(product, now),
+    ),
     total,
     currentPage,
     pageCount,
@@ -174,12 +200,14 @@ export async function getProductFilterOptions() {
 }
 
 export async function getProductBySlug(slug: string) {
-  return prisma.product.findUnique({
+  const product = await prisma.product.findUnique({
     where: {
       slug,
     },
     include: productInclude,
   });
+
+  return product ? withEffectiveProductPromotion(product) : null;
 }
 
 export async function getCategoryBySlug(slug: string) {

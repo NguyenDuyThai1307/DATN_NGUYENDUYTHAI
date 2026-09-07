@@ -13,7 +13,7 @@ export function ArchiveProductButton({ productId }: ArchiveProductButtonProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleArchive() {
-    const confirmed = window.confirm("Ban co chac muon an san pham nay?");
+    const confirmed = window.confirm("Bạn có chắc muốn ẩn sản phẩm này?");
 
     if (!confirmed) {
       return;
@@ -37,7 +37,7 @@ export function ArchiveProductButton({ productId }: ArchiveProductButtonProps) {
       disabled={isSubmitting}
       onClick={handleArchive}
     >
-      An
+      Ẩn
     </Button>
   );
 }

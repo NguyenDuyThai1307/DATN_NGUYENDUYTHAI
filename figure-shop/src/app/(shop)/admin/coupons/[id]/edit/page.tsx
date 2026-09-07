@@ -39,7 +39,7 @@ export default async function AdminEditCouponPage({
     });
 
     if (!parsed.success) {
-      throw new Error("Invalid coupon data");
+      throw new Error("Dữ liệu coupon không hợp lệ");
     }
 
     await updateAdminCoupon(id, parsed.data);
@@ -51,17 +51,17 @@ export default async function AdminEditCouponPage({
       <div>
         <p className="text-sm font-semibold uppercase text-red-600">Admin</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight">
-          Sua coupon
+          Sửa coupon
         </h1>
         <p className="mt-2 text-zinc-600">
-          Cap nhat gia tri, dieu kien va thoi gian coupon.
+          Cập nhật giá trị, điều kiện và thời gian coupon.
         </p>
       </div>
 
       <section className="mt-8 rounded-md border border-zinc-200 bg-white p-6">
         <CouponForm
           action={updateCouponAction}
-          submitLabel="Luu thay doi"
+          submitLabel="Lưu thay đổi"
           coupon={coupon}
         />
       </section>

@@ -32,7 +32,7 @@ export default async function AdminEditBrandPage({
     });
 
     if (!parsed.success) {
-      throw new Error("Invalid brand data");
+      throw new Error("Dữ liệu thương hiệu không hợp lệ");
     }
 
     await updateAdminBrand(id, parsed.data);
@@ -44,17 +44,17 @@ export default async function AdminEditBrandPage({
       <div>
         <p className="text-sm font-semibold uppercase text-red-600">Admin</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight">
-          Sua thuong hieu
+          Sửa thương hiệu
         </h1>
         <p className="mt-2 text-zinc-600">
-          Cap nhat thong tin thuong hieu.
+          Cập nhật thông tin thương hiệu.
         </p>
       </div>
 
       <section className="mt-8 rounded-md border border-zinc-200 bg-white p-6">
         <TaxonomyForm
           action={updateBrandAction}
-          submitLabel="Luu thay doi"
+          submitLabel="Lưu thay đổi"
           item={brand}
         />
       </section>

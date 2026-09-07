@@ -21,7 +21,7 @@ export function FeaturedSeries() {
   return (
     <section className="py-7 sm:py-10">
       <div className="rounded-lg border border-zinc-200 bg-white p-5 sm:p-7">
-        <p className="text-sm font-bold uppercase text-zinc-950">Series noi bat</p>
+        <p className="text-sm font-bold uppercase text-zinc-950">Series nổi bật</p>
         <div className="mt-4 flex flex-wrap gap-2">
           {featuredSeries.map((series) => (
             <Link key={series} href={`/products?q=${encodeURIComponent(series)}`} className="rounded-full border border-rose-100 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition hover:border-[var(--brand)] hover:bg-white hover:text-[var(--brand-strong)]">
@@ -37,7 +37,7 @@ export function FeaturedSeries() {
 export function NewsHighlight() {
   return (
     <aside className="rounded-lg border border-zinc-200 bg-white p-5">
-      <p className="text-sm font-bold uppercase text-zinc-950">Tin tuc noi bat</p>
+      <p className="text-sm font-bold uppercase text-zinc-950">Tin tức nổi bật</p>
       <div className="mt-4 divide-y divide-zinc-100">
         {latestNews.map((article) => (
           <Link key={article.title} href={article.href} className="block py-4 first:pt-0 last:pb-0">
@@ -99,13 +99,13 @@ export function FeaturedCategoryGrid({ categories }: { categories: CategoryItem[
           <div className="relative z-10 flex items-start justify-between gap-3">
             <div>
               <p className="text-base font-bold text-zinc-950">{category.name}</p>
-              <p className="mt-1 text-sm text-zinc-500">{category.productCount} san pham</p>
+              <p className="mt-1 text-sm text-zinc-500">{category.productCount} sản phẩm</p>
             </div>
             <PackageCheck size={20} className="text-[var(--brand)]" aria-hidden="true" />
           </div>
 
           <span className="relative z-10 mt-12 inline-flex text-xs font-bold text-[var(--brand-strong)]">
-            Xem danh muc
+            Xem danh mục
           </span>
         </Link>
       ))}
@@ -173,7 +173,7 @@ export function BrandLogoCloud({ brands }: { brands: { id: string; name: string;
         <Link key={brand.id} href={`/products?brandId=${brand.id}`} className="rounded-md border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm font-bold text-zinc-600 transition hover:border-rose-200 hover:bg-rose-50 hover:text-[var(--brand-strong)]">
           {brand.name}
         </Link>
-      )) : <p className="text-sm text-zinc-500">Thuong hieu se duoc cap nhat som.</p>}
+      )) : <p className="text-sm text-zinc-500">Thương hiệu sẽ được cập nhật sớm.</p>}
     </div>
   );
 }
@@ -187,7 +187,7 @@ export function LatestNewsSection() {
           <h3 className="mt-3 text-lg font-bold text-zinc-950">{article.title}</h3>
           <p className="mt-2 text-sm leading-6 text-zinc-600">{article.excerpt}</p>
           <Link href={article.href} className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[var(--brand-strong)] hover:text-zinc-950">
-            Doc them <Copy size={14} aria-hidden="true" />
+            Đọc thêm <Copy size={14} aria-hidden="true" />
           </Link>
         </article>
       ))}

@@ -6,7 +6,7 @@ type ProductTabsProps = {
   description: string | null;
 };
 
-const tabs = ["Thong tin san pham", "Huong dan mua hang", "Cau hoi thuong gap"] as const;
+const tabs = ["Thông tin sản phẩm", "Hướng dẫn mua hàng", "Câu hỏi thường gặp"] as const;
 
 export function ProductTabs({ description }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>(tabs[0]);
@@ -22,9 +22,9 @@ export function ProductTabs({ description }: ProductTabsProps) {
       </div>
 
       <div className="pt-5 text-sm leading-7 text-zinc-600">
-        {activeTab === "Thong tin san pham" ? <p>{description ?? "Thong tin chi tiet cua san pham dang duoc Figure Shop cap nhat."}</p> : null}
-        {activeTab === "Huong dan mua hang" ? <p>Chon so luong, them vao gio hang, kiem tra thong tin giao nhan va hoan tat dat hang tai trang checkout.</p> : null}
-        {activeTab === "Cau hoi thuong gap" ? <p>Ban co the theo doi trang thai don hang trong Tai khoan. San pham pre-order se duoc thong bao thoi gian ve hang truoc khi giao.</p> : null}
+        {activeTab === "Thông tin sản phẩm" ? <p>{description ?? "Thông tin chi tiết của sản phẩm đang được Figure Shop cập nhật."}</p> : null}
+        {activeTab === "Hướng dẫn mua hàng" ? <p>Chọn số lượng, thêm vào giỏ hàng, kiểm tra thông tin giao nhận và hoàn tất đặt hàng tại trang thanh toán.</p> : null}
+        {activeTab === "Câu hỏi thường gặp" ? <p>Bạn có thể theo dõi trạng thái đơn hàng trong Tài khoản. Sản phẩm pre-order sẽ được thông báo thời gian về hàng trước khi giao.</p> : null}
       </div>
     </section>
   );

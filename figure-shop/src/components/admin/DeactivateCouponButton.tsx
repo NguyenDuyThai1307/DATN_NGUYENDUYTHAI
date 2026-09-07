@@ -15,7 +15,7 @@ export function DeactivateCouponButton({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleDeactivate() {
-    const confirmed = window.confirm("Ban co chac muon tat coupon nay?");
+    const confirmed = window.confirm("Bạn có chắc muốn tắt coupon này?");
 
     if (!confirmed) {
       return;
@@ -42,7 +42,7 @@ export function DeactivateCouponButton({
       disabled={isSubmitting}
       onClick={handleDeactivate}
     >
-      Tat
+      Tắt
     </Button>
   );
 }

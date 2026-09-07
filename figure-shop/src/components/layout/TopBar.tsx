@@ -12,7 +12,7 @@ export function TopBar({ isAuthenticated }: TopBarProps) {
         <div className="flex items-center gap-5">
           <span className="inline-flex items-center gap-1.5 font-medium">
             <ShieldCheck size={13} aria-hidden="true" />
-            Figure chinh hang, ho tro dat truoc
+            Mô hình chính hãng, hỗ trợ đặt trước
           </span>
           <a href="tel:0900000000" className="inline-flex items-center gap-1.5 font-medium hover:text-[var(--brand-strong)]">
             <Phone size={13} aria-hidden="true" />
@@ -20,22 +20,22 @@ export function TopBar({ isAuthenticated }: TopBarProps) {
           </a>
           <Link href="/contact#stores" className="inline-flex items-center gap-1.5 font-medium hover:text-[var(--brand-strong)]">
             <MapPin size={13} aria-hidden="true" />
-            He thong cua hang
+            Hệ thống cửa hàng
           </Link>
         </div>
 
         {isAuthenticated ? (
           <Link href="/account" className="font-medium hover:text-[var(--brand-strong)]">
-            Tai khoan cua toi
+            Tài khoản của tôi
           </Link>
         ) : (
           <div className="flex items-center gap-3 font-medium">
             <Link href="/login" className="hover:text-[var(--brand-strong)]">
-              Dang nhap
+              Đăng nhập
             </Link>
             <span className="text-zinc-300">/</span>
             <Link href="/register" className="hover:text-[var(--brand-strong)]">
-              Dang ky
+              Đăng ký
             </Link>
           </div>
         )}

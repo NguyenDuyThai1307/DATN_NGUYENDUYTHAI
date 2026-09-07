@@ -47,19 +47,19 @@ export default async function AdminOrderDetailPage({
         href="/admin/orders"
         className="text-sm font-medium text-zinc-600 hover:text-zinc-950"
       >
-        {"<-"} Quay lai don hang
+        {"<-"} Quay lại đơn hàng
       </Link>
 
       <div className="mt-6 flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-            Chi tiet don hang
+            Chi tiết đơn hàng
           </p>
           <h1 className="mt-1 text-3xl font-black tracking-tight text-zinc-950">
             {order.orderNumber}
           </h1>
           <p className="mt-2 text-sm text-zinc-500">
-            Khach hang: {order.user.name ?? order.user.email}
+            Khách hàng: {order.user.name ?? order.user.email}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             <OrderStatusBadge status={order.status} />
@@ -69,7 +69,7 @@ export default async function AdminOrderDetailPage({
 
         <div className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
           <p className="text-xs font-semibold uppercase text-zinc-500">
-            Tong thanh toan
+            Tổng thanh toán
           </p>
           <div className="mt-1">
             <ProductPrice price={order.total} />
@@ -83,7 +83,7 @@ export default async function AdminOrderDetailPage({
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_340px]">
         <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
-          <h2 className="font-bold text-zinc-950">San pham</h2>
+          <h2 className="font-bold text-zinc-950">Sản phẩm</h2>
 
           <div className="mt-4 space-y-4">
             {order.items.map((item) => {
@@ -110,7 +110,7 @@ export default async function AdminOrderDetailPage({
 
                     {item.discountAmount > 0 ? (
                       <p className="mt-1 text-xs font-medium text-red-600">
-                        Giam {item.discountAmount.toLocaleString("vi-VN")} d
+                        Giảm {item.discountAmount.toLocaleString("vi-VN")} đ
                       </p>
                     ) : null}
                   </div>
@@ -124,26 +124,26 @@ export default async function AdminOrderDetailPage({
 
         <aside className="space-y-5 lg:sticky lg:top-36 lg:h-fit">
           <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
-            <h2 className="font-bold text-zinc-950">Trang thai</h2>
+            <h2 className="font-bold text-zinc-950">Trạng thái</h2>
 
             <div className="mt-4 space-y-2 text-sm text-zinc-600">
               <div className="flex items-center gap-2">
-                <span>Don hang:</span>
+                <span>Đơn hàng:</span>
                 <OrderStatusBadge status={order.status} />
               </div>
               <div className="flex items-center gap-2">
-                <span>Thanh toan:</span>
+                <span>Thanh toán:</span>
                 <PaymentStatusBadge status={order.paymentStatus} />
               </div>
-              <p>Phuong thuc: {order.paymentMethod}</p>
+              <p>Phương thức: {order.paymentMethod}</p>
 
               {order.payment?.transactionCode ? (
-                <p>Ma giao dich: {order.payment.transactionCode}</p>
+                <p>Mã giao dịch: {order.payment.transactionCode}</p>
               ) : null}
 
               {order.payment?.paidAt ? (
                 <p>
-                  Da thanh toan luc:{" "}
+                  Đã thanh toán lúc:{" "}
                   {order.payment.paidAt.toLocaleString("vi-VN")}
                 </p>
               ) : null}
@@ -151,19 +151,19 @@ export default async function AdminOrderDetailPage({
           </section>
 
           <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
-            <h2 className="font-bold text-zinc-950">Tom tat thanh toan</h2>
+            <h2 className="font-bold text-zinc-950">Tóm tắt thanh toán</h2>
 
             <div className="mt-4 space-y-3 text-sm text-zinc-600">
               <div className="flex items-center justify-between">
-                <span>Tam tinh</span>
+                <span>Tạm tính</span>
                 <ProductPrice price={order.subtotal} />
               </div>
 
               {productDiscountAmount > 0 ? (
                 <div className="flex items-center justify-between">
-                  <span>Giam san pham</span>
+                  <span>Giảm sản phẩm</span>
                   <span className="font-medium text-red-600">
-                    -{productDiscountAmount.toLocaleString("vi-VN")} d
+                    -{productDiscountAmount.toLocaleString("vi-VN")} đ
                   </span>
                 </div>
               ) : null}
@@ -171,20 +171,20 @@ export default async function AdminOrderDetailPage({
               {order.couponDiscountAmount > 0 ? (
                 <div className="flex items-center justify-between">
                   <span>
-                    Giam coupon{" "}
+                    Giảm coupon{" "}
                     {order.couponCode ? `(${order.couponCode})` : ""}
                   </span>
                   <span className="font-medium text-red-600">
-                    -{order.couponDiscountAmount.toLocaleString("vi-VN")} d
+                    -{order.couponDiscountAmount.toLocaleString("vi-VN")} đ
                   </span>
                 </div>
               ) : null}
 
               <div className="flex items-center justify-between">
-                <span>Phi giao hang</span>
+                <span>Phí giao hàng</span>
                 {order.shippingFee === 0 ? (
                   <span className="font-medium text-emerald-700">
-                    Mien phi
+                    Miễn phí
                   </span>
                 ) : (
                   <ProductPrice price={order.shippingFee} />
@@ -192,14 +192,14 @@ export default async function AdminOrderDetailPage({
               </div>
 
               <div className="flex items-center justify-between border-t border-zinc-200 pt-3 font-medium text-zinc-950">
-                <span>Tong cong</span>
+                <span>Tổng cộng</span>
                 <ProductPrice price={order.total} />
               </div>
             </div>
           </section>
 
           <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
-            <h2 className="font-bold text-zinc-950">Thong tin giao hang</h2>
+            <h2 className="font-bold text-zinc-950">Thông tin giao hàng</h2>
 
             <div className="mt-4 space-y-2 text-sm text-zinc-600">
               <p className="font-semibold text-zinc-950">
@@ -210,7 +210,7 @@ export default async function AdminOrderDetailPage({
                 {order.addressDetail}, {order.ward}, {order.district},{" "}
                 {order.province}
               </p>
-              {order.note ? <p>Ghi chu: {order.note}</p> : null}
+              {order.note ? <p>Ghi chú: {order.note}</p> : null}
             </div>
           </section>
         </aside>

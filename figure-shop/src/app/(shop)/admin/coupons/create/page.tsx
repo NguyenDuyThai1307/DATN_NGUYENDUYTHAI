@@ -21,7 +21,7 @@ export default function AdminCreateCouponPage() {
     });
 
     if (!parsed.success) {
-      throw new Error("Invalid coupon data");
+      throw new Error("Dữ liệu coupon không hợp lệ");
     }
 
     await createAdminCoupon(parsed.data);
@@ -33,17 +33,17 @@ export default function AdminCreateCouponPage() {
       <div>
         <p className="text-sm font-semibold uppercase text-red-600">Admin</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight">
-          Tao coupon
+          Tạo coupon
         </h1>
         <p className="mt-2 text-zinc-600">
-          Tao ma giam gia de khach hang ap dung khi thanh toan.
+          Tạo mã giảm giá để khách hàng áp dụng khi thanh toán.
         </p>
       </div>
 
       <section className="mt-8 rounded-md border border-zinc-200 bg-white p-6">
         <CouponForm
           action={createCouponAction}
-          submitLabel="Tao coupon"
+          submitLabel="Tạo coupon"
         />
       </section>
     </main>

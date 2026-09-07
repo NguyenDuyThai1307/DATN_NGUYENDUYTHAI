@@ -14,7 +14,7 @@ export default function AdminCreateBrandPage() {
     });
 
     if (!parsed.success) {
-      throw new Error("Invalid brand data");
+      throw new Error("Dữ liệu thương hiệu không hợp lệ");
     }
 
     await createAdminBrand(parsed.data);
@@ -26,17 +26,17 @@ export default function AdminCreateBrandPage() {
       <div>
         <p className="text-sm font-semibold uppercase text-red-600">Admin</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight">
-          Them thuong hieu
+          Thêm thương hiệu
         </h1>
         <p className="mt-2 text-zinc-600">
-          Tao thuong hieu moi cho san pham.
+          Tạo thương hiệu mới cho sản phẩm.
         </p>
       </div>
 
       <section className="mt-8 rounded-md border border-zinc-200 bg-white p-6">
         <TaxonomyForm
           action={createBrandAction}
-          submitLabel="Them thuong hieu"
+          submitLabel="Thêm thương hiệu"
         />
       </section>
     </main>

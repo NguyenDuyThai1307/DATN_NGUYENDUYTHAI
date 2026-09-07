@@ -39,9 +39,9 @@ export default async function AccountOrderDetailPage({
     <main className="mx-auto max-w-[1500px] px-4 py-7 sm:px-6 sm:py-10">
       <Breadcrumbs
         items={[
-          { label: "Trang chu", href: "/" },
-          { label: "Tai khoan", href: "/account" },
-          { label: "Don hang", href: "/account/orders" },
+          { label: "Trang chủ", href: "/" },
+          { label: "Tài khoản", href: "/account" },
+          { label: "Đơn hàng", href: "/account/orders" },
           { label: order.orderNumber },
         ]}
       />
@@ -51,16 +51,16 @@ export default async function AccountOrderDetailPage({
         className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-zinc-600 hover:text-[var(--brand-strong)]"
       >
         <ArrowLeft size={16} aria-hidden="true" />
-        Quay lai don hang
+        Quay lại đơn hàng
       </Link>
 
       <div className="mt-6 flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-            Chi tiet don hang
+            Chi tiết đơn hàng
           </p>
           <h1 className="mt-1 text-3xl font-black tracking-tight text-zinc-950">
-            Don hang {order.orderNumber}
+            Đơn hàng {order.orderNumber}
           </h1>
           <div className="mt-3 flex flex-wrap gap-2">
             <OrderStatusBadge status={order.status} />
@@ -70,7 +70,7 @@ export default async function AccountOrderDetailPage({
 
         <div className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
           <p className="text-xs font-semibold uppercase text-zinc-500">
-            Tong thanh toan
+            Tổng thanh toán
           </p>
           <div className="mt-1">
             <ProductPrice price={order.total} />
@@ -84,7 +84,7 @@ export default async function AccountOrderDetailPage({
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px]">
         <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
-          <h2 className="text-lg font-bold text-zinc-950">San pham</h2>
+          <h2 className="text-lg font-bold text-zinc-950">Sản phẩm</h2>
 
           <div className="mt-4 space-y-4">
             {order.items.map((item) => {
@@ -111,7 +111,7 @@ export default async function AccountOrderDetailPage({
 
                     {item.discountAmount > 0 ? (
                       <p className="mt-1 text-xs font-medium text-red-600">
-                        Giam {item.discountAmount.toLocaleString("vi-VN")} d
+                        Giảm {item.discountAmount.toLocaleString("vi-VN")} đ
                       </p>
                     ) : null}
                   </div>
@@ -126,7 +126,7 @@ export default async function AccountOrderDetailPage({
         <aside className="space-y-5 lg:sticky lg:top-36 lg:h-fit">
           <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
             <h2 className="text-lg font-bold text-zinc-950">
-              Thong tin giao hang
+              Thông tin giao hàng
             </h2>
 
             <div className="mt-4 space-y-2 text-sm text-zinc-600">
@@ -138,31 +138,31 @@ export default async function AccountOrderDetailPage({
                 {order.addressDetail}, {order.ward}, {order.district},{" "}
                 {order.province}
               </p>
-              {order.note ? <p>Ghi chu: {order.note}</p> : null}
+              {order.note ? <p>Ghi chú: {order.note}</p> : null}
             </div>
           </section>
 
           <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
-            <h2 className="text-lg font-bold text-zinc-950">Thanh toan</h2>
+            <h2 className="text-lg font-bold text-zinc-950">Thanh toán</h2>
 
             <div className="mt-4 space-y-3 text-sm text-zinc-600">
-              <p>Phuong thuc: {order.paymentMethod}</p>
+              <p>Phương thức: {order.paymentMethod}</p>
               <div className="flex flex-wrap gap-2">
-                <span>Trang thai:</span>
+                <span>Trạng thái:</span>
                 <PaymentStatusBadge status={order.paymentStatus} />
               </div>
 
               <div className="space-y-3 border-t border-zinc-200 pt-3">
                 <div className="flex items-center justify-between">
-                  <span>Tam tinh</span>
+                  <span>Tạm tính</span>
                   <ProductPrice price={order.subtotal} />
                 </div>
 
                 {productDiscountAmount > 0 ? (
                   <div className="flex items-center justify-between gap-4">
-                    <span>Giam san pham</span>
+                    <span>Giảm sản phẩm</span>
                     <span className="font-medium text-red-600">
-                      -{productDiscountAmount.toLocaleString("vi-VN")} d
+                      -{productDiscountAmount.toLocaleString("vi-VN")} đ
                     </span>
                   </div>
                 ) : null}
@@ -170,20 +170,20 @@ export default async function AccountOrderDetailPage({
                 {order.couponDiscountAmount > 0 ? (
                   <div className="flex items-center justify-between gap-4">
                     <span>
-                      Giam coupon{" "}
+                      Giảm coupon{" "}
                       {order.couponCode ? `(${order.couponCode})` : ""}
                     </span>
                     <span className="font-medium text-red-600">
-                      -{order.couponDiscountAmount.toLocaleString("vi-VN")} d
+                      -{order.couponDiscountAmount.toLocaleString("vi-VN")} đ
                     </span>
                   </div>
                 ) : null}
 
                 <div className="flex items-center justify-between">
-                  <span>Phi giao hang</span>
+                  <span>Phí giao hàng</span>
                   {order.shippingFee === 0 ? (
                     <span className="font-medium text-emerald-700">
-                      Mien phi
+                      Miễn phí
                     </span>
                   ) : (
                     <ProductPrice price={order.shippingFee} />
@@ -191,7 +191,7 @@ export default async function AccountOrderDetailPage({
                 </div>
 
                 <div className="flex items-center justify-between border-t border-zinc-200 pt-3 font-medium">
-                  <span>Tong cong</span>
+                  <span>Tổng cộng</span>
                   <ProductPrice price={order.total} />
                 </div>
               </div>

@@ -85,12 +85,12 @@ export function AccountProfileForm({
         name: errors?.name?.[0],
         phone: errors?.phone?.[0],
       });
-      setError(data?.message ?? "Khong the cap nhat thong tin.");
+      setError(data?.message ?? "Không thể cập nhật thông tin.");
       return;
     }
 
     setEditingField(null);
-    setSuccess("Da luu thong tin tai khoan.");
+    setSuccess("Đã lưu thông tin tài khoản.");
     router.refresh();
   }
 
@@ -100,10 +100,10 @@ export function AccountProfileForm({
         <ReadOnlyInfoCard label="Email" value={user.email} />
 
         <EditableInfoCard
-          label="Ho ten"
-          placeholder="Nguyen Van A"
+          label="Họ tên"
+          placeholder="Nguyễn Văn A"
           value={values.name}
-          displayValue={values.name || "Chua cap nhat"}
+          displayValue={values.name || "Chưa cập nhật"}
           isEditing={editingField === "name"}
           error={fieldErrors.name}
           onEdit={() => setEditingField("name")}
@@ -123,10 +123,10 @@ export function AccountProfileForm({
         />
 
         <EditableInfoCard
-          label="So dien thoai"
+          label="Số điện thoại"
           placeholder="0909123456"
           value={values.phone}
-          displayValue={values.phone || "Chua cap nhat"}
+          displayValue={values.phone || "Chưa cập nhật"}
           isEditing={editingField === "phone"}
           error={fieldErrors.phone}
           onEdit={() => setEditingField("phone")}
@@ -146,7 +146,7 @@ export function AccountProfileForm({
         />
 
         {canViewRole ? (
-          <ReadOnlyInfoCard label="Vai tro" value={user.role} />
+          <ReadOnlyInfoCard label="Vai trò" value={user.role} />
         ) : null}
       </div>
 
@@ -155,10 +155,10 @@ export function AccountProfileForm({
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="font-semibold text-zinc-950">
-                Ban co muon luu thong tin da sua?
+                Bạn có muốn lưu thông tin đã sửa?
               </p>
               <p className="mt-1 text-sm text-zinc-600">
-                Thay doi chi duoc cap nhat sau khi ban bam nut luu.
+                Thay đổi chỉ được cập nhật sau khi bạn bấm nút lưu.
               </p>
             </div>
 
@@ -171,7 +171,7 @@ export function AccountProfileForm({
                 disabled={isSubmitting}
               >
                 <RotateCcw size={16} aria-hidden="true" />
-                Huy
+                Hủy
               </Button>
               <Button
                 type="button"
@@ -180,7 +180,7 @@ export function AccountProfileForm({
                 disabled={isSubmitting}
               >
                 <Check size={16} aria-hidden="true" />
-                {isSubmitting ? "Dang luu..." : "Luu thay doi"}
+                {isSubmitting ? "Đang lưu..." : "Lưu thay đổi"}
               </Button>
             </div>
           </div>
@@ -250,12 +250,12 @@ function EditableInfoCard({
           {isEditing ? (
             <>
               <X size={13} aria-hidden="true" />
-              Huy
+              Hủy
             </>
           ) : (
             <>
               <Pencil size={13} aria-hidden="true" />
-              Sua
+              Sửa
             </>
           )}
         </button>

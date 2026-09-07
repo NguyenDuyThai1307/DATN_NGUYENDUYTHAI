@@ -40,7 +40,7 @@ export function CouponForm({
     <form action={action} className="grid gap-5">
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="text-sm font-medium">Ma coupon</label>
+          <label className="text-sm font-medium">Mã coupon</label>
           <Input
             name="code"
             required
@@ -50,30 +50,30 @@ export function CouponForm({
         </div>
 
         <div>
-          <label className="text-sm font-medium">Ten coupon</label>
+          <label className="text-sm font-medium">Tên coupon</label>
           <Input
             name="name"
             required
             defaultValue={coupon?.name}
-            placeholder="Giam gia mua he"
+            placeholder="Giảm giá mùa hè"
           />
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="text-sm font-medium">Kieu giam gia</label>
+          <label className="text-sm font-medium">Kiểu giảm giá</label>
           <Select
             name="type"
             defaultValue={coupon?.type ?? "PERCENTAGE"}
           >
-            <option value="PERCENTAGE">Giam theo phan tram</option>
-            <option value="FIXED_AMOUNT">Giam so tien co dinh</option>
+            <option value="PERCENTAGE">Giảm theo phần trăm</option>
+            <option value="FIXED_AMOUNT">Giảm số tiền cố định</option>
           </Select>
         </div>
 
         <div>
-          <label className="text-sm font-medium">Gia tri giam</label>
+          <label className="text-sm font-medium">Giá trị giảm</label>
           <Input
             name="value"
             type="number"
@@ -87,7 +87,7 @@ export function CouponForm({
 
       <div className="grid gap-4 md:grid-cols-3">
         <div>
-          <label className="text-sm font-medium">Don toi thieu</label>
+          <label className="text-sm font-medium">Đơn tối thiểu</label>
           <Input
             name="minOrderValue"
             type="number"
@@ -99,31 +99,31 @@ export function CouponForm({
         </div>
 
         <div>
-          <label className="text-sm font-medium">Giam toi da</label>
+          <label className="text-sm font-medium">Giảm tối đa</label>
           <Input
             name="maxDiscountAmount"
             type="number"
             min={1}
             defaultValue={coupon?.maxDiscountAmount ?? ""}
-            placeholder="Bo trong neu khong gioi han"
+            placeholder="Bỏ trống nếu không giới hạn"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium">Luot dung toi da</label>
+          <label className="text-sm font-medium">Lượt dùng tối đa</label>
           <Input
             name="usageLimit"
             type="number"
             min={1}
             defaultValue={coupon?.usageLimit ?? ""}
-            placeholder="Bo trong neu khong gioi han"
+            placeholder="Bỏ trống nếu không giới hạn"
           />
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="text-sm font-medium">Bat dau</label>
+          <label className="text-sm font-medium">Bắt đầu</label>
           <Input
             name="startsAt"
             type="datetime-local"
@@ -133,7 +133,7 @@ export function CouponForm({
         </div>
 
         <div>
-          <label className="text-sm font-medium">Ket thuc</label>
+          <label className="text-sm font-medium">Kết thúc</label>
           <Input
             name="endsAt"
             type="datetime-local"
@@ -149,7 +149,7 @@ export function CouponForm({
           type="checkbox"
           defaultChecked={coupon?.isActive ?? true}
         />
-        Bat coupon ngay sau khi luu
+        Bật coupon ngay sau khi lưu
       </label>
 
       <div className="flex justify-end">

@@ -21,12 +21,12 @@ export function TaxonomyForm({
     <form action={action} className="grid gap-5">
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="text-sm font-medium">Ten</label>
+          <label className="text-sm font-medium">Tên</label>
           <Input
             name="name"
             required
             defaultValue={item?.name}
-            placeholder="Scale Figure"
+            placeholder="Mô hình tỉ lệ"
           />
         </div>
 
@@ -42,12 +42,12 @@ export function TaxonomyForm({
       </div>
 
       <div>
-        <label className="text-sm font-medium">Mo ta</label>
+        <label className="text-sm font-medium">Mô tả</label>
         <Textarea
           name="description"
           rows={4}
           defaultValue={item?.description ?? ""}
-          placeholder="Mo ta ngan"
+          placeholder="Mô tả ngắn"
         />
       </div>
 

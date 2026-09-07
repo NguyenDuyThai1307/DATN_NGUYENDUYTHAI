@@ -1,6 +1,11 @@
 import { prisma } from "@/lib/prisma";
+import { StorefrontError } from "@/lib/storefront-error";
 import { getCouponByCode, getCouponValidationError } from "@/services/coupon.service";
 import { calculateOrderPricing } from "@/services/pricing.service";
+import {
+  productPromotionInclude,
+  withEffectiveProductPromotion,
+} from "@/services/promotion.service";
 
 export async function getOrCreateCart(userId: string) {
   const existingCart = await prisma.cart.findUnique({
@@ -23,7 +28,7 @@ export async function getOrCreateCart(userId: string) {
 export async function getCartByUserId(userId: string) {
   const cart = await getOrCreateCart(userId);
 
-  return prisma.cart.findUnique({
+  const detailedCart = await prisma.cart.findUnique({
     where: {
       id: cart.id,
     },
@@ -33,13 +38,12 @@ export async function getCartByUserId(userId: string) {
         include: {
           product: {
             include: {
-              promotion: true,
+              ...productPromotionInclude,
               images: {
                 orderBy: {
                   sortOrder: "asc",
                 },
               },
-              brand: true,
             },
           },
         },
@@ -49,6 +53,20 @@ export async function getCartByUserId(userId: string) {
       },
     },
   });
+
+  if (!detailedCart) {
+    return null;
+  }
+
+  const now = new Date();
+
+  return {
+    ...detailedCart,
+    items: detailedCart.items.map((item) => ({
+      ...item,
+      product: withEffectiveProductPromotion(item.product, now),
+    })),
+  };
 }
 
 export async function addProductToCart(
@@ -56,6 +74,30 @@ export async function addProductToCart(
   productId: string,
   quantity = 1,
 ) {
+  if (quantity < 1 || quantity > 99) {
+    throw new StorefrontError("Số lượng sản phẩm không hợp lệ");
+  }
+
+  const product = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+    select: {
+      name: true,
+      status: true,
+      type: true,
+      stock: true,
+    },
+  });
+
+  if (!product) {
+    throw new StorefrontError("Sản phẩm không tồn tại", 404);
+  }
+
+  if (product.status !== "ACTIVE") {
+    throw new StorefrontError("Sản phẩm hiện không mở bán", 409);
+  }
+
   const cart = await getOrCreateCart(userId);
 
   const existingItem = await prisma.cartItem.findUnique({
@@ -68,14 +110,30 @@ export async function addProductToCart(
   });
 
   if (existingItem) {
+    const nextQuantity = existingItem.quantity + quantity;
+
+    if (product.type === "IN_STOCK" && nextQuantity > product.stock) {
+      throw new StorefrontError(
+        `${product.name} chỉ còn ${product.stock} sản phẩm`,
+        409,
+      );
+    }
+
     return prisma.cartItem.update({
       where: {
         id: existingItem.id,
       },
       data: {
-        quantity: existingItem.quantity + quantity,
+        quantity: nextQuantity,
       },
     });
+  }
+
+  if (product.type === "IN_STOCK" && quantity > product.stock) {
+    throw new StorefrontError(
+      `${product.name} chỉ còn ${product.stock} sản phẩm`,
+      409,
+    );
   }
 
   return prisma.cartItem.create({
@@ -94,6 +152,27 @@ export async function updateCartItemQuantity(
 ) {
   const cart = await getOrCreateCart(userId);
 
+  const cartItem = await prisma.cartItem.findFirst({
+    where: {
+      id: itemId,
+      cartId: cart.id,
+    },
+    include: {
+      product: {
+        select: {
+          name: true,
+          status: true,
+          type: true,
+          stock: true,
+        },
+      },
+    },
+  });
+
+  if (!cartItem) {
+    throw new StorefrontError("Sản phẩm không có trong giỏ hàng", 404);
+  }
+
   if (quantity <= 0) {
     return prisma.cartItem.delete({
       where: {
@@ -101,6 +180,24 @@ export async function updateCartItemQuantity(
         cartId: cart.id,
       },
     });
+  }
+
+  if (quantity > 99) {
+    throw new StorefrontError("Số lượng sản phẩm không được vượt quá 99");
+  }
+
+  if (cartItem.product.status !== "ACTIVE") {
+    throw new StorefrontError("Sản phẩm hiện không mở bán", 409);
+  }
+
+  if (
+    cartItem.product.type === "IN_STOCK" &&
+    quantity > cartItem.product.stock
+  ) {
+    throw new StorefrontError(
+      `${cartItem.product.name} chỉ còn ${cartItem.product.stock} sản phẩm`,
+      409,
+    );
   }
 
   return prisma.cartItem.update({
@@ -117,6 +214,20 @@ export async function updateCartItemQuantity(
 export async function removeCartItem(userId: string, itemId: string) {
   const cart = await getOrCreateCart(userId);
 
+  const cartItem = await prisma.cartItem.findFirst({
+    where: {
+      id: itemId,
+      cartId: cart.id,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!cartItem) {
+    throw new StorefrontError("Sản phẩm không có trong giỏ hàng", 404);
+  }
+
   return prisma.cartItem.delete({
     where: {
       id: itemId,
@@ -129,7 +240,7 @@ export async function applyCouponToCart(userId: string, code: string) {
   const cart = await getCartByUserId(userId);
 
   if (!cart || cart.items.length === 0) {
-    throw new Error("Cart is empty");
+    throw new Error("Giỏ hàng đang trống");
   }
 
   const pricing = calculateOrderPricing(
@@ -146,7 +257,7 @@ export async function applyCouponToCart(userId: string, code: string) {
   const coupon = await getCouponByCode(code);
 
   if (!coupon) {
-    throw new Error("Coupon not found");
+    throw new Error("Không tìm thấy coupon");
   }
 
   const validationError = getCouponValidationError(

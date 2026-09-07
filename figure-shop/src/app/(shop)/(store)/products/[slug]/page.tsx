@@ -59,8 +59,8 @@ export default async function ProductDetailPage({
     <main className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10">
       <Breadcrumbs
         items={[
-          { label: "Trang chu", href: "/" },
-          { label: "San pham", href: "/products" },
+          { label: "Trang chủ", href: "/" },
+          { label: "Sản phẩm", href: "/products" },
           { label: product.name },
         ]}
       />
@@ -70,7 +70,7 @@ export default async function ProductDetailPage({
 
         <section className="h-fit rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm lg:sticky lg:top-36">
           <p className="inline-flex rounded-full bg-rose-50 px-3 py-1 text-xs font-bold uppercase text-[var(--brand-strong)]">
-            {product.type === "PREORDER" ? "Pre-order" : "Co san"}
+            {product.type === "PREORDER" ? "Pre-order" : "Có sẵn"}
           </p>
           <h1 className="mt-2 text-3xl font-black tracking-tight text-zinc-950 sm:text-4xl">
             {product.name}
@@ -84,8 +84,8 @@ export default async function ProductDetailPage({
             {activePromotion ? (
               <p className="mt-2 text-sm font-bold text-[var(--brand-strong)]">
                 {activePromotion.type === "PERCENTAGE"
-                  ? `Khuyen mai giam ${activePromotion.value}%`
-                  : `Khuyen mai giam ${activePromotion.value.toLocaleString("vi-VN")} d`}
+                  ? `Khuyến mãi giảm ${activePromotion.value}%`
+                  : `Khuyến mãi giảm ${activePromotion.value.toLocaleString("vi-VN")} đ`}
               </p>
             ) : null}
           </div>
@@ -93,7 +93,7 @@ export default async function ProductDetailPage({
           <div className="mt-6 grid gap-2 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-600">
             {product.brand ? (
               <div className="flex items-center justify-between gap-4">
-                <span>Thuong hieu</span>
+                <span>Thương hiệu</span>
                 <span className="font-semibold text-zinc-900">
                   {product.brand.name}
                 </span>
@@ -101,18 +101,18 @@ export default async function ProductDetailPage({
             ) : null}
             {product.category ? (
               <div className="flex items-center justify-between gap-4">
-                <span>Danh muc</span>
+                <span>Danh mục</span>
                 <span className="font-semibold text-zinc-900">
                   {product.category.name}
                 </span>
               </div>
             ) : null}
             <div className="flex items-center justify-between gap-4">
-              <span>Tinh trang</span>
+              <span>Tình trạng</span>
               <span className="font-semibold text-zinc-900">
                 {product.type === "PREORDER"
-                  ? "Dang nhan dat truoc"
-                  : `Con ${product.stock} san pham`}
+                  ? "Đang nhận đặt trước"
+                  : `Còn ${product.stock} sản phẩm`}
               </span>
             </div>
           </div>
@@ -139,10 +139,10 @@ export default async function ProductDetailPage({
       {relatedProducts.length > 0 ? (
         <section className="mt-12">
           <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-            Co the ban se thich
+            Có thể bạn sẽ thích
           </p>
           <h2 className="mt-1 text-2xl font-bold text-zinc-950">
-            San pham lien quan
+            Sản phẩm liên quan
           </h2>
           <div className="mt-5">
             <ProductGrid products={relatedProducts} />

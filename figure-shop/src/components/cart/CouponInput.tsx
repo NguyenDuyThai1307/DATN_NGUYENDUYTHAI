@@ -22,7 +22,7 @@ export function CouponInput({ coupon }: CouponInputProps) {
     event.preventDefault();
 
     if (!code.trim()) {
-      setError("Vui long nhap ma coupon.");
+      setError("Vui lòng nhập mã coupon.");
       return;
     }
 
@@ -44,7 +44,7 @@ export function CouponInput({ coupon }: CouponInputProps) {
     setIsSubmitting(false);
 
     if (!response.ok) {
-      setError(data.message ?? "Khong the ap dung coupon.");
+      setError(data.message ?? "Không thể áp dụng coupon.");
       return;
     }
 
@@ -63,7 +63,7 @@ export function CouponInput({ coupon }: CouponInputProps) {
     setIsSubmitting(false);
 
     if (!response.ok) {
-      setError("Khong the go coupon.");
+      setError("Không thể go coupon.");
       return;
     }
 
@@ -76,7 +76,7 @@ export function CouponInput({ coupon }: CouponInputProps) {
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="text-sm font-semibold text-emerald-800">
-              Da ap dung: {coupon.code}
+              Đã áp dụng: {coupon.code}
             </p>
             <p className="mt-1 text-xs text-emerald-700">{coupon.name}</p>
           </div>
@@ -88,7 +88,7 @@ export function CouponInput({ coupon }: CouponInputProps) {
             disabled={isSubmitting}
             onClick={handleRemove}
           >
-            Go
+            Gỡ
           </Button>
         </div>
 
@@ -102,7 +102,7 @@ export function CouponInput({ coupon }: CouponInputProps) {
   return (
     <form onSubmit={handleApply} className="space-y-2">
       <label htmlFor="couponCode" className="text-sm font-medium">
-        Ma coupon
+        Mã coupon
       </label>
 
       <div className="flex gap-2">
@@ -110,12 +110,12 @@ export function CouponInput({ coupon }: CouponInputProps) {
           id="couponCode"
           value={code}
           onChange={(event) => setCode(event.target.value)}
-          placeholder="Nhap ma giam gia"
+          placeholder="Nhập mã giảm giá"
           disabled={isSubmitting}
         />
 
         <Button type="submit" size="sm" disabled={isSubmitting}>
-          Ap dung
+          Áp dụng
         </Button>
       </div>
 

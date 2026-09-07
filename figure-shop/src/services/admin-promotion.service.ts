@@ -15,6 +15,20 @@ export async function getAdminPromotions() {
           price: true,
         },
       },
+      category: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
+      brand: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
     },
   });
 }
@@ -31,6 +45,20 @@ export async function getAdminPromotionById(id: string) {
           name: true,
           slug: true,
           price: true,
+        },
+      },
+      category: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
+      brand: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
         },
       },
     },
@@ -69,10 +97,35 @@ export async function getProductsForPromotionForm(
   });
 }
 
+export async function getPromotionFormOptions(currentProductId?: string) {
+  const [products, categories, brands] = await Promise.all([
+    getProductsForPromotionForm(currentProductId),
+    prisma.category.findMany({
+      orderBy: { name: "asc" },
+      select: { id: true, name: true },
+    }),
+    prisma.brand.findMany({
+      orderBy: { name: "asc" },
+      select: { id: true, name: true },
+    }),
+  ]);
+
+  return { products, categories, brands };
+}
+
+function getPromotionTargetData(input: PromotionInput) {
+  return {
+    scope: input.scope,
+    productId: input.scope === "PRODUCT" ? input.productId : null,
+    categoryId: input.scope === "CATEGORY" ? input.categoryId : null,
+    brandId: input.scope === "BRAND" ? input.brandId : null,
+  };
+}
+
 export async function createAdminPromotion(input: PromotionInput) {
   return prisma.promotion.create({
     data: {
-      productId: input.productId,
+      ...getPromotionTargetData(input),
       name: input.name,
       type: input.type,
       value: input.value,
@@ -92,7 +145,7 @@ export async function updateAdminPromotion(
       id,
     },
     data: {
-      productId: input.productId,
+      ...getPromotionTargetData(input),
       name: input.name,
       type: input.type,
       value: input.value,

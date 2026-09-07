@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   if (!parsed.success) {
     return NextResponse.json(
       {
-        message: "Invalid register data",
+        message: "Dữ liệu đăng ký không hợp lệ",
         errors: parsed.error.flatten().fieldErrors,
       },
       { status: 400 },
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
   if (existingUser) {
     return NextResponse.json(
-      { message: "Email already exists" },
+      { message: "Email đã tồn tại" },
       { status: 409 },
     );
   }
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
 
   const response = NextResponse.json(
     {
-      message: "Register successfully",
+      message: "Đăng ký thành công",
       user,
     },
     { status: 201 },

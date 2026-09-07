@@ -49,30 +49,38 @@ export async function getAdminProducts(
   filters: AdminProductFilters = {},
 ) {
   const query = filters.query?.trim();
-
-  return prisma.product.findMany({
-    where: {
-      ...(query
-        ? {
+  const andConditions = [
+    ...(query
+      ? [
+          {
             OR: [
+              { name: { contains: query } },
+              { slug: { contains: query } },
+            ],
+          },
+        ]
+      : []),
+    ...(filters.categoryId
+      ? [
+          {
+            OR: [
+              { categoryId: filters.categoryId },
               {
-                name: {
-                  contains: query,
-                },
-              },
-              {
-                slug: {
-                  contains: query,
+                categories: {
+                  some: {
+                    categoryId: filters.categoryId,
+                  },
                 },
               },
             ],
-          }
-        : {}),
-      ...(filters.categoryId
-        ? {
-            categoryId: filters.categoryId,
-          }
-        : {}),
+          },
+        ]
+      : []),
+  ];
+
+  return prisma.product.findMany({
+    where: {
+      ...(andConditions.length > 0 ? { AND: andConditions } : {}),
       ...(filters.brandId
         ? {
             brandId: filters.brandId,
@@ -94,6 +102,11 @@ export async function getAdminProducts(
     },
     include: {
       category: true,
+      categories: {
+        include: {
+          category: true,
+        },
+      },
       brand: true,
       images: {
         orderBy: {
@@ -131,6 +144,11 @@ export async function getAdminProductById(id: string) {
     },
     include: {
       category: true,
+      categories: {
+        include: {
+          category: true,
+        },
+      },
       brand: true,
       images: {
         orderBy: {
@@ -164,6 +182,10 @@ export async function getProductFormOptions() {
 }
 
 export async function createAdminProduct(input: AdminProductInput) {
+  const categoryIds = Array.from(
+    new Set([input.categoryId, ...input.categoryIds]),
+  );
+
   return prisma.product.create({
     data: {
       name: input.name,
@@ -175,6 +197,11 @@ export async function createAdminProduct(input: AdminProductInput) {
       brandId: input.brandId,
       status: input.status,
       type: input.type,
+      categories: {
+        create: categoryIds.map((categoryId) => ({
+          categoryId,
+        })),
+      },
       images: input.imageUrl
         ? {
             create: {
@@ -192,6 +219,10 @@ export async function updateAdminProduct(
   id: string,
   input: AdminProductInput,
 ) {
+  const categoryIds = Array.from(
+    new Set([input.categoryId, ...input.categoryIds]),
+  );
+
   return prisma.product.update({
     where: {
       id,
@@ -206,6 +237,12 @@ export async function updateAdminProduct(
       brandId: input.brandId,
       status: input.status,
       type: input.type,
+      categories: {
+        deleteMany: {},
+        create: categoryIds.map((categoryId) => ({
+          categoryId,
+        })),
+      },
       images: {
         deleteMany: {},
         ...(input.imageUrl

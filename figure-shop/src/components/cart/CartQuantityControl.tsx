@@ -15,11 +15,13 @@ export function CartQuantityControl({
 }: CartQuantityControlProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   async function updateQuantity(nextQuantity: number) {
     setIsSubmitting(true);
+    setError("");
 
-    await fetch(`/api/cart/items/${itemId}`, {
+    const response = await fetch(`/api/cart/items/${itemId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -29,23 +31,41 @@ export function CartQuantityControl({
       }),
     });
 
+    const data = await response.json().catch(() => null);
+
     setIsSubmitting(false);
+
+    if (!response.ok) {
+      setError(data?.message ?? "Không thể cập nhật số lượng");
+      return;
+    }
+
     router.refresh();
   }
 
   async function removeItem() {
     setIsSubmitting(true);
+    setError("");
 
-    await fetch(`/api/cart/items/${itemId}`, {
+    const response = await fetch(`/api/cart/items/${itemId}`, {
       method: "DELETE",
     });
 
+    const data = await response.json().catch(() => null);
+
     setIsSubmitting(false);
+
+    if (!response.ok) {
+      setError(data?.message ?? "Không thể xóa sản phẩm");
+      return;
+    }
+
     router.refresh();
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div>
+      <div className="flex flex-wrap items-center gap-2">
       <div className="inline-flex items-center rounded-md border border-zinc-300 bg-white">
         <button
           type="button"
@@ -77,8 +97,13 @@ export function CartQuantityControl({
         disabled={isSubmitting}
         onClick={removeItem}
       >
-        Xoa
+        Xóa
       </Button>
+      </div>
+
+      {error ? (
+        <p className="mt-2 text-xs font-medium text-red-600">{error}</p>
+      ) : null}
     </div>
   );
 }

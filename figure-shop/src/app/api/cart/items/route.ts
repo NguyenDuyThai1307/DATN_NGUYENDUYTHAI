@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
+import { StorefrontError } from "@/lib/storefront-error";
 import { addProductToCart } from "@/services/cart.service";
 import { addToCartSchema } from "@/validations/cart.schema";
 
@@ -19,24 +20,35 @@ export async function POST(request: Request) {
   if (!parsed.success) {
     return NextResponse.json(
       {
-        message: "Invalid cart item data",
+        message: "Dữ liệu sản phẩm trong giỏ không hợp lệ",
         errors: parsed.error.flatten().fieldErrors,
       },
       { status: 400 },
     );
   }
 
-  const item = await addProductToCart(
-    user.id,
-    parsed.data.productId,
-    parsed.data.quantity,
-  );
+  try {
+    const item = await addProductToCart(
+      user.id,
+      parsed.data.productId,
+      parsed.data.quantity,
+    );
 
-  return NextResponse.json(
-    {
-      message: "Added product to cart",
-      item,
-    },
-    { status: 201 },
-  );
+    return NextResponse.json(
+      {
+        message: "Đã thêm sản phẩm vào giỏ hàng",
+        item,
+      },
+      { status: 201 },
+    );
+  } catch (error) {
+    if (error instanceof StorefrontError) {
+      return NextResponse.json(
+        { message: error.message },
+        { status: error.status },
+      );
+    }
+
+    throw error;
+  }
 }

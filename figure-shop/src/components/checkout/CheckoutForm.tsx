@@ -34,27 +34,27 @@ function validateCheckoutForm(values: Record<CheckoutField, string>) {
   const errors: FieldErrors = {};
 
   if (values.receiverName.length < 2) {
-    errors.receiverName = "Vui long nhap ho ten nguoi nhan.";
+    errors.receiverName = "Vui lòng nhập họ tên người nhận.";
   }
 
   if (values.receiverPhone.length < 8) {
-    errors.receiverPhone = "So dien thoai phai co it nhat 8 ky tu.";
+    errors.receiverPhone = "Số điện thoại phải có ít nhất 8 ký tự.";
   }
 
   if (!values.province) {
-    errors.province = "Vui long nhap tinh/thanh.";
+    errors.province = "Vui lòng nhập tỉnh/thành.";
   }
 
   if (!values.district) {
-    errors.district = "Vui long nhap quan/huyen.";
+    errors.district = "Vui lòng nhập quận/huyện.";
   }
 
   if (!values.ward) {
-    errors.ward = "Vui long nhap phuong/xa.";
+    errors.ward = "Vui lòng nhập phường/xã.";
   }
 
   if (values.addressDetail.length < 5) {
-    errors.addressDetail = "Dia chi chi tiet phai co it nhat 5 ky tu.";
+    errors.addressDetail = "Địa chỉ chi tiết phải có ít nhất 5 ký tự.";
   }
 
   return errors;
@@ -140,14 +140,14 @@ export function CheckoutForm() {
 
         setError(
           data?.message ??
-            "Khong the tao don hang. Vui long kiem tra lai thong tin.",
+            "Không thể tạo đơn hàng. Vui lòng kiểm tra lại thông tin.",
         );
         return;
       }
 
       router.push(`/checkout/success?orderId=${data.order.id}`);
     } catch {
-      setError("Khong the ket noi den server. Vui long thu lai.");
+      setError("Không thể kết nối đến máy chủ. Vui lòng thử lại.");
     } finally {
       setIsSubmitting(false);
     }
@@ -157,13 +157,13 @@ export function CheckoutForm() {
     <form onSubmit={handleSubmit} noValidate className="mt-5 grid gap-4">
       <div>
         <label htmlFor="receiverName" className="text-sm font-medium">
-          Ho ten nguoi nhan
+          Họ tên người nhận
         </label>
         <Input
           id="receiverName"
           name="receiverName"
           className="mt-2"
-          placeholder="Nguyen Van A"
+          placeholder="Nguyễn Văn A"
           aria-invalid={Boolean(fieldErrors.receiverName)}
         />
         <FieldError message={fieldErrors.receiverName} />
@@ -171,7 +171,7 @@ export function CheckoutForm() {
 
       <div>
         <label htmlFor="receiverPhone" className="text-sm font-medium">
-          So dien thoai
+          Số điện thoại
         </label>
         <Input
           id="receiverPhone"
@@ -186,13 +186,13 @@ export function CheckoutForm() {
       <div className="grid gap-4 md:grid-cols-3">
         <div>
           <label htmlFor="province" className="text-sm font-medium">
-            Tinh/Thanh
+            Tỉnh/Thành
           </label>
           <Input
             id="province"
             name="province"
             className="mt-2"
-            placeholder="Ho Chi Minh"
+            placeholder="Hồ Chí Minh"
             aria-invalid={Boolean(fieldErrors.province)}
           />
           <FieldError message={fieldErrors.province} />
@@ -200,13 +200,13 @@ export function CheckoutForm() {
 
         <div>
           <label htmlFor="district" className="text-sm font-medium">
-            Quan/Huyen
+            Quận/Hủyện
           </label>
           <Input
             id="district"
             name="district"
             className="mt-2"
-            placeholder="Quan 1"
+            placeholder="Quận 1"
             aria-invalid={Boolean(fieldErrors.district)}
           />
           <FieldError message={fieldErrors.district} />
@@ -214,13 +214,13 @@ export function CheckoutForm() {
 
         <div>
           <label htmlFor="ward" className="text-sm font-medium">
-            Phuong/Xa
+            Phường/Xã
           </label>
           <Input
             id="ward"
             name="ward"
             className="mt-2"
-            placeholder="Ben Nghe"
+            placeholder="Bến Nghé"
             aria-invalid={Boolean(fieldErrors.ward)}
           />
           <FieldError message={fieldErrors.ward} />
@@ -229,13 +229,13 @@ export function CheckoutForm() {
 
       <div>
         <label htmlFor="addressDetail" className="text-sm font-medium">
-          Dia chi chi tiet
+          Địa chỉ chi tiết
         </label>
         <Input
           id="addressDetail"
           name="addressDetail"
           className="mt-2"
-          placeholder="123 Le Loi"
+          placeholder="123 Lê Lợi"
           aria-invalid={Boolean(fieldErrors.addressDetail)}
         />
         <FieldError message={fieldErrors.addressDetail} />
@@ -243,20 +243,20 @@ export function CheckoutForm() {
 
       <div>
         <label htmlFor="note" className="text-sm font-medium">
-          Ghi chu
+          Ghi chú
         </label>
         <Textarea
           id="note"
           name="note"
           rows={4}
           className="mt-2"
-          placeholder="Ghi chu cho don hang"
+          placeholder="Ghi chú cho đơn hàng"
         />
       </div>
 
       <div>
         <label htmlFor="paymentMethod" className="text-sm font-medium">
-          Phuong thuc thanh toan
+          Phương thức thanh toán
         </label>
         <Select
           id="paymentMethod"
@@ -265,8 +265,8 @@ export function CheckoutForm() {
           className="mt-2"
         >
           <option value="COD">COD</option>
-          <option value="BANK_TRANSFER">Chuyen khoan</option>
-          <option value="DEMO">Demo payment</option>
+          <option value="BANK_TRANSFER">Chuyển khoản</option>
+          <option value="DEMO">Thanh toán thử nghiệm</option>
         </Select>
       </div>
 
@@ -277,7 +277,7 @@ export function CheckoutForm() {
       ) : null}
 
       <Button type="submit" disabled={isSubmitting} size="lg">
-        {isSubmitting ? "Dang dat hang..." : "Dat hang"}
+        {isSubmitting ? "Đang đặt hàng..." : "Đặt hàng"}
       </Button>
     </form>
   );

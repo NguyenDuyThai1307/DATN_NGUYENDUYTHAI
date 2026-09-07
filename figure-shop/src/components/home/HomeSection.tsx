@@ -14,7 +14,7 @@ export function HomeSection({
   title,
   eyebrow,
   href,
-  linkLabel = "Xem tat ca",
+  linkLabel = "Xem tất cả",
   children,
   className = "",
 }: HomeSectionProps) {

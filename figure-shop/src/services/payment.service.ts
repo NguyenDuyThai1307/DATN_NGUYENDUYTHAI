@@ -12,11 +12,11 @@ export async function markDemoPaymentAsPaid(orderId: string, userId: string) {
   });
 
   if (!order) {
-    throw new Error("Order not found");
+    throw new Error("Không tìm thấy đơn hàng");
   }
 
   if (order.paymentMethod !== "DEMO") {
-    throw new Error("Order is not demo payment");
+    throw new Error("Đơn hàng không sử dụng thanh toán thử nghiệm");
   }
 
   if (order.paymentStatus === "PAID") {

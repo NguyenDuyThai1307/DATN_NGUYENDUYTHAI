@@ -24,18 +24,18 @@ export default async function CollectionsPage() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
       <Breadcrumbs
-        items={[{ label: "Trang chu", href: "/" }, { label: "Danh muc" }]}
+        items={[{ label: "Trang chủ", href: "/" }, { label: "Danh mục" }]}
       />
 
       <div className="mt-5">
         <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-          Bo suu tap
+          Bộ sưu tập
         </p>
         <h1 className="mt-2 text-3xl font-black text-zinc-950">
-          Danh muc san pham
+          Danh mục sản phẩm
         </h1>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-600">
-          Chon nhanh nhom figure theo dong san pham de loc bo suu tap phu hop.
+          Chọn nhanh nhóm mô hình theo dòng sản phẩm để lọc bộ sưu tập phù hợp.
         </p>
       </div>
 
@@ -58,7 +58,7 @@ export default async function CollectionsPage() {
                   />
                 ) : (
                   <div className="flex h-full items-center justify-center px-6 text-center text-sm font-medium text-zinc-500">
-                    Chua co anh danh muc
+                    Chưa có ảnh danh mục
                   </div>
                 )}
               </div>
@@ -67,7 +67,7 @@ export default async function CollectionsPage() {
                   {category.name}
                 </h2>
                 <p className="mt-1 text-sm text-zinc-500">
-                  {category.productCount} san pham
+                  {category.productCount} sản phẩm
                 </p>
               </div>
             </Link>
@@ -75,7 +75,7 @@ export default async function CollectionsPage() {
         </section>
       ) : (
         <div className="mt-8 rounded-lg border border-dashed border-zinc-300 bg-white p-10 text-center text-sm text-zinc-500">
-          Chua co danh muc san pham.
+          Chưa có danh mục sản phẩm.
         </div>
       )}
     </main>

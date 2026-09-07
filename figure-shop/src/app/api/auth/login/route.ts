@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   if (!parsed.success) {
     return NextResponse.json(
       {
-        message: "Invalid login data",
+        message: "Dữ liệu đăng nhập không hợp lệ",
         errors: parsed.error.flatten().fieldErrors,
       },
       { status: 400 },
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
   if (!user) {
     return NextResponse.json(
-      { message: "Invalid email or password" },
+      { message: "Email hoặc mật khẩu không đúng" },
       { status: 401 },
     );
   }
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
   if (!isPasswordValid) {
     return NextResponse.json(
-      { message: "Invalid email or password" },
+      { message: "Email hoặc mật khẩu không đúng" },
       { status: 401 },
     );
   }
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
   });
 
   const response = NextResponse.json({
-    message: "Login successfully",
+    message: "Đăng nhập thành công",
     user: {
       id: user.id,
       email: user.email,

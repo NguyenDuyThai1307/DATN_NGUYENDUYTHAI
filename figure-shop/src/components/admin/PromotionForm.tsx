@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
@@ -10,8 +13,19 @@ type PromotionFormProps = {
     name: string;
     price: number;
   }[];
+  categories: {
+    id: string;
+    name: string;
+  }[];
+  brands: {
+    id: string;
+    name: string;
+  }[];
   promotion?: {
-    productId: string;
+    scope: "PRODUCT" | "CATEGORY" | "BRAND";
+    productId: string | null;
+    categoryId: string | null;
+    brandId: string | null;
     name: string;
     type: "PERCENTAGE" | "FIXED_AMOUNT";
     value: number;
@@ -37,53 +51,118 @@ export function PromotionForm({
   action,
   submitLabel,
   products,
+  categories,
+  brands,
   promotion,
 }: PromotionFormProps) {
+  const [scope, setScope] = useState<"PRODUCT" | "CATEGORY" | "BRAND">(
+    promotion?.scope ?? "PRODUCT",
+  );
+
   return (
     <form action={action} className="grid gap-5">
       <div>
-        <label className="text-sm font-medium">San pham ap dung</label>
+        <label className="text-sm font-medium">Phạm vi áp dụng</label>
         <Select
-          name="productId"
-          required
-          defaultValue={promotion?.productId ?? ""}
+          name="scope"
+          value={scope}
+          onChange={(event) =>
+            setScope(event.target.value as "PRODUCT" | "CATEGORY" | "BRAND")
+          }
         >
-          <option value="" disabled>
-            Chon san pham
-          </option>
-
-          {products.map((product) => (
-            <option key={product.id} value={product.id}>
-              {product.name} - {product.price.toLocaleString("vi-VN")} d
-            </option>
-          ))}
+          <option value="PRODUCT">Một sản phẩm</option>
+          <option value="CATEGORY">Toàn bộ danh mục</option>
+          <option value="BRAND">Toàn bộ thương hiệu</option>
         </Select>
       </div>
 
+      {scope === "PRODUCT" ? (
+        <div>
+          <label className="text-sm font-medium">Sản phẩm áp dụng</label>
+          <Select
+            name="productId"
+            required
+            defaultValue={promotion?.productId ?? ""}
+          >
+            <option value="" disabled>
+              Chọn sản phẩm
+            </option>
+
+            {products.map((product) => (
+              <option key={product.id} value={product.id}>
+                {product.name} - {product.price.toLocaleString("vi-VN")} đ
+              </option>
+            ))}
+          </Select>
+        </div>
+      ) : null}
+
+      {scope === "CATEGORY" ? (
+        <div>
+          <label className="text-sm font-medium">Danh mục áp dụng</label>
+          <Select
+            name="categoryId"
+            required
+            defaultValue={promotion?.categoryId ?? ""}
+          >
+            <option value="" disabled>
+              Chọn danh mục
+            </option>
+
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </Select>
+        </div>
+      ) : null}
+
+      {scope === "BRAND" ? (
+        <div>
+          <label className="text-sm font-medium">Thương hiệu áp dụng</label>
+          <Select
+            name="brandId"
+            required
+            defaultValue={promotion?.brandId ?? ""}
+          >
+            <option value="" disabled>
+              Chọn thương hiệu
+            </option>
+
+            {brands.map((brand) => (
+              <option key={brand.id} value={brand.id}>
+                {brand.name}
+              </option>
+            ))}
+          </Select>
+        </div>
+      ) : null}
+
       <div>
-        <label className="text-sm font-medium">Ten khuyen mai</label>
+        <label className="text-sm font-medium">Tên khuyến mãi</label>
         <Input
           name="name"
           required
           defaultValue={promotion?.name}
-          placeholder="Giam gia mua he"
+          placeholder="Giảm giá mùa hè"
         />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="text-sm font-medium">Kieu giam gia</label>
+          <label className="text-sm font-medium">Kiểu giảm giá</label>
           <Select
             name="type"
             defaultValue={promotion?.type ?? "PERCENTAGE"}
           >
-            <option value="PERCENTAGE">Giam theo phan tram</option>
-            <option value="FIXED_AMOUNT">Giam so tien co dinh</option>
+            <option value="PERCENTAGE">Giảm theo phần trăm</option>
+            <option value="FIXED_AMOUNT">Giảm số tiền cố định</option>
           </Select>
         </div>
 
         <div>
-          <label className="text-sm font-medium">Gia tri giam</label>
+          <label className="text-sm font-medium">Giá trị giảm</label>
           <Input
             name="value"
             type="number"
@@ -97,7 +176,7 @@ export function PromotionForm({
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="text-sm font-medium">Bat dau</label>
+          <label className="text-sm font-medium">Bắt đầu</label>
           <Input
             name="startsAt"
             type="datetime-local"
@@ -107,7 +186,7 @@ export function PromotionForm({
         </div>
 
         <div>
-          <label className="text-sm font-medium">Ket thuc</label>
+          <label className="text-sm font-medium">Kết thúc</label>
           <Input
             name="endsAt"
             type="datetime-local"
@@ -123,7 +202,7 @@ export function PromotionForm({
           type="checkbox"
           defaultChecked={promotion?.isActive ?? true}
         />
-        Bat khuyen mai ngay sau khi luu
+        Bật khuyến mãi ngay sau khi lưu
       </label>
 
       <div className="flex justify-end">

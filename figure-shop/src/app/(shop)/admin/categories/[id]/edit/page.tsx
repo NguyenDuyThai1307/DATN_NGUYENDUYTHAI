@@ -32,7 +32,7 @@ export default async function AdminEditCategoryPage({
     });
 
     if (!parsed.success) {
-      throw new Error("Invalid category data");
+      throw new Error("Dữ liệu danh mục không hợp lệ");
     }
 
     await updateAdminCategory(id, parsed.data);
@@ -44,17 +44,17 @@ export default async function AdminEditCategoryPage({
       <div>
         <p className="text-sm font-semibold uppercase text-red-600">Admin</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight">
-          Sua danh muc
+          Sửa danh mục
         </h1>
         <p className="mt-2 text-zinc-600">
-          Cap nhat thong tin danh muc.
+          Cập nhật thông tin danh mục.
         </p>
       </div>
 
       <section className="mt-8 rounded-md border border-zinc-200 bg-white p-6">
         <TaxonomyForm
           action={updateCategoryAction}
-          submitLabel="Luu thay doi"
+          submitLabel="Lưu thay đổi"
           item={category}
         />
       </section>

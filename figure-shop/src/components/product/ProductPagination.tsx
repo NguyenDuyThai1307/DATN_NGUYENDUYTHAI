@@ -37,7 +37,7 @@ export function ProductPagination({
   }
 
   return (
-    <nav className="mt-8 flex items-center justify-center gap-2" aria-label="Phan trang san pham">
+    <nav className="mt-8 flex items-center justify-center gap-2" aria-label="Phân trang sản phẩm">
       <Link
         href={getPageHref(pathname, searchParams, Math.max(1, currentPage - 1))}
         aria-disabled={currentPage === 1}

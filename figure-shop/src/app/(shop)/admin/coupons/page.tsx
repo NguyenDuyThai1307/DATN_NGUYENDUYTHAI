@@ -14,21 +14,21 @@ function getCouponStatus(coupon: {
 
   if (!coupon.isActive) {
     return {
-      label: "Da tat",
+      label: "Đã tắt",
       variant: "default" as const,
     };
   }
 
   if (coupon.startsAt > now) {
     return {
-      label: "Chua bat dau",
+      label: "Chưa bắt đầu",
       variant: "info" as const,
     };
   }
 
   if (coupon.endsAt < now) {
     return {
-      label: "Da ket thuc",
+      label: "Đã kết thúc",
       variant: "danger" as const,
     };
   }
@@ -38,13 +38,13 @@ function getCouponStatus(coupon: {
     coupon.usedCount >= coupon.usageLimit
   ) {
     return {
-      label: "Da het luot",
+      label: "Đã hết lượt",
       variant: "warning" as const,
     };
   }
 
   return {
-    label: "Dang ap dung",
+    label: "Đang áp dụng",
     variant: "success" as const,
   };
 }
@@ -61,7 +61,7 @@ export default async function AdminCouponsPage() {
             Coupon
           </h1>
           <p className="mt-2 text-zinc-600">
-            Tao va quan ly ma giam gia cho don hang.
+            Tạo và quản lý mã giảm giá cho đơn hàng.
           </p>
         </div>
 
@@ -69,7 +69,7 @@ export default async function AdminCouponsPage() {
           href="/admin/coupons/create"
           className="inline-flex items-center justify-center rounded-md bg-zinc-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800"
         >
-          Tao coupon
+          Tạo coupon
         </Link>
       </div>
 
@@ -79,12 +79,12 @@ export default async function AdminCouponsPage() {
             <table className="w-full min-w-[980px] text-left text-sm">
               <thead className="border-b border-zinc-200 bg-zinc-50 text-xs uppercase text-zinc-500">
                 <tr>
-                  <th className="px-4 py-3">Ma</th>
-                  <th className="px-4 py-3">Gia tri</th>
-                  <th className="px-4 py-3">Dieu kien</th>
-                  <th className="px-4 py-3">Thoi gian</th>
-                  <th className="px-4 py-3">Trang thai</th>
-                  <th className="px-4 py-3 text-right">Thao tac</th>
+                  <th className="px-4 py-3">Mã</th>
+                  <th className="px-4 py-3">Giá trị</th>
+                  <th className="px-4 py-3">Điều kiện</th>
+                  <th className="px-4 py-3">Thời gian</th>
+                  <th className="px-4 py-3">Trạng thái</th>
+                  <th className="px-4 py-3 text-right">Thao tác</th>
                 </tr>
               </thead>
 
@@ -105,17 +105,17 @@ export default async function AdminCouponsPage() {
 
                       <td className="px-4 py-4 font-medium text-red-600">
                         {coupon.type === "PERCENTAGE"
-                          ? `Giam ${coupon.value}%`
-                          : `Giam ${coupon.value.toLocaleString("vi-VN")} d`}
+                          ? `Giảm ${coupon.value}%`
+                          : `Giảm ${coupon.value.toLocaleString("vi-VN")} đ`}
                       </td>
 
                       <td className="px-4 py-4 text-zinc-600">
                         <p>
-                          Don tu{" "}
-                          {coupon.minOrderValue.toLocaleString("vi-VN")} d
+                          Đơn từ{" "}
+                          {coupon.minOrderValue.toLocaleString("vi-VN")} đ
                         </p>
                         <p className="mt-1">
-                          Da dung {coupon.usedCount}
+                          Đã dùng {coupon.usedCount}
                           {coupon.usageLimit !== null
                             ? `/${coupon.usageLimit}`
                             : ""}
@@ -125,7 +125,7 @@ export default async function AdminCouponsPage() {
                       <td className="px-4 py-4 text-zinc-600">
                         <p>{coupon.startsAt.toLocaleString("vi-VN")}</p>
                         <p className="mt-1">
-                          Den {coupon.endsAt.toLocaleString("vi-VN")}
+                          Đến {coupon.endsAt.toLocaleString("vi-VN")}
                         </p>
                       </td>
 
@@ -139,7 +139,7 @@ export default async function AdminCouponsPage() {
                             href={`/admin/coupons/${coupon.id}/edit`}
                             className="inline-flex rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-950 transition hover:bg-zinc-100"
                             >
-                            Sua
+                            Sửa
                             </Link>
 
                             {coupon.isActive ? (
@@ -155,7 +155,7 @@ export default async function AdminCouponsPage() {
           </div>
         ) : (
           <div className="p-8 text-center">
-            <p className="text-zinc-600">Chua co coupon nao.</p>
+            <p className="text-zinc-600">Chưa có coupon nào.</p>
           </div>
         )}
       </section>

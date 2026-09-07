@@ -23,7 +23,7 @@ export async function GET(_request: Request, { params }: OrderRouteProps) {
 
   if (!order) {
     return NextResponse.json(
-      { message: "Order not found" },
+      { message: "Không tìm thấy đơn hàng" },
       { status: 404 },
     );
   }

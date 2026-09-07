@@ -2,18 +2,21 @@ import { redirect } from "next/navigation";
 import { PromotionForm } from "@/components/admin/PromotionForm";
 import {
   createAdminPromotion,
-  getProductsForPromotionForm,
+  getPromotionFormOptions,
 } from "@/services/admin-promotion.service";
 import { promotionSchema } from "@/validations/promotion.schema";
 
 export default async function AdminCreatePromotionPage() {
-  const products = await getProductsForPromotionForm();
+  const { products, categories, brands } = await getPromotionFormOptions();
 
   async function createPromotionAction(formData: FormData) {
     "use server";
 
     const parsed = promotionSchema.safeParse({
+      scope: formData.get("scope"),
       productId: formData.get("productId"),
+      categoryId: formData.get("categoryId"),
+      brandId: formData.get("brandId"),
       name: formData.get("name"),
       type: formData.get("type"),
       value: formData.get("value"),
@@ -23,7 +26,7 @@ export default async function AdminCreatePromotionPage() {
     });
 
     if (!parsed.success) {
-      throw new Error("Invalid promotion data");
+      throw new Error("Dữ liệu khuyến mãi không hợp lệ");
     }
 
     await createAdminPromotion(parsed.data);
@@ -35,18 +38,20 @@ export default async function AdminCreatePromotionPage() {
       <div>
         <p className="text-sm font-semibold uppercase text-red-600">Admin</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight">
-          Tao khuyen mai
+          Tạo khuyến mãi
         </h1>
         <p className="mt-2 text-zinc-600">
-          Chon san pham va cau hinh gia tri, thoi gian ap dung.
+          Chọn sản phẩm, danh mục hoặc thương hiệu và cấu hình thời gian áp dụng.
         </p>
       </div>
 
       <section className="mt-8 rounded-md border border-zinc-200 bg-white p-6">
         <PromotionForm
           action={createPromotionAction}
-          submitLabel="Tao khuyen mai"
+          submitLabel="Tạo khuyến mãi"
           products={products}
+          categories={categories}
+          brands={brands}
         />
       </section>
     </main>

@@ -21,16 +21,16 @@ export default async function RegisterPage({
 
   return (
     <AuthPageShell
-      title="Tao tai khoan"
-      description="Dang ky de luu gio hang va theo doi don hang cua ban."
+      title="Tạo tài khoản"
+      description="Đăng ký để lưu giỏ hàng và theo dõi đơn hàng của bạn."
       footer={
         <>
-          Da co tai khoan?{" "}
+          Đã có tài khoản?{" "}
           <Link
             href={loginHref}
             className="font-medium text-zinc-950 underline underline-offset-4"
           >
-            Dang nhap
+            Đăng nhập
           </Link>
         </>
       }

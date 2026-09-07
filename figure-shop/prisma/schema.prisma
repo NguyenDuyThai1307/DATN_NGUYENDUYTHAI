@@ -34,6 +34,12 @@ enum PromotionType {
   FIXED_AMOUNT
 }
 
+enum PromotionScope {
+  PRODUCT
+  CATEGORY
+  BRAND
+}
+
 enum CouponType {
   PERCENTAGE
   FIXED_AMOUNT
@@ -94,22 +100,25 @@ model Address {
 }
 
 model Category {
-  id          String    @id @default(cuid())
-  name        String
-  slug        String    @unique
-  description String?
-  products    Product[]
+  id           String            @id @default(cuid())
+  name         String
+  slug         String            @unique
+  description  String?
+  products     Product[]         @relation("PrimaryProductCategory")
+  productLinks ProductCategory[]
+  promotions   Promotion[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Brand {
-  id          String    @id @default(cuid())
+  id          String      @id @default(cuid())
   name        String
-  slug        String    @unique
+  slug        String      @unique
   description String?
   products    Product[]
+  promotions  Promotion[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -128,8 +137,9 @@ model Product {
   categoryId String?
   brandId    String?
 
-  category   Category?      @relation(fields: [categoryId], references: [id])
-  brand      Brand?         @relation(fields: [brandId], references: [id])
+  category   Category?         @relation("PrimaryProductCategory", fields: [categoryId], references: [id])
+  categories ProductCategory[]
+  brand      Brand?            @relation(fields: [brandId], references: [id])
   images     ProductImage[]
   promotion  Promotion?
   cartItems  CartItem[]
@@ -139,22 +149,42 @@ model Product {
   updatedAt DateTime @updatedAt
 }
 
-model Promotion {
-  id        String        @id @default(cuid())
-  productId String        @unique
-  name      String
-  type      PromotionType
-  value     Int
-  startsAt  DateTime
-  endsAt    DateTime
-  isActive  Boolean       @default(true)
+model ProductCategory {
+  productId  String
+  categoryId String
 
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([productId, categoryId])
+  @@index([categoryId])
+}
+
+model Promotion {
+  id         String         @id @default(cuid())
+  scope      PromotionScope @default(PRODUCT)
+  productId  String?        @unique
+  categoryId String?
+  brandId    String?
+  name       String
+  type       PromotionType
+  value      Int
+  startsAt   DateTime
+  endsAt     DateTime
+  isActive   Boolean        @default(true)
+
+  product  Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  brand    Brand?    @relation(fields: [brandId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([isActive, startsAt, endsAt])
+  @@index([scope, categoryId])
+  @@index([scope, brandId])
 }
 
 model Coupon {

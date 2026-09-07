@@ -19,13 +19,13 @@ export default async function AdminDashboardPage() {
         <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-xs font-bold uppercase text-amber-300">
-            Admin center
+            Trung tâm quản trị
           </p>
           <h1 className="mt-2 text-3xl font-black tracking-tight">
-            Dashboard
+            Tổng quan
           </h1>
           <p className="mt-2 text-zinc-300">
-            Tong quan san pham, don hang va doanh thu.
+            Tổng quan sản phẩm, đơn hàng và doanh thu.
           </p>
         </div>
 
@@ -33,7 +33,7 @@ export default async function AdminDashboardPage() {
           href="/admin/products"
           className="inline-flex items-center gap-2 rounded-md bg-white px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-amber-100"
         >
-          Quan ly san pham
+          Quản lý sản phẩm
           <ArrowRight size={16} aria-hidden="true" />
         </Link>
         </div>
@@ -47,15 +47,15 @@ export default async function AdminDashboardPage() {
         <div className="flex items-center justify-between gap-4 border-b border-zinc-200 px-5 py-4">
           <div>
             <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-              Theo doi nhanh
+              Theo dõi nhanh
             </p>
-            <h2 className="mt-1 font-bold text-zinc-950">Don hang moi</h2>
+            <h2 className="mt-1 font-bold text-zinc-950">Đơn hàng mới</h2>
           </div>
           <Link
             href="/admin/orders"
             className="text-sm font-semibold text-zinc-600 hover:text-[var(--brand-strong)]"
           >
-            Xem tat ca
+            Xem tất cả
           </Link>
         </div>
 
@@ -80,7 +80,7 @@ export default async function AdminDashboardPage() {
           </div>
         ) : (
           <div className="px-5 py-8 text-center text-zinc-600">
-            Chua co don hang nao.
+            Chưa có đơn hàng nào.
           </div>
         )}
       </section>

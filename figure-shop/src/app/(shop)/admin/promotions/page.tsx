@@ -12,27 +12,27 @@ function getPromotionStatus(promotion: {
 
   if (!promotion.isActive) {
     return {
-      label: "Da tat",
+      label: "Đã tắt",
       variant: "default" as const,
     };
   }
 
   if (promotion.startsAt > now) {
     return {
-      label: "Chua bat dau",
+      label: "Chưa bắt đầu",
       variant: "info" as const,
     };
   }
 
   if (promotion.endsAt < now) {
     return {
-      label: "Da ket thuc",
+      label: "Đã kết thúc",
       variant: "danger" as const,
     };
   }
 
   return {
-    label: "Dang ap dung",
+    label: "Đang áp dụng",
     variant: "success" as const,
   };
 }
@@ -46,10 +46,10 @@ export default async function AdminPromotionsPage() {
         <div>
           <p className="text-sm font-semibold uppercase text-red-600">Admin</p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight">
-            Khuyen mai
+            Khuyến mãi
           </h1>
           <p className="mt-2 text-zinc-600">
-            Tao va quan ly khuyen mai theo tung san pham.
+            Tạo và quản lý khuyến mãi theo sản phẩm, danh mục hoặc thương hiệu.
           </p>
         </div>
 
@@ -57,7 +57,7 @@ export default async function AdminPromotionsPage() {
           href="/admin/promotions/create"
           className="inline-flex items-center justify-center rounded-md bg-zinc-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800"
         >
-          Tao khuyen mai
+          Tạo khuyến mãi
         </Link>
       </div>
 
@@ -67,27 +67,52 @@ export default async function AdminPromotionsPage() {
             <table className="w-full min-w-[900px] text-left text-sm">
               <thead className="border-b border-zinc-200 bg-zinc-50 text-xs uppercase text-zinc-500">
                 <tr>
-                  <th className="px-4 py-3">San pham</th>
-                  <th className="px-4 py-3">Khuyen mai</th>
-                  <th className="px-4 py-3">Thoi gian</th>
-                  <th className="px-4 py-3">Trang thai</th>
-                  <th className="px-4 py-3 text-right">Thao tac</th>
+                  <th className="px-4 py-3">Phạm vi áp dụng</th>
+                  <th className="px-4 py-3">Khuyến mãi</th>
+                  <th className="px-4 py-3">Thời gian</th>
+                  <th className="px-4 py-3">Trạng thái</th>
+                  <th className="px-4 py-3 text-right">Thao tác</th>
                 </tr>
               </thead>
 
               <tbody className="divide-y divide-zinc-200">
                 {promotions.map((promotion) => {
                   const status = getPromotionStatus(promotion);
+                  const target =
+                    promotion.scope === "PRODUCT"
+                      ? {
+                          label: "Sản phẩm",
+                          name: promotion.product?.name ?? "Sản phẩm đã xóa",
+                          detail: promotion.product
+                            ? `${promotion.product.price.toLocaleString("vi-VN")} đ`
+                            : null,
+                        }
+                      : promotion.scope === "CATEGORY"
+                        ? {
+                            label: "Danh mục",
+                            name: promotion.category?.name ?? "Danh mục đã xóa",
+                            detail: null,
+                          }
+                        : {
+                            label: "Thương hiệu",
+                            name: promotion.brand?.name ?? "Thương hiệu đã xóa",
+                            detail: null,
+                          };
 
                   return (
                     <tr key={promotion.id}>
                       <td className="px-4 py-4">
+                        <p className="text-xs font-semibold uppercase text-red-600">
+                          {target.label}
+                        </p>
                         <p className="font-medium text-zinc-950">
-                          {promotion.product.name}
+                          {target.name}
                         </p>
-                        <p className="mt-1 text-xs text-zinc-500">
-                          {promotion.product.price.toLocaleString("vi-VN")} d
-                        </p>
+                        {target.detail ? (
+                          <p className="mt-1 text-xs text-zinc-500">
+                            {target.detail}
+                          </p>
+                        ) : null}
                       </td>
 
                       <td className="px-4 py-4">
@@ -96,8 +121,8 @@ export default async function AdminPromotionsPage() {
                         </p>
                         <p className="mt-1 text-sm text-red-600">
                           {promotion.type === "PERCENTAGE"
-                            ? `Giam ${promotion.value}%`
-                            : `Giam ${promotion.value.toLocaleString("vi-VN")} d`}
+                            ? `Giảm ${promotion.value}%`
+                            : `Giảm ${promotion.value.toLocaleString("vi-VN")} đ`}
                         </p>
                       </td>
 
@@ -106,7 +131,7 @@ export default async function AdminPromotionsPage() {
                           {promotion.startsAt.toLocaleString("vi-VN")}
                         </p>
                         <p className="mt-1">
-                          Den {promotion.endsAt.toLocaleString("vi-VN")}
+                          Đến {promotion.endsAt.toLocaleString("vi-VN")}
                         </p>
                       </td>
 
@@ -120,7 +145,7 @@ export default async function AdminPromotionsPage() {
                             href={`/admin/promotions/${promotion.id}/edit`}
                             className="inline-flex rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-950 transition hover:bg-zinc-100"
                           >
-                            Sua
+                            Sửa
                           </Link>
 
                           {promotion.isActive ? (
@@ -136,7 +161,7 @@ export default async function AdminPromotionsPage() {
           </div>
         ) : (
           <div className="p-8 text-center">
-            <p className="text-zinc-600">Chua co khuyen mai nao.</p>
+            <p className="text-zinc-600">Chưa có khuyến mãi nào.</p>
           </div>
         )}
       </section>

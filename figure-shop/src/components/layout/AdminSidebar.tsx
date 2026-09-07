@@ -1,15 +1,15 @@
 import Link from "next/link";
 
 const adminNavItems = [
-  { href: "/admin", label: "Dashboard" },
-  { href: "/admin/orders", label: "Don hang" },
-  { href: "/admin/products", label: "San pham" },
-  { href: "/admin/promotions", label: "Khuyen mai" },
+  { href: "/admin", label: "Tổng quan" },
+  { href: "/admin/orders", label: "Đơn hàng" },
+  { href: "/admin/products", label: "Sản phẩm" },
+  { href: "/admin/promotions", label: "Khuyến mãi" },
   { href: "/admin/coupons", label: "Coupon" },
-  { href: "/admin/categories", label: "Danh muc" },
-  { href: "/admin/brands", label: "Thuong hieu" },
-  { href: "/admin/users", label: "Nguoi dung" },
-  { href: "/admin/reports", label: "Bao cao" },
+  { href: "/admin/categories", label: "Danh mục" },
+  { href: "/admin/brands", label: "Thương hiệu" },
+  { href: "/admin/users", label: "Người dùng" },
+  { href: "/admin/reports", label: "Báo cáo" },
 ];
 
 export function AdminSidebar() {

@@ -5,14 +5,14 @@ export default function NewsPage() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
       <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-        Tin tuc
+        Tin tức
       </p>
       <h1 className="mt-2 text-3xl font-black text-zinc-950">
-        Cap nhat cho nguoi suu tam figure
+        Cập nhật cho người sưu tầm mô hình
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-600">
-        Cac bai viet demo ve cach chon figure, bao quan mo hinh va lich
-        pre-order. Phan nay co the thay bang CMS hoac bang admin sau.
+        Các bài viết demo về cách chọn mô hình, bảo quản mô hình và lịch
+        pre-order. Phần này có thể thay bằng CMS hoặc trang quản trị sau.
       </p>
 
       <section className="mt-8 grid gap-4 md:grid-cols-3">
@@ -34,7 +34,7 @@ export default function NewsPage() {
               href={article.href}
               className="mt-5 text-sm font-bold text-[var(--brand-strong)] hover:text-zinc-950"
             >
-              Xem them san pham lien quan
+              Xem thêm sản phẩm liên quan
             </Link>
           </article>
         ))}

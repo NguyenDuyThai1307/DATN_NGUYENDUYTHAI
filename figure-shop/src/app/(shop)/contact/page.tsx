@@ -15,8 +15,8 @@ const contactItems = [
     icon: Mail,
   },
   {
-    label: "Tu van",
-    value: "Gui cau hoi ve san pham",
+    label: "Tư vấn",
+    value: "Gửi câu hỏi về sản phẩm",
     href: "/products",
     icon: MessageCircle,
   },
@@ -26,14 +26,14 @@ export default function ContactPage() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
       <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-        Lien he
+        Liên hệ
       </p>
       <h1 className="mt-2 text-3xl font-black text-zinc-950">
-        Can ho tro ve figure?
+        Cần hỗ trợ về mô hình?
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-600">
-        Day la trang lien he demo cho do an. Sau nay co the ket noi form lien
-        he, ban do cua hang va kenh chat that.
+        Đây là trang liên hệ demo cho đồ án. Sau này có thể kết nối form liên
+        hệ, bản đồ cửa hàng và kênh chat thật.
       </p>
 
       <section className="mt-8 grid gap-4 md:grid-cols-3">
@@ -71,16 +71,16 @@ export default function ContactPage() {
             aria-hidden="true"
           />
           <div>
-            <h2 className="font-bold text-zinc-950">He thong cua hang</h2>
+            <h2 className="font-bold text-zinc-950">Hệ thống cửa hàng</h2>
             <p className="mt-2 text-sm leading-6 text-zinc-600">
-              Cua hang demo Figure Shop, Ha Noi. Thong tin chi tiet se duoc
-              cap nhat khi co du lieu cua hang that.
+              Cửa hàng demo Figure Shop, Hà Nội. Thông tin chi tiết sẽ được
+              cập nhật khi có dữ liệu cửa hàng thật.
             </p>
             <Link
               href="/products"
               className="mt-5 inline-flex rounded-md bg-[var(--brand-strong)] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#982934]"
             >
-              Xem san pham dang ban
+              Xem sản phẩm đang bán
             </Link>
           </div>
         </div>

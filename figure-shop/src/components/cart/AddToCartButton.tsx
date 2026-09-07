@@ -19,7 +19,7 @@ type AddToCartButtonProps = {
 export function AddToCartButton({
   productId,
   quantity = 1,
-  label = "Them vao gio hang",
+  label = "Thêm vào giỏ hàng",
   children,
   ariaLabel,
   className,
@@ -46,6 +46,8 @@ export function AddToCartButton({
       }),
     });
 
+    const data = await response.json().catch(() => null);
+
     setIsSubmitting(false);
 
     if (response.status === 401) {
@@ -54,11 +56,11 @@ export function AddToCartButton({
     }
 
     if (!response.ok) {
-      setMessage("Khong the them vao gio hang");
+      setMessage(data?.message ?? "Không thể thêm vào giỏ hàng");
       return;
     }
 
-    setMessage("Da them vao gio hang");
+    setMessage("Đã thêm vào giỏ hàng");
     router.refresh();
     onSuccess?.();
   }
@@ -75,7 +77,7 @@ export function AddToCartButton({
           className,
         )}
       >
-        {isSubmitting ? "Dang them..." : (children ?? label)}
+        {isSubmitting ? "Đang thêm..." : (children ?? label)}
       </button>
 
       {showMessage && message ? (

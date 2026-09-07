@@ -6,56 +6,58 @@ import { useState } from "react";
 
 const figureGroups = [
   {
-    label: "Mo Hinh PVC",
-    href: "/products?q=PVC",
+    label: "Mô hình tĩnh",
+    href: "/collections/scale-figure",
     children: [
-      ["Scale Figure", "/collections/scale-figure"],
-      ["Nendoroid", "/products?q=Nendoroid"],
-      ["Figma", "/products?q=Figma"],
+      ["Mô hình tỉ lệ", "/collections/scale-figure"],
+      ["Mô hình giải thưởng", "/collections/prize-figure"],
+      ["Tượng resin", "/collections/resin-statue"],
     ],
   },
   {
-    label: "Mo Hinh Resin",
-    href: "/products?q=Resin",
+    label: "Mô hình có khớp",
+    href: "/collections/action-figure",
     children: [
-      ["GK Figure", "/products?q=GK"],
-      ["Statue", "/products?q=Statue"],
+      ["Mô hình có khớp", "/collections/action-figure"],
+      ["Nendoroid và mô hình chibi", "/collections/nendoroid"],
+      ["Búp bê sưu tầm", "/collections/collectible-doll"],
     ],
   },
   {
-    label: "Hang Dat Truoc",
-    href: "/preorder",
+    label: "Mô hình lắp ráp",
+    href: "/collections/model-kit",
     children: [
-      ["Pre-order moi", "/preorder"],
-      ["Sap phat hanh", "/products?type=PREORDER"],
+      ["Bộ mô hình lắp ráp", "/collections/model-kit"],
+      ["Mô hình mini và hộp mù", "/collections/mini-blind-box"],
     ],
   },
   {
-    label: "Hang San Xuat",
+    label: "Trạng thái sản phẩm",
+    href: "/products",
+    children: [
+      ["Hàng có sẵn", "/products?type=IN_STOCK"],
+      ["Hàng đặt trước", "/preorder"],
+    ],
+  },
+  {
+    label: "Thương hiệu",
     href: "/brands",
     children: [
       ["Bandai", "/products?q=Bandai"],
       ["Good Smile Company", "/products?q=Good Smile Company"],
-    ],
-  },
-  {
-    label: "San Pham Noi Bat",
-    href: "/products",
-    children: [
-      ["Flash sale", "/products?sort=price_asc"],
-      ["Hang co san", "/products?type=IN_STOCK"],
+      ["Kotobukiya", "/products?q=Kotobukiya"],
     ],
   },
 ] as const;
 
 const navigation = [
-  { href: "/", label: "Trang chu", hasDropdown: false },
-  { href: "/products", label: "San pham khac", hasDropdown: true },
-  { href: "/products?sort=price_asc", label: "Khuyen mai", hasDropdown: true },
-  { href: "/guide", label: "Huong dan", hasDropdown: true },
-  { href: "/news", label: "Tin tuc", hasDropdown: true },
-  { href: "/contact", label: "Lien he", hasDropdown: false },
-  { href: "/collections", label: "Khac", hasDropdown: true },
+  { href: "/", label: "Trang chủ", hasDropdown: false },
+  { href: "/products", label: "Sản phẩm khác", hasDropdown: true },
+  { href: "/products?sort=price_asc", label: "Khuyến mãi", hasDropdown: true },
+  { href: "/guide", label: "Hướng dẫn", hasDropdown: true },
+  { href: "/news", label: "Tin tức", hasDropdown: true },
+  { href: "/contact", label: "Liên hệ", hasDropdown: false },
+  { href: "/collections", label: "Khác", hasDropdown: true },
 ] as const;
 
 export function MegaMenu() {
@@ -68,7 +70,7 @@ export function MegaMenu() {
           href="/"
           className="inline-flex h-10 items-center rounded-lg px-3 text-[15px] font-bold text-zinc-950 transition hover:bg-white/35 hover:text-zinc-800"
         >
-          Trang chu
+          Trang chủ
         </Link>
 
         <div
@@ -79,18 +81,16 @@ export function MegaMenu() {
           <button
             type="button"
             className="inline-flex h-10 items-center gap-1.5 rounded-lg px-3 text-[15px] font-bold text-zinc-950 transition hover:bg-white/35 hover:text-zinc-800"
+            style={{ fontWeight: 700 }}
             onClick={() => setIsOpen((value) => !value)}
             aria-expanded={isOpen}
           >
-            Mo Hinh / Figure
+            Mô hình
             <ChevronDown size={16} aria-hidden="true" />
           </button>
 
           {isOpen ? (
             <div className="absolute left-0 top-full z-50 w-80 rounded-xl border border-zinc-200 bg-white py-2 shadow-xl">
-              <div className="absolute -top-8 left-3 rounded-t-md bg-amber-100 px-3 py-1.5 text-xs font-semibold text-zinc-900 shadow-sm">
-                Mo Hinh / Figure
-              </div>
               {figureGroups.map((item) => (
                 <div key={item.label} className="group/item relative">
                   <Link

@@ -33,22 +33,22 @@ export default async function CartPage() {
     <main className="mx-auto max-w-[1500px] px-4 py-7 sm:px-6 sm:py-10">
       <Breadcrumbs
         items={[
-          { label: "Trang chu", href: "/" },
-          { label: "Gio hang" },
+          { label: "Trang chủ", href: "/" },
+          { label: "Giỏ hàng" },
         ]}
       />
 
       <div className="mt-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
         <div>
           <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-            Gio hang cua ban
+            Giỏ hàng của bạn
           </p>
           <h1 className="mt-1 text-3xl font-black tracking-tight text-zinc-950">
-            Kiem tra san pham
+            Kiểm tra sản phẩm
           </h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
-            Cap nhat so luong, ap dung coupon va kiem tra tong tien truoc khi
-            chuyen sang thanh toan.
+            Cập nhật số lượng, áp dụng coupon và kiểm tra tổng tiền trước khi
+            chuyển sang thanh toán.
           </p>
         </div>
 
@@ -56,7 +56,7 @@ export default async function CartPage() {
           href="/products"
           className="text-sm font-semibold text-zinc-600 hover:text-[var(--brand-strong)]"
         >
-          Tiep tuc mua sam
+          Tiếp tục mua sắm
         </Link>
       </div>
 
@@ -83,10 +83,10 @@ export default async function CartPage() {
       ) : (
         <EmptyState
           className="mt-8"
-          title="Gio hang dang trong"
-          description="Hay them mot vai figure yeu thich vao gio hang de bat dau dat hang."
+          title="Giỏ hàng đang trống"
+          description="Hãy thêm một vài mô hình yêu thích vào giỏ hàng để bắt đầu đặt hàng."
           icon={<ShoppingBag size={22} aria-hidden="true" />}
-          action={{ href: "/products", label: "Xem san pham" }}
+          action={{ href: "/products", label: "Xem sản phẩm" }}
         />
       )}
     </main>

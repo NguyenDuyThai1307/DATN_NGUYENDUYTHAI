@@ -1,10 +1,10 @@
 import { BadgeCheck, PackageCheck, ShieldCheck, Truck } from "lucide-react";
 
 const commitments = [
-  { title: "Hang chinh hang", icon: BadgeCheck },
-  { title: "Dong goi can than", icon: PackageCheck },
-  { title: "Tu van ro rang", icon: ShieldCheck },
-  { title: "Giao hang toan quoc", icon: Truck },
+  { title: "Hàng chính hãng", icon: BadgeCheck },
+  { title: "Đóng gói cẩn thận", icon: PackageCheck },
+  { title: "Tư vấn rõ ràng", icon: ShieldCheck },
+  { title: "Giao hàng toàn quốc", icon: Truck },
 ];
 
 export function ServiceCommitments() {

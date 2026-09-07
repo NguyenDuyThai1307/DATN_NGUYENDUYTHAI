@@ -79,8 +79,8 @@ export function CartItem({ item }: CartItemProps) {
           {activePromotion ? (
             <p className="mt-1 text-xs font-medium text-red-600">
               {activePromotion.type === "PERCENTAGE"
-                ? `Giam ${activePromotion.value}%`
-                : `Giam ${activePromotion.value.toLocaleString("vi-VN")} d`}
+                ? `Giảm ${activePromotion.value}%`
+                : `Giảm ${activePromotion.value.toLocaleString("vi-VN")} đ`}
             </p>
           ) : null}
         </div>

@@ -19,21 +19,21 @@ export default async function AccountPage() {
     <main className="mx-auto max-w-[1500px] px-4 py-7 sm:px-6 sm:py-10">
       <Breadcrumbs
         items={[
-          { label: "Trang chu", href: "/" },
-          { label: "Tai khoan" },
+          { label: "Trang chủ", href: "/" },
+          { label: "Tài khoản" },
         ]}
       />
 
       <div className="mt-6 rounded-3xl bg-gradient-to-br from-amber-100 via-white to-rose-50 p-6 ring-1 ring-zinc-200">
         <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-          Khu vuc khach hang
+          Khu vực khách hàng
         </p>
         <h1 className="mt-2 text-3xl font-black tracking-tight text-zinc-950">
-          Xin chao, {user.name ?? user.email}
+          Xin chào, {user.name ?? user.email}
         </h1>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
-          Quan ly thong tin ca nhan, theo doi don hang va quay lai mua sam
-          nhanh hon trong nhung lan tiep theo.
+          Quản lý thông tin cá nhân, theo dõi đơn hàng và quay lại mua sắm
+          nhanh hơn trong những lần tiếp theo.
         </p>
       </div>
 
@@ -45,10 +45,10 @@ export default async function AccountPage() {
             </span>
             <div>
               <p className="text-xs font-bold uppercase text-zinc-500">
-                Ho so
+                Hồ sơ
               </p>
               <h2 className="text-lg font-bold text-zinc-950">
-                Thong tin ca nhan
+                Thông tin cá nhân
               </h2>
             </div>
           </div>
@@ -70,7 +70,7 @@ export default async function AccountPage() {
             className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-white p-4 font-semibold transition hover:border-zinc-300 hover:shadow-sm"
           >
             <ClipboardList size={20} className="text-[var(--brand-strong)]" />
-            Don hang cua toi
+            Đơn hàng của toi
           </Link>
 
           <Link
@@ -78,13 +78,13 @@ export default async function AccountPage() {
             className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-white p-4 font-semibold transition hover:border-zinc-300 hover:shadow-sm"
           >
             <ShoppingBag size={20} className="text-[var(--brand-strong)]" />
-            Tiep tuc mua sam
+            Tiếp tục mua sắm
           </Link>
 
           <div className="rounded-2xl border border-zinc-200 bg-white p-4">
             <div className="mb-3 flex items-center gap-3 font-semibold">
               <LogOut size={20} className="text-[var(--brand-strong)]" />
-              Dang xuat tai khoan
+              Đăng xuất tài khoản
             </div>
             <LogoutButton />
           </div>

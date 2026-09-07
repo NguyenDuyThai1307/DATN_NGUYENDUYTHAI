@@ -85,15 +85,15 @@ export default async function CollectionPage({
     <main className="mx-auto max-w-[1500px] px-4 py-7 sm:px-6 sm:py-10">
       <Breadcrumbs
         items={[
-          { label: "Trang chu", href: "/" },
-          { label: "Danh muc", href: "/products" },
+          { label: "Trang chủ", href: "/" },
+          { label: "Danh mục", href: "/products" },
           { label: category.name },
         ]}
       />
 
       <div className="mt-5">
         <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-          Danh muc figure
+          Danh mục mô hình
         </p>
         <h1 className="mt-2 text-3xl font-black text-zinc-950">
           {category.name}
@@ -127,7 +127,7 @@ export default async function CollectionPage({
       <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(250px,25%)_minmax(0,1fr)]">
         <aside className="hidden lg:block">
           <div className="sticky top-36">
-            <p className="mb-3 text-sm font-bold text-zinc-950">Loc san pham</p>
+            <p className="mb-3 text-sm font-bold text-zinc-950">Lọc sản phẩm</p>
             <ProductFilter
             action={pathname}
             layout="sidebar"
@@ -150,9 +150,9 @@ export default async function CollectionPage({
 
         <section>
           <div className="mb-4 flex items-center justify-between gap-4">
-            <p className="text-sm text-zinc-600">{result.total} san pham</p>
+            <p className="text-sm text-zinc-600">{result.total} sản phẩm</p>
             <p className="text-sm font-medium text-zinc-700">
-              Sap xep: {sort.replace("_", " ")}
+              Sắp xếp: {sort.replace("_", " ")}
             </p>
           </div>
 
@@ -160,9 +160,9 @@ export default async function CollectionPage({
             <ProductGrid products={result.products} />
           ) : (
             <EmptyState
-              title="Chua co san pham phu hop"
-              description="Bo loc hien tai khong co ket qua trong danh muc nay. Thu doi khoang gia, thuong hieu hoac tinh trang hang."
-              action={{ href: pathname, label: "Dat lai bo loc" }}
+              title="Chưa có sản phẩm phù hợp"
+              description="Bộ lọc hiện tại không có kết quả trong danh mục này. Thử đổi khoảng giá, thương hiệu hoặc tình trạng hàng."
+              action={{ href: pathname, label: "Đặt lại bộ lọc" }}
             />
           )}
 

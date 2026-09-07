@@ -55,46 +55,46 @@ async function HomePageContent() {
         <FeaturedSeries />
         <PromoShortcutGrid />
 
-        <HomeSection title="Flash sale" eyebrow="Uu dai hom nay" href="/products">
+        <HomeSection title="Flash sale" eyebrow="Ưu đãi hôm nay" href="/products">
           <div className="mb-4 flex flex-wrap items-center gap-3 rounded-lg border border-rose-100 bg-rose-50 px-4 py-3">
             <Flame size={20} className="text-[var(--brand-strong)]" aria-hidden="true" />
-            <p className="mr-auto text-sm font-semibold text-zinc-800">Ket thuc trong</p>
+            <p className="mr-auto text-sm font-semibold text-zinc-800">Kết thúc trong</p>
             <FlashSaleCountdown endsAt="2026-12-31T23:59:59+07:00" />
           </div>
           <ProductShelf products={discountedProducts} />
         </HomeSection>
 
-        <HomeSection title="Danh muc noi bat" href="/products">
-          {catalogCategories.length > 0 ? <FeaturedCategoryGrid categories={catalogCategories} /> : <p className="text-sm text-zinc-500">Chua co danh muc duoc tao.</p>}
+        <HomeSection title="Danh mục nổi bật" href="/products">
+          {catalogCategories.length > 0 ? <FeaturedCategoryGrid categories={catalogCategories} /> : <p className="text-sm text-zinc-500">Chưa có danh mục được tạo.</p>}
         </HomeSection>
 
-        <HomeSection title="Mo hinh da phat hanh" eyebrow="San san cho bo suu tap" href="/products?type=IN_STOCK">
+        <HomeSection title="Mô hình đã phát hành" eyebrow="Sẵn sàng cho bộ sưu tập" href="/products?type=IN_STOCK">
           <ProductShelf products={releasedProducts} />
         </HomeSection>
 
         <ServiceBanners />
 
-        <HomeSection title="Mo hinh dat truoc" eyebrow="Phien ban sap ra mat" href="/preorder">
+        <HomeSection title="Mô hình đặt trước" eyebrow="Phiên bản sắp ra mắt" href="/preorder">
           <ProductShelf products={preorderProducts} />
         </HomeSection>
 
-        <HomeSection title="San pham dang giam gia" href="/products">
+        <HomeSection title="Sản phẩm đang giảm giá" href="/products">
           <ProductShelf products={discountedProducts} />
         </HomeSection>
 
-        <HomeSection title="Review va goc suu tam" eyebrow="Cam hung cho collector">
+        <HomeSection title="Review và góc sưu tầm" eyebrow="Cảm hứng cho collector">
           <VideoReviewSection />
         </HomeSection>
 
-        <HomeSection title="Thuong hieu duoc yeu thich">
+        <HomeSection title="Thương hiệu được yêu thích">
           <BrandLogoCloud brands={options.brands} />
         </HomeSection>
 
-        <HomeSection title="Tin tuc noi bat" eyebrow="Su kien va huong dan">
+        <HomeSection title="Tin tức nổi bật" eyebrow="Sự kiện và hướng dẫn">
           <NewsHighlight />
         </HomeSection>
 
-        <HomeSection title="Tin tuc moi nhat" href="/products">
+        <HomeSection title="Tin tức mới nhất" href="/products">
           <LatestNewsSection />
         </HomeSection>
         </div>

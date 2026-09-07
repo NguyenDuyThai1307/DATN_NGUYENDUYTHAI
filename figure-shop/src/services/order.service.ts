@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { StorefrontError } from "@/lib/storefront-error";
 import type { CheckoutInput } from "@/validations/order.schema";
 import {
   calculateLinePricing,
@@ -8,6 +9,10 @@ import {
   CouponValidationError,
   getCouponValidationError,
 } from "@/services/coupon.service";
+import {
+  getEffectiveProductPromotion,
+  productPromotionInclude,
+} from "@/services/promotion.service";
 
 function generateOrderNumber() {
   const timestamp = Date.now().toString(36).toUpperCase();
@@ -20,46 +25,74 @@ export async function createOrderFromCart(
   userId: string,
   input: CheckoutInput,
 ) {
-  const cart = await prisma.cart.findUnique({
-    where: {
-      userId,
-    },
-    include: {
-      coupon: true,
-      items: {
-        include: {
-          product: {
-            include: {
-              promotion: true,
+  const shippingFee = 0;
+
+  return prisma.$transaction(async (tx) => {
+    const now = new Date();
+    const cart = await tx.cart.findUnique({
+      where: {
+        userId,
+      },
+      include: {
+        coupon: true,
+        items: {
+          include: {
+            product: {
+              include: {
+                ...productPromotionInclude,
+              },
             },
           },
         },
       },
-    },
-  });
+    });
 
-  if (!cart || cart.items.length === 0) {
-    throw new Error("Cart is empty");
-  }
+    if (!cart || cart.items.length === 0) {
+      throw new StorefrontError("Giỏ hàng đang trống");
+    }
 
-  const shippingFee = 0;
+    for (const item of cart.items) {
+      if (item.product.status !== "ACTIVE") {
+        throw new StorefrontError(
+          `${item.product.name} hiện không mở bán`,
+          409,
+        );
+      }
 
-  const pricingItems = cart.items.map((item) => ({
-    unitPrice: item.product.price,
-    quantity: item.quantity,
-    promotion: item.product.promotion,
-  }));
+      if (
+        item.product.type === "IN_STOCK" &&
+        item.quantity > item.product.stock
+      ) {
+        throw new StorefrontError(
+          `${item.product.name} chỉ còn ${item.product.stock} sản phẩm`,
+          409,
+        );
+      }
+    }
 
-  const pricingWithoutCoupon = calculateOrderPricing(
-    pricingItems,
-    shippingFee,
-  );
+    const promotionsByProductId = new Map(
+      cart.items.map((item) => [
+        item.productId,
+        getEffectiveProductPromotion(item.product, now),
+      ]),
+    );
+    const pricingItems = cart.items.map((item) => ({
+      unitPrice: item.product.price,
+      quantity: item.quantity,
+      promotion: promotionsByProductId.get(item.productId),
+    }));
 
-  const amountAfterProductDiscount =
-    pricingWithoutCoupon.subtotal -
-    pricingWithoutCoupon.productDiscountAmount;
+    const pricingWithoutCoupon = calculateOrderPricing(
+      pricingItems,
+      shippingFee,
+      undefined,
+      now,
+    );
 
-  return prisma.$transaction(async (tx) => {
+    const amountAfterProductDiscount =
+      pricingWithoutCoupon.subtotal -
+      pricingWithoutCoupon.productDiscountAmount;
+
     let coupon = cart.coupon;
 
     if (coupon) {
@@ -70,7 +103,7 @@ export async function createOrderFromCart(
       });
 
       if (!latestCoupon) {
-        throw new CouponValidationError("Coupon not found");
+        throw new CouponValidationError("Không tìm thấy coupon");
       }
 
       const couponError = getCouponValidationError(
@@ -89,6 +122,7 @@ export async function createOrderFromCart(
       pricingItems,
       shippingFee,
       coupon,
+      now,
     );
 
     const order = await tx.order.create({
@@ -114,11 +148,14 @@ export async function createOrderFromCart(
         addressDetail: input.addressDetail,
         items: {
           create: cart.items.map((item) => {
-            const linePricing = calculateLinePricing({
-              unitPrice: item.product.price,
-              quantity: item.quantity,
-              promotion: item.product.promotion,
-            });
+            const linePricing = calculateLinePricing(
+              {
+                unitPrice: item.product.price,
+                quantity: item.quantity,
+                promotion: promotionsByProductId.get(item.productId),
+              },
+              now,
+            );
 
             return {
               productId: item.productId,
@@ -157,6 +194,21 @@ export async function createOrderFromCart(
           },
         },
       });
+    }
+
+    for (const item of cart.items) {
+      if (item.product.type === "IN_STOCK") {
+        await tx.product.update({
+          where: {
+            id: item.productId,
+          },
+          data: {
+            stock: {
+              decrement: item.quantity,
+            },
+          },
+        });
+      }
     }
 
     await tx.cartItem.deleteMany({

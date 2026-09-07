@@ -7,10 +7,10 @@ type PaymentStatusBadgeProps = {
 };
 
 const labels: Record<PaymentStatus, string> = {
-  UNPAID: "Chua thanh toan",
-  PAID: "Da thanh toan",
-  FAILED: "That bai",
-  REFUNDED: "Da hoan tien",
+  UNPAID: "Chưa thanh toán",
+  PAID: "Đã thanh toán",
+  FAILED: "Thất bại",
+  REFUNDED: "Đã hoàn tiền",
 };
 
 const variants: Record<

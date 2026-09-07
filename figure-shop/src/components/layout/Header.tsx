@@ -44,21 +44,21 @@ export async function Header() {
             className="hidden min-w-0 flex-1 md:block"
           >
             <label htmlFor="site-search" className="sr-only">
-              Tim san pham
+              Tìm sản phẩm
             </label>
             <div className="relative">
               <input
                 id="site-search"
                 name="q"
                 type="search"
-                placeholder="Tim kiem figure, nendoroid, scale figure..."
+                placeholder="Tìm kiếm mô hình, Nendoroid, mô hình tỉ lệ..."
                 className="h-12 w-full rounded-lg border border-white/70 bg-white px-5 pr-14 text-sm text-zinc-800 shadow-sm outline-none transition placeholder:text-zinc-400 focus:border-zinc-950/20 focus:ring-4 focus:ring-white/50"
               />
               <button
                 type="submit"
                 className="absolute inset-y-1 right-1 grid w-11 place-items-center rounded-md text-zinc-700 transition hover:bg-amber-100 hover:text-zinc-950"
-                aria-label="Tim kiem"
-                title="Tim kiem"
+                aria-label="Tìm kiếm"
+                title="Tìm kiếm"
               >
                 <Search size={23} aria-hidden="true" />
               </button>
@@ -83,14 +83,14 @@ export async function Header() {
             >
               <MapPinned size={27} aria-hidden="true" />
               <span>
-                <span className="block text-xs">He thong</span>
-                <span className="block text-base">Cua hang</span>
+                <span className="block text-xs">Hệ thống</span>
+                <span className="block text-base">Cửa hàng</span>
               </span>
             </Link>
 
             <Link
               href={user ? "/account" : "/login"}
-              title={user ? "Tai khoan" : "Dang nhap"}
+              title={user ? "Tài khoản" : "Đăng nhập"}
               className="grid h-11 w-11 place-items-center rounded-full bg-white/25 text-zinc-950 transition hover:bg-white/60"
             >
               <UserRound size={24} aria-hidden="true" />
@@ -98,7 +98,7 @@ export async function Header() {
 
             <Link
               href="/cart"
-              title="Gio hang"
+              title="Giỏ hàng"
               className="grid h-11 w-11 place-items-center rounded-full bg-white/25 text-zinc-950 transition hover:bg-white/60"
             >
               <ShoppingCart size={25} aria-hidden="true" />

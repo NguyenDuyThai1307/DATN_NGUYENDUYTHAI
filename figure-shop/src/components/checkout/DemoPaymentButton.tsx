@@ -29,7 +29,7 @@ export function DemoPaymentButton({ orderId }: DemoPaymentButtonProps) {
     setIsSubmitting(false);
 
     if (!response.ok) {
-      setError("Khong the thanh toan demo");
+      setError("Không thể thanh toán demo");
       return;
     }
 
@@ -44,7 +44,7 @@ export function DemoPaymentButton({ orderId }: DemoPaymentButtonProps) {
         disabled={isSubmitting}
         className="w-full rounded-md bg-red-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {isSubmitting ? "Dang xu ly..." : "Thanh toan demo"}
+        {isSubmitting ? "Đang xử lý..." : "Thanh toán demo"}
       </button>
 
       {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}

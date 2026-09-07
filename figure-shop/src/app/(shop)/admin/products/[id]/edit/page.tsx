@@ -6,6 +6,7 @@ import {
   updateAdminProduct,
 } from "@/services/admin-product.service";
 import { adminProductSchema } from "@/validations/product.schema";
+import { saveUploadedProductImage } from "@/services/admin-product-image.service";
 
 type AdminEditProductPageProps = {
   params: Promise<{
@@ -37,6 +38,7 @@ export default async function AdminEditProductPage({
       price: formData.get("price"),
       stock: formData.get("stock"),
       categoryId: formData.get("categoryId"),
+      categoryIds: formData.getAll("categoryIds"),
       brandId: formData.get("brandId"),
       status: formData.get("status"),
       type: formData.get("type"),
@@ -45,10 +47,17 @@ export default async function AdminEditProductPage({
     });
 
     if (!parsed.success) {
-      throw new Error("Invalid product data");
+      throw new Error("Dữ liệu sản phẩm không hợp lệ");
     }
 
-    await updateAdminProduct(id, parsed.data);
+    const uploadedImageUrl = await saveUploadedProductImage(
+      formData.get("imageFile"),
+    );
+
+    await updateAdminProduct(id, {
+      ...parsed.data,
+      imageUrl: uploadedImageUrl ?? parsed.data.imageUrl,
+    });
     redirect("/admin/products");
   }
 
@@ -57,17 +66,17 @@ export default async function AdminEditProductPage({
       <div>
         <p className="text-sm font-semibold uppercase text-red-600">Admin</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight">
-          Sua san pham
+          Sửa sản phẩm
         </h1>
         <p className="mt-2 text-zinc-600">
-          Cap nhat thong tin san pham trong cua hang.
+          Cập nhật thông tin sản phẩm trong cửa hàng.
         </p>
       </div>
 
       <section className="mt-8 rounded-md border border-zinc-200 bg-white p-6">
         <ProductForm
           action={updateProductAction}
-          submitLabel="Luu thay doi"
+          submitLabel="Lưu thay đổi"
           categories={options.categories}
           brands={options.brands}
           imageOptions={options.imageOptions}

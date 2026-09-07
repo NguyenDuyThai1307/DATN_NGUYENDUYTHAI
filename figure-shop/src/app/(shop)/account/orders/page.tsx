@@ -28,30 +28,30 @@ export default async function AccountOrdersPage() {
     <main className="mx-auto max-w-[1500px] px-4 py-7 sm:px-6 sm:py-10">
       <Breadcrumbs
         items={[
-          { label: "Trang chu", href: "/" },
-          { label: "Tai khoan", href: "/account" },
-          { label: "Don hang" },
+          { label: "Trang chủ", href: "/" },
+          { label: "Tài khoản", href: "/account" },
+          { label: "Đơn hàng" },
         ]}
       />
 
       <div className="mt-6">
         <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-          Lich su mua hang
+          Lịch sử mua hàng
         </p>
         <h1 className="mt-1 text-3xl font-black tracking-tight text-zinc-950">
-          Don hang cua toi
+          Đơn hàng của toi
         </h1>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
-          Theo doi trang thai xu ly, thanh toan va xem lai chi tiet tung don
-          hang da dat.
+          Theo dõi trạng thái xử lý, thanh toán và xem lại chi tiết từng đơn
+          hàng đã đặt.
         </p>
       </div>
 
       <div className="mt-8 grid gap-3 sm:grid-cols-3">
-        <OrderMetricCard label="Tong don hang" value={`${orders.length}`} />
-        <OrderMetricCard label="Chua thanh toan" value={`${unpaidOrders}`} />
+        <OrderMetricCard label="Tổng đơn hàng" value={`${orders.length}`} />
+        <OrderMetricCard label="Chưa thanh toán" value={`${unpaidOrders}`} />
         <OrderMetricCard
-          label="Da thanh toan"
+          label="Đã thanh toán"
           value={<ProductPrice price={paidTotal} />}
         />
       </div>
@@ -66,7 +66,7 @@ export default async function AccountOrdersPage() {
             >
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <p className="text-sm text-zinc-500">Ma don hang</p>
+                  <p className="text-sm text-zinc-500">Mã đơn hàng</p>
                   <p className="mt-1 font-bold text-zinc-950">
                     {order.orderNumber}
                   </p>
@@ -75,12 +75,12 @@ export default async function AccountOrdersPage() {
                     <PaymentStatusBadge status={order.paymentStatus} />
                   </div>
                   <p className="mt-1 text-sm text-zinc-500">
-                    So san pham: {order.items.length}
+                    Số sản phẩm: {order.items.length}
                   </p>
                 </div>
 
                 <div className="text-left sm:text-right">
-                  <p className="mb-1 text-sm text-zinc-500">Tong tien</p>
+                  <p className="mb-1 text-sm text-zinc-500">Tổng tiền</p>
                   <ProductPrice price={order.total} />
                 </div>
               </div>
@@ -90,10 +90,10 @@ export default async function AccountOrdersPage() {
       ) : (
         <EmptyState
           className="mt-8"
-          title="Ban chua co don hang nao"
-          description="Khi dat hang thanh cong, don hang se xuat hien tai day de ban tien theo doi."
+          title="Bạn chưa có đơn hàng nào"
+          description="Khi đặt hàng thành công, đơn hàng sẽ xuất hiện tại đây để bạn tiện theo dõi."
           icon={<ClipboardList size={22} aria-hidden="true" />}
-          action={{ href: "/products", label: "Xem san pham" }}
+          action={{ href: "/products", label: "Xem sản phẩm" }}
         />
       )}
     </main>

@@ -77,17 +77,17 @@ export default async function ProductsPage({
   return (
     <main className="mx-auto max-w-[1500px] px-4 py-7 sm:px-6 sm:py-10">
       <Breadcrumbs
-        items={[{ label: "Trang chu", href: "/" }, { label: "San pham" }]}
+        items={[{ label: "Trang chủ", href: "/" }, { label: "Sản phẩm" }]}
       />
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium uppercase text-red-600">
           Figure Shop
         </p>
 
-        <h1 className="text-3xl font-bold tracking-tight">San pham</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Sản phẩm</h1>
 
         <p className="max-w-2xl text-zinc-600">
-          Tim kiem, loc va sap xep figure co san va san pham pre-order.
+          Tìm kiếm, lọc và sắp xếp mô hình có sẵn và sản phẩm đặt trước.
         </p>
       </div>
 
@@ -111,9 +111,9 @@ export default async function ProductsPage({
         <aside className="hidden lg:block">
           <div className="sticky top-36">
             <div className="mb-3">
-              <p className="text-sm font-bold text-zinc-950">Bo loc san pham</p>
+              <p className="text-sm font-bold text-zinc-950">Bộ lọc sản phẩm</p>
               <p className="mt-1 text-xs leading-5 text-zinc-500">
-                Chon thuong hieu, danh muc, gia va tinh trang hang.
+                Chọn thương hiệu, danh mục, giá và tình trạng hàng.
               </p>
             </div>
             <ProductFilter
@@ -136,10 +136,10 @@ export default async function ProductsPage({
         <section>
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm text-zinc-600">
-              Tim thay {result.total} san pham.
+              Tìm thấy {result.total} sản phẩm.
             </p>
             <p className="text-xs font-semibold uppercase text-zinc-500">
-              Sap xep: {sort.replace("_", " ")}
+              Sắp xếp: {sort.replace("_", " ")}
             </p>
           </div>
 
@@ -155,9 +155,9 @@ export default async function ProductsPage({
             </>
           ) : (
             <EmptyState
-              title="Khong tim thay san pham"
-              description="Thu doi tu khoa, bo bot bo loc hoac quay lai danh sach san pham de xem tat ca figure hien co."
-              action={{ href: "/products", label: "Xem tat ca san pham" }}
+              title="Không tìm thấy sản phẩm"
+              description="Thử đổi từ khóa, bỏ bớt bộ lọc hoặc quay lại danh sách sản phẩm để xem tất cả mô hình hiện có."
+              action={{ href: "/products", label: "Xem tất cả sản phẩm" }}
             />
           )}
         </section>

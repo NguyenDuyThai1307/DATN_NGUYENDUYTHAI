@@ -19,7 +19,7 @@ export async function PATCH(request: Request) {
   if (!parsed.success) {
     return NextResponse.json(
       {
-        message: "Invalid profile data",
+        message: "Dữ liệu tài khoản không hợp lệ",
         errors: parsed.error.flatten().fieldErrors,
       },
       { status: 400 },
@@ -41,7 +41,7 @@ export async function PATCH(request: Request) {
   });
 
   return NextResponse.json({
-    message: "Profile updated successfully",
+    message: "Cập nhật tài khoản thành công",
     user: updatedUser,
   });
 }

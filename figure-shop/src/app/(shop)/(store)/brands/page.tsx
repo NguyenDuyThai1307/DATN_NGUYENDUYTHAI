@@ -24,19 +24,19 @@ export default async function BrandsPage() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
       <Breadcrumbs
-        items={[{ label: "Trang chu", href: "/" }, { label: "Thuong hieu" }]}
+        items={[{ label: "Trang chủ", href: "/" }, { label: "Thương hiệu" }]}
       />
 
       <div className="mt-5">
         <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-          Hang san xuat
+          Hãng sản xuất
         </p>
         <h1 className="mt-2 text-3xl font-black text-zinc-950">
-          Thuong hieu figure
+          Thương hiệu mô hình
         </h1>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-600">
-          Loc nhanh san pham theo thuong hieu, nha san xuat hoac series dang co
-          trong cua hang.
+          Lọc nhanh sản phẩm theo thương hiệu, nhà sản xuất hoặc series đang có
+          trong cửa hàng.
         </p>
       </div>
 
@@ -68,7 +68,7 @@ export default async function BrandsPage() {
                   {brand.name}
                 </h2>
                 <p className="mt-1 text-sm text-zinc-500">
-                  {brand.productCount} san pham
+                  {brand.productCount} sản phẩm
                 </p>
               </div>
             </Link>
@@ -76,7 +76,7 @@ export default async function BrandsPage() {
         </section>
       ) : (
         <div className="mt-8 rounded-lg border border-dashed border-zinc-300 bg-white p-10 text-center text-sm text-zinc-500">
-          Chua co thuong hieu san pham.
+          Chưa có thương hiệu sản phẩm.
         </div>
       )}
     </main>

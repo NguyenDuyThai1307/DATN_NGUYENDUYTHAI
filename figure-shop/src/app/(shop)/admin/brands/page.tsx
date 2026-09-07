@@ -10,10 +10,10 @@ export default async function AdminBrandsPage() {
         <div>
           <p className="text-sm font-semibold uppercase text-red-600">Admin</p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight">
-            Thuong hieu
+            Thương hiệu
           </h1>
           <p className="mt-2 text-zinc-600">
-            Quan ly thuong hieu, hang san xuat hoac series san pham.
+            Quản lý thương hiệu, hãng sản xuất hoặc series sản phẩm.
           </p>
         </div>
 
@@ -21,7 +21,7 @@ export default async function AdminBrandsPage() {
           href="/admin/brands/create"
           className="inline-flex items-center justify-center rounded-md bg-zinc-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800"
         >
-          Them thuong hieu
+          Thêm thương hiệu
         </Link>
       </div>
 
@@ -46,7 +46,7 @@ export default async function AdminBrandsPage() {
                 </div>
 
                 <div className="text-sm text-zinc-600">
-                  {brand._count.products} san pham
+                  {brand._count.products} sản phẩm
                 </div>
 
                 <div className="flex items-start justify-end gap-2">
@@ -54,7 +54,7 @@ export default async function AdminBrandsPage() {
                     href={`/admin/brands/${brand.id}/edit`}
                     className="inline-flex rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-950 transition hover:bg-zinc-100"
                   >
-                    Sua
+                    Sửa
                   </Link>
                 </div>
               </div>
@@ -62,7 +62,7 @@ export default async function AdminBrandsPage() {
           </div>
         ) : (
           <div className="p-8 text-center">
-            <p className="text-zinc-600">Chua co thuong hieu nao.</p>
+            <p className="text-zinc-600">Chưa có thương hiệu nào.</p>
           </div>
         )}
       </section>

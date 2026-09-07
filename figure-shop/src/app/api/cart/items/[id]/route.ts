@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
+import { StorefrontError } from "@/lib/storefront-error";
 import {
   removeCartItem,
   updateCartItemQuantity,
@@ -29,19 +30,34 @@ export async function PATCH(request: Request, { params }: CartItemRouteProps) {
   if (!parsed.success) {
     return NextResponse.json(
       {
-        message: "Invalid cart item data",
+        message: "Dữ liệu sản phẩm trong giỏ không hợp lệ",
         errors: parsed.error.flatten().fieldErrors,
       },
       { status: 400 },
     );
   }
 
-  const item = await updateCartItemQuantity(user.id, id, parsed.data.quantity);
+  try {
+    const item = await updateCartItemQuantity(
+      user.id,
+      id,
+      parsed.data.quantity,
+    );
 
-  return NextResponse.json({
-    message: "Updated cart item",
-    item,
-  });
+    return NextResponse.json({
+      message: "Đã cập nhật sản phẩm trong giỏ",
+      item,
+    });
+  } catch (error) {
+    if (error instanceof StorefrontError) {
+      return NextResponse.json(
+        { message: error.message },
+        { status: error.status },
+      );
+    }
+
+    throw error;
+  }
 }
 
 export async function DELETE(_request: Request, { params }: CartItemRouteProps) {
@@ -55,9 +71,20 @@ export async function DELETE(_request: Request, { params }: CartItemRouteProps) 
   }
 
   const { id } = await params;
-  await removeCartItem(user.id, id);
+  try {
+    await removeCartItem(user.id, id);
 
-  return NextResponse.json({
-    message: "Removed cart item",
-  });
+    return NextResponse.json({
+      message: "Đã xóa sản phẩm khỏi giỏ",
+    });
+  } catch (error) {
+    if (error instanceof StorefrontError) {
+      return NextResponse.json(
+        { message: error.message },
+        { status: error.status },
+      );
+    }
+
+    throw error;
+  }
 }

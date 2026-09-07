@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Figure Shop",
-  description: "Website thuong mai dien tu cho cua hang mo hinh suu tam",
+  description: "Website thương mại điện tử cho cửa hàng mô hình sưu tầm",
 };
 
 export default function RootLayout({

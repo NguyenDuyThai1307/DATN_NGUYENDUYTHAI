@@ -33,7 +33,7 @@ export function LoginForm() {
     setIsSubmitting(false);
 
     if (!response.ok) {
-      setError("Email hoac mat khau khong dung");
+      setError("Email hoặc mật khẩu không đúng");
       return;
     }
 
@@ -55,7 +55,7 @@ export function LoginForm() {
       </div>
 
       <div>
-        <label className="text-sm font-medium">Mat khau</label>
+        <label className="text-sm font-medium">Mật khẩu</label>
           <Input
             name="password"
             type="password"
@@ -77,7 +77,7 @@ export function LoginForm() {
         className="w-full"
         size="lg"
       >
-        {isSubmitting ? "Dang dang nhap..." : "Dang nhap"}
+        {isSubmitting ? "Đang đăng nhập..." : "Đăng nhập"}
       </Button>
     </form>
   );

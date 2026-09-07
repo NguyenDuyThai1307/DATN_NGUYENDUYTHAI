@@ -9,9 +9,9 @@ export default async function AdminPreordersPage() {
     <main>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Pre-orders</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Đơn đặt trước</h1>
           <p className="mt-2 text-zinc-600">
-            Theo doi cac san pham dang nhan dat truoc.
+            Theo dõi các sản phẩm đang nhận đặt trước.
           </p>
         </div>
 
@@ -19,7 +19,7 @@ export default async function AdminPreordersPage() {
           href="/admin/products"
           className="rounded-md border border-zinc-300 bg-white px-4 py-2 text-sm font-medium transition hover:bg-zinc-100"
         >
-          Quan ly san pham
+          Quản lý sản phẩm
         </Link>
       </div>
 
@@ -38,14 +38,14 @@ export default async function AdminPreordersPage() {
                 </div>
 
                 <div className="text-sm text-zinc-600">
-                  <p>{product.brand?.name ?? "Chua co brand"}</p>
-                  <p>{product.category?.name ?? "Chua co danh muc"}</p>
+                  <p>{product.brand?.name ?? "Chưa có brand"}</p>
+                  <p>{product.category?.name ?? "Chưa có danh mục"}</p>
                 </div>
 
                 <div className="lg:text-right">
                   <ProductPrice price={product.price} />
                   <p className="mt-1 text-sm text-zinc-500">
-                    Trang thai: {product.status}
+                    Trạng thái: {product.status}
                   </p>
                 </div>
               </Link>
@@ -53,7 +53,7 @@ export default async function AdminPreordersPage() {
           </div>
         ) : (
           <div className="px-5 py-8 text-center text-zinc-600">
-            Chua co san pham pre-order.
+            Chưa có sản phẩm pre-order.
           </div>
         )}
       </section>

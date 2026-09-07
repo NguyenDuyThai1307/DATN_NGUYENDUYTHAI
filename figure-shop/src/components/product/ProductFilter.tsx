@@ -87,14 +87,14 @@ export function ProductFilter({
     >
       <div className={layout === "toolbar" ? "lg:col-span-2" : ""}>
         <label htmlFor="q" className="text-sm font-medium">
-          Tim san pham
+          Tìm sản phẩm
         </label>
         <Input
           id="q"
           name="q"
           type="search"
           defaultValue={values.query}
-          placeholder="Ten figure hoac mo ta"
+          placeholder="Tên mô hình hoặc mô tả"
           className="mt-2"
         />
       </div>
@@ -102,7 +102,7 @@ export function ProductFilter({
       {showCategory ? (
         <div>
           <label htmlFor="categoryId" className="text-sm font-medium">
-            Danh muc
+            Danh mục
           </label>
           <Select
             id="categoryId"
@@ -110,7 +110,7 @@ export function ProductFilter({
             defaultValue={values.categoryId ?? ""}
             className="mt-2"
           >
-            <option value="">Tat ca danh muc</option>
+            <option value="">Tất cả danh mục</option>
             {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
@@ -122,7 +122,7 @@ export function ProductFilter({
 
       <div>
         <label htmlFor="brandId" className="text-sm font-medium">
-          Thuong hieu
+          Thương hiệu
         </label>
         <Select
           id="brandId"
@@ -130,7 +130,7 @@ export function ProductFilter({
           defaultValue={values.brandId ?? ""}
           className="mt-2"
         >
-          <option value="">Tat ca thuong hieu</option>
+          <option value="">Tất cả thương hiệu</option>
           {brands.map((brand) => (
             <option key={brand.id} value={brand.id}>
               {brand.name}
@@ -141,7 +141,7 @@ export function ProductFilter({
 
       <div>
         <label htmlFor="sort" className="text-sm font-medium">
-          Sap xep
+          Sắp xếp
         </label>
         <Select
           id="sort"
@@ -149,18 +149,18 @@ export function ProductFilter({
           defaultValue={values.sort ?? "newest"}
           className="mt-2"
         >
-          <option value="newest">Moi nhat</option>
-          <option value="oldest">Cu nhat</option>
-          <option value="name_asc">Ten A-Z</option>
-          <option value="name_desc">Ten Z-A</option>
-          <option value="price_asc">Gia thap den cao</option>
-          <option value="price_desc">Gia cao den thap</option>
+          <option value="newest">Mới nhất</option>
+          <option value="oldest">Cũ nhất</option>
+          <option value="name_asc">Tên A-Z</option>
+          <option value="name_desc">Tên Z-A</option>
+          <option value="price_asc">Giá thấp đến cao</option>
+          <option value="price_desc">Giá cao đến thấp</option>
         </Select>
       </div>
 
       <div>
         <label htmlFor="type" className="text-sm font-medium">
-          Loai san pham
+          Loại sản phẩm
         </label>
         <Select
           id="type"
@@ -168,8 +168,8 @@ export function ProductFilter({
           defaultValue={values.type ?? ""}
           className="mt-2"
         >
-          <option value="">Tat ca loai</option>
-          <option value="IN_STOCK">Co san</option>
+          <option value="">Tất cả loại</option>
+          <option value="IN_STOCK">Có sẵn</option>
           <option value="PREORDER">Pre-order</option>
         </Select>
       </div>
@@ -177,7 +177,7 @@ export function ProductFilter({
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label htmlFor="minPrice" className="text-sm font-medium">
-            Gia tu
+            Giá từ
           </label>
           <Input
             id="minPrice"
@@ -193,7 +193,7 @@ export function ProductFilter({
 
         <div>
           <label htmlFor="maxPrice" className="text-sm font-medium">
-            Den
+            Đến
           </label>
           <Input
             id="maxPrice"
@@ -213,13 +213,13 @@ export function ProductFilter({
           layout === "toolbar" ? "lg:col-span-2" : ""
         }`}
       >
-        <Button type="submit">Ap dung</Button>
+        <Button type="submit">Áp dụng</Button>
 
         <Link
           href={resetHref}
           className="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-950"
         >
-          Dat lai
+          Đặt lại
         </Link>
       </div>
     </form>
@@ -238,14 +238,14 @@ export function ProductFilterMobileDrawer(props: ProductFilterProps) {
         onClick={() => setIsOpen(true)}
       >
         <SlidersHorizontal size={17} aria-hidden="true" />
-        Bo loc va sap xep
+        Bộ lọc và sắp xếp
       </Button>
 
       {isOpen ? (
         <div className="fixed inset-0 z-50">
           <button
             type="button"
-            aria-label="Dong bo loc"
+            aria-label="Đóng bộ lọc"
             className="absolute inset-0 bg-zinc-950/45"
             onClick={() => setIsOpen(false)}
           />
@@ -254,10 +254,10 @@ export function ProductFilterMobileDrawer(props: ProductFilterProps) {
             <div className="mb-4 flex items-center justify-between gap-3">
               <div>
                 <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-                  Bo loc
+                  Bộ lọc
                 </p>
                 <h2 className="text-lg font-black text-zinc-950">
-                  Tim san pham
+                  Tìm sản phẩm
                 </h2>
               </div>
 
@@ -265,7 +265,7 @@ export function ProductFilterMobileDrawer(props: ProductFilterProps) {
                 type="button"
                 className="grid size-9 place-items-center rounded-full border border-zinc-200 text-zinc-700 transition hover:bg-zinc-100"
                 onClick={() => setIsOpen(false)}
-                aria-label="Dong bo loc"
+                aria-label="Đóng bộ lọc"
               >
                 <X size={18} aria-hidden="true" />
               </button>

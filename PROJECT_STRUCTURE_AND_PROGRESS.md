@@ -329,25 +329,25 @@ Muc tieu: nang website tu khung chuc nang co ban thanh san pham dep hon, de dung
 [x] Refactor ProductCard dung Badge
 [x] Tach CartItem va CartSummary
 [x] Tao OrderStatusBadge va PaymentStatusBadge
-[ ] Them anh that/placeholder dep cho san pham trong public/images/products
-[ ] Nang cap trang chu: hero banner, san pham moi, preorder hot, brand noi bat
-[ ] Nang cap product detail: gallery anh, thong so, chinh sach preorder, CTA ro hon
-[ ] Them mobile navbar/menu
-[ ] Cai thien footer voi thong tin lien he, chinh sach, lien ket nhanh
+[x] Them anh that/placeholder dep cho san pham trong public/images/products
+[x] Nang cap trang chu: hero banner, san pham moi, preorder hot, brand noi bat
+[x] Nang cap product detail: gallery anh, thong so, chinh sach preorder, CTA ro hon
+[x] Them mobile navbar/menu
+[x] Cai thien footer voi thong tin lien he, chinh sach, lien ket nhanh
 ```
 
 ### 8.2. Frontend / Component Structure
 
 ```text
-[ ] Tao ProductGrid
-[ ] Tao ProductGallery
+[x] Tao ProductGrid
+[x] Tao ProductGallery
 [x] Tao ProductFilter
 [x] Tao ProductSort
 [x] Tao CartQuantityControl
-[ ] Tao OrderSummary dung chung cho cart/checkout/order
-[ ] Tao status badges cho product/preorder neu can
-[ ] Giam code lap lai trong cac page admin/order/cart
-[ ] Them loading, empty state, error state dong bo
+[x] Tao OrderSummary dung chung cho cart/checkout/order
+[x] Tao status badges cho product/preorder neu can
+[x] Giam code lap lai trong cac page admin/order/cart
+[x] Them loading, empty state, error state dong bo
 ```
 
 ### 8.3. Cart Va Checkout UX
@@ -356,8 +356,8 @@ Muc tieu: nang website tu khung chuc nang co ban thanh san pham dep hon, de dung
 [x] Them nut tang/giam so luong trong gio hang
 [x] Them nut xoa san pham khoi gio hang tren UI
 [x] Hien thi tam tinh, giam gia, phi ship, tong thanh toan ro rang
-[ ] Cai thien validation checkout: field-level error
-[ ] Tao trang order success sau khi checkout
+[x] Cai thien validation checkout: field-level error
+[x] Tao trang order success sau khi checkout
 [x] Dam bao checkout khong tin gia tu client, server tu tinh lai gia
 ```
 
@@ -372,8 +372,8 @@ Chuc nang can co:
 [x] Xoa mem/Archive san pham
 [x] Quan ly danh muc: danh sach, them, sua
 [x] Quan ly thuong hieu: danh sach, them, sua
-[ ] Quan ly anh san pham
-[ ] Loc/tim san pham theo ten, brand, category, status, type
+[x] Quan ly anh san pham: chon anh da luu hoac upload anh moi
+[x] Loc/tim san pham theo ten, brand, category, status, type
 ```
 
 Truong san pham nen quan ly:
@@ -414,7 +414,7 @@ src/app/api/admin/products/[id]/route.ts
 [x] Them pricing.service.ts de tinh gia tap trung
 [x] Ho tro gia goc, gia sau giam, phan tram giam
 [x] Promotion theo san pham: admin tao, sua, tat, co thoi gian ap dung
-[ ] Promotion theo category/brand
+[x] Promotion theo category/brand
 [x] Coupon: admin tao, sua, tat
 [x] Coupon: ap dung/go ma tai gio hang va hien thi o checkout
 [x] Coupon: server kiem tra lai khi tao order va cap nhat usedCount
@@ -423,7 +423,7 @@ src/app/api/admin/products/[id]/route.ts
 ### 8.6. Thanh Toan That Sau Nay
 
 ```text
-[ ] Giu payment demo cho bao cao hien tai
+[x] Giu payment demo cho bao cao hien tai
 [ ] Sau khi khung do an on dinh moi tich hop VNPay sandbox
 [ ] Neu them VNPay: them PaymentMethod VNPAY, env VNPAY_*, helper ky/verify, route create/return
 [ ] Secret thanh toan chi nam trong .env, khong dua ra client
@@ -497,15 +497,15 @@ Checklist nghiem thu:
 Muc tieu: nang trai nghiem mua hang tu trang chi tiet den gio hang va checkout.
 
 ```text
-[ ] Product detail UX
-[ ] ProductGallery
-[ ] ProductInfoPanel
-[ ] PromoCodeBox
-[ ] ServiceCommitments
-[ ] ProductTabs
-[ ] Cart UX polish
-[ ] Checkout UX polish
-[ ] Order success page polish
+[x] Product detail UX
+[x] ProductGallery
+[x] ProductInfoPanel
+[x] PromoCodeBox
+[x] ServiceCommitments
+[x] ProductTabs
+[x] Cart UX polish
+[x] Checkout UX polish
+[x] Order success page polish
 ```
 
 Pham vi file du kien:
@@ -527,14 +527,14 @@ src/app/(shop)/(store)/checkout/success/page.tsx
 Checklist nghiem thu:
 
 ```text
-[ ] Chi tiet san pham co gallery, gia, sale, stock/preorder, CTA ro rang
-[ ] Nut Them vao gio va Mua ngay hoat dong
-[ ] Gio hang hien dung tam tinh, giam san pham, coupon, ship, tong tien
-[ ] Checkout validate ro rang, loi hien dung noi
-[ ] Dat hang xong sang trang success
-[ ] Coupon/promotion van duoc server tinh lai
-[ ] npm.cmd exec tsc -- --noEmit pass
-[ ] npm.cmd run lint pass
+[x] Chi tiet san pham co gallery, gia, sale, stock/preorder, CTA ro rang
+[x] Nut Them vao gio va Mua ngay hoat dong
+[x] Gio hang hien dung tam tinh, giam san pham, coupon, ship, tong tien
+[x] Checkout validate ro rang, loi hien dung noi
+[x] Dat hang xong sang trang success
+[x] Coupon/promotion van duoc server tinh lai
+[x] npm.cmd exec tsc -- --noEmit pass
+[x] npm.cmd run lint pass
 ```
 
 #### Luot 3 - Account/Order UX + Admin Dashboard/Table/Form Polish
@@ -542,13 +542,13 @@ Checklist nghiem thu:
 Muc tieu: lam ro trai nghiem sau mua hang va nang cap phan quan tri de phu hop demo do an.
 
 ```text
-[ ] Account dashboard polish
-[ ] User order list polish
-[ ] User order detail polish
-[ ] Admin dashboard polish
-[ ] Admin table polish
-[ ] Admin form polish
-[ ] Admin empty/error states
+[x] Account dashboard polish
+[x] User order list polish
+[x] User order detail polish
+[x] Admin dashboard polish
+[x] Admin table polish
+[x] Admin form polish
+[x] Admin empty/error states
 ```
 
 Pham vi file du kien:
@@ -569,14 +569,14 @@ src/components/order/
 Checklist nghiem thu:
 
 ```text
-[ ] Account hien thong tin user va loi tat don hang
-[ ] Order list/detail de doc, status badge dong bo
-[ ] Admin dashboard co metric ro rang
-[ ] Bang admin de scan, co filter/search neu can
-[ ] Form admin co label, validation, button state ro rang
-[ ] Khong pha route/admin action da co
-[ ] npm.cmd exec tsc -- --noEmit pass
-[ ] npm.cmd run lint pass
+[x] Account hien thong tin user va loi tat don hang
+[x] Order list/detail de doc, status badge dong bo
+[x] Admin dashboard co metric ro rang
+[x] Bang admin de scan, co filter/search neu can
+[x] Form admin co label, validation, button state ro rang
+[x] Khong pha route/admin action da co
+[x] npm.cmd exec tsc -- --noEmit pass
+[x] npm.cmd run lint pass
 ```
 
 #### Luot 4 - Test Admin CRUD + Fix Bug + Build/Lint/Typecheck
@@ -584,14 +584,14 @@ Checklist nghiem thu:
 Muc tieu: khoa chat chat luong sau khi UI/UX da cai thien.
 
 ```text
-[ ] Test admin CRUD product
-[ ] Test admin CRUD category
-[ ] Test admin CRUD brand
-[ ] Test admin CRUD promotion
-[ ] Test admin CRUD coupon
-[ ] Test auth/cart/order/payment
-[ ] Fix bug phat hien trong qua trinh test
-[ ] Build/lint/typecheck cuoi
+[x] Test admin CRUD product
+[x] Test admin CRUD category
+[x] Test admin CRUD brand
+[x] Test admin CRUD promotion
+[x] Test admin CRUD coupon
+[x] Test cart/order/payment
+[x] Fix bug phat hien trong qua trinh test
+[x] Build/lint/typecheck cuoi
 ```
 
 Pham vi test:
@@ -619,12 +619,36 @@ Admin xem don hang
 Checklist nghiem thu:
 
 ```text
-[ ] npm.cmd exec tsc -- --noEmit pass
-[ ] npm.cmd run lint pass
-[ ] npm.cmd run build pass
-[ ] Bao cao test ghi ro route/API nao da test
-[ ] Neu co data test tao ra thi ghi lai de biet
-[ ] Cap nhat file PROJECT_STRUCTURE_AND_PROGRESS.md truoc khi nghi/commit
+[x] npm.cmd exec tsc -- --noEmit pass
+[x] npm.cmd run lint pass
+[x] npm.cmd run build pass
+[x] Bao cao test ghi ro route/API nao da test
+[x] Data smoke test dung database tam va tu dong don dep
+[x] Cap nhat file PROJECT_STRUCTURE_AND_PROGRESS.md truoc khi nghi/commit
+```
+
+### 8.9. Ra Soat Tien Do Gan Nhat - 07/09/2026
+
+Da doi chieu source code thay vi chi dua vao checkbox cu:
+
+```text
+[x] Bon luot frontend da co day du component va luong chinh
+[x] Promotion ho tro PRODUCT, CATEGORY, BRAND va tu chon muc giam tot nhat
+[x] Gia khuyen mai dung chung tai storefront, cart, checkout, order va AI
+[x] Admin co the chon anh da luu hoac upload anh san pham moi (toi da 5 MB)
+[x] Smoke test dung database tam, tu dong don data va anh test
+[x] Typecheck, lint, build production va cac route storefront chinh deu pass
+```
+
+Hang muc con lai de phat trien sau moc nay:
+
+```text
+[ ] Test HTTP/E2E tu dong day du cho dang ky, dang nhap va dang xuat
+[ ] Nang cap admin anh tu mot anh chinh thanh nhieu anh, sap xep va xoa rieng tung anh
+[ ] Lay video review/thumbnail tu nguon noi dung that thay cho du lieu tinh
+[ ] Danh gia lai nhu cau shadcn/ui, framer-motion va sonner de tranh trung lap UI primitives hien co
+[ ] Bo sung cac model Series, Review, Wishlist, InventoryLog neu dua vao pham vi khoa luan
+[ ] Tich hop VNPay sandbox sau khi chot luong thanh toan demo
 ```
 
 Role and Tech Stack:
