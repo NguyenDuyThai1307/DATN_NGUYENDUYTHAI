@@ -35,7 +35,7 @@ export function ProductGallery({
 
   if (!selectedImage) {
     return (
-      <div className="flex aspect-square items-center justify-center rounded-md border border-zinc-200 bg-zinc-100 px-8 text-center text-sm font-medium text-zinc-500">
+      <div className="flex aspect-square items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-100 px-8 text-center text-sm font-medium text-zinc-500">
         Chưa có ảnh cho {productName}
       </div>
     );
@@ -43,14 +43,14 @@ export function ProductGallery({
 
   return (
     <div>
-      <div className="relative aspect-square overflow-hidden rounded-md border border-zinc-200 bg-zinc-100">
+      <div className="relative aspect-square overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100">
         <Image
           src={selectedImage.url}
           alt={selectedImage.alt ?? productName}
           fill
           priority
           sizes="(min-width: 1024px) 50vw, 100vw"
-          className="object-cover"
+          className="object-contain p-3"
           onError={() => markImageAsFailed(selectedImage.url)}
         />
       </div>
@@ -62,7 +62,7 @@ export function ProductGallery({
               key={image.id}
               type="button"
               onClick={() => setSelectedUrl(image.url)}
-              className={`relative aspect-square overflow-hidden rounded-md border ${
+              className={`relative aspect-square overflow-hidden rounded-2xl border ${
                 image.url === selectedImage.url
                   ? "border-zinc-950 ring-1 ring-zinc-950"
                   : "border-zinc-200"
@@ -74,7 +74,7 @@ export function ProductGallery({
                 alt={image.alt ?? `${productName} ${index + 1}`}
                 fill
                 sizes="96px"
-                className="object-cover"
+                className="object-contain p-3"
                 onError={() => markImageAsFailed(image.url)}
               />
             </button>

@@ -71,6 +71,7 @@ export async function getProductsForPromotionForm(
   return prisma.product.findMany({
     where: {
       status: "ACTIVE",
+      type: "IN_STOCK",
       OR: [
         {
           promotion: {
@@ -123,6 +124,7 @@ function getPromotionTargetData(input: PromotionInput) {
 }
 
 export async function createAdminPromotion(input: PromotionInput) {
+  await validatePromotionProduct(input);
   return prisma.promotion.create({
     data: {
       ...getPromotionTargetData(input),
@@ -140,6 +142,7 @@ export async function updateAdminPromotion(
   id: string,
   input: PromotionInput,
 ) {
+  await validatePromotionProduct(input);
   return prisma.promotion.update({
     where: {
       id,
@@ -165,4 +168,15 @@ export async function deactivateAdminPromotion(id: string) {
       isActive: false,
     },
   });
+}
+
+async function validatePromotionProduct(input: PromotionInput) {
+  if (input.scope !== "PRODUCT") return;
+  const product = await prisma.product.findUnique({
+    where: { id: input.productId },
+    select: { type: true },
+  });
+  if (product?.type === "PREORDER") {
+    throw new Error("Không áp dụng giảm giá cho sản phẩm pre-order.");
+  }
 }

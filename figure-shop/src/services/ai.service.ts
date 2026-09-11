@@ -1,4 +1,4 @@
-import Groq from "groq-sdk";
+import OpenAI from "openai";
 import {
   compareProductsForAi,
   getCatalogOverviewForAi,
@@ -13,8 +13,14 @@ import {
   type AiChatRequest,
 } from "@/validations/ai.schema";
 
-const DEFAULT_MODEL = "openai/gpt-oss-120b";
+const DEFAULT_MODEL = "gpt-5.6-sol";
 const MAX_TOOL_ROUNDS = 3;
+// Log provider diagnostics without serializing request headers or credentials.
+function logAiError(context: string, error: unknown) {
+  console.error(context, error instanceof OpenAI.APIError
+    ? { status: error.status, code: error.code, type: error.type }
+    : { name: error instanceof Error ? error.name : "UnknownError" });
+}
 const priceFormatter = new Intl.NumberFormat("vi-VN");
 
 type ConversationPreferences = {
@@ -63,7 +69,7 @@ Ví dụ về giọng điệu mong muốn:
 - "Trong tầm giá này, Luffy phù hợp hơn nếu bạn muốn nhận hàng sớm vì mẫu đang còn sẵn. Miku có mức giảm tốt hơn nhưng cần đặt trước, nên sẽ hợp hơn nếu bạn không vội."
 - Với câu hỏi quá chung chung: "Bạn đang ưu tiên series nào và ngân sách khoảng bao nhiêu để mình chọn đúng hơn?"`;
 
-const tools: Groq.Chat.ChatCompletionTool[] = [
+const tools: OpenAI.Chat.ChatCompletionTool[] = [
   {
     type: "function",
     function: {
@@ -166,14 +172,14 @@ const tools: Groq.Chat.ChatCompletionTool[] = [
   },
 ];
 
-function createGroqClient() {
-  const apiKey = process.env.GROQ_API_KEY?.trim();
+function createOpenAIClient() {
+  const apiKey = process.env.OPENAI_API_KEY?.trim();
 
   if (!apiKey) {
     throw new Error("AI_NOT_CONFIGURED");
   }
 
-  return new Groq({
+  return new OpenAI({
     apiKey,
     maxRetries: 1,
     timeout: 20_000,
@@ -328,11 +334,11 @@ function createNoDirectProductMatchMessage(query: string) {
 }
 
 async function createOpenConversationReply(
-  groq: Groq,
+  openai: OpenAI,
   input: AiChatRequest,
 ): Promise<AiChatResponse> {
   try {
-    const completion = await groq.chat.completions.create({
+    const completion = await openai.chat.completions.create({
       model: process.env.AI_MODEL?.trim() || DEFAULT_MODEL,
       messages: [
         {
@@ -342,7 +348,8 @@ async function createOpenConversationReply(
         ...input.history.slice(-10),
         { role: "user", content: input.message },
       ],
-      temperature: 0.45,
+      reasoning_effort: "none",
+      store: false,
       max_completion_tokens: 700,
     });
 
@@ -353,7 +360,7 @@ async function createOpenConversationReply(
       products: [],
     };
   } catch (error) {
-    console.error("AI open conversation failed", error);
+    logAiError("AI open conversation failed", error);
     return {
       message:
         "Mình chưa thể giải thích trọn vẹn chủ đề này lúc này. Bạn thử hỏi lại sau một chút nhé.",
@@ -705,7 +712,7 @@ export async function createAiFallbackReply(
 }
 
 async function createGroundedFinalReply(
-  groq: Groq,
+  openai: OpenAI,
   input: AiChatRequest,
   toolResults: Array<{ name: string; result: unknown }>,
   products: AiProductReference[],
@@ -719,7 +726,7 @@ async function createGroundedFinalReply(
     .join("\n");
 
   try {
-    const completion = await groq.chat.completions.create({
+    const completion = await openai.chat.completions.create({
       model: process.env.AI_MODEL?.trim() || DEFAULT_MODEL,
       messages: [
         {
@@ -731,7 +738,8 @@ async function createGroundedFinalReply(
           content: `${recentConversation ? `Hội thoại gần đây:\n${recentConversation}\n\n` : ""}Yêu cầu hiện tại của khách: ${input.message}\n\nDữ liệu cửa hàng đã xác minh:\n${JSON.stringify(toolResults)}`,
         },
       ],
-      temperature: 0.4,
+      reasoning_effort: "none",
+      store: false,
       max_completion_tokens: 500,
     });
 
@@ -740,7 +748,7 @@ async function createGroundedFinalReply(
       products,
     );
   } catch (error) {
-    console.error("AI final response generation failed", error);
+    logAiError("AI final response generation failed", error);
     return fallbackMessage ?? normalizeAssistantMessage(null, products);
   }
 }
@@ -748,10 +756,10 @@ async function createGroundedFinalReply(
 export async function createAiChatReply(
   input: AiChatRequest,
 ): Promise<AiChatResponse> {
-  const groq = createGroqClient();
+  const openai = createOpenAIClient();
 
   if (shouldUseOpenConversation(input)) {
-    return createOpenConversationReply(groq, input);
+    return createOpenConversationReply(openai, input);
   }
 
   const referencedProducts = new Map<string, AiProductReference>();
@@ -770,7 +778,7 @@ export async function createAiChatReply(
 
     return {
       message: await createGroundedFinalReply(
-        groq,
+        openai,
         input,
         toolResults,
         products,
@@ -802,7 +810,7 @@ export async function createAiChatReply(
 
       return {
         message: await createGroundedFinalReply(
-          groq,
+          openai,
           input,
           toolResults,
           products,
@@ -818,7 +826,7 @@ export async function createAiChatReply(
     };
   }
 
-  const messages: Groq.Chat.ChatCompletionMessageParam[] = [
+  const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
     { role: "system", content: systemPrompt },
     ...input.history,
     { role: "user", content: input.message },
@@ -826,12 +834,13 @@ export async function createAiChatReply(
 
   try {
     for (let round = 0; round < MAX_TOOL_ROUNDS; round += 1) {
-      const completion = await groq.chat.completions.create({
+      const completion = await openai.chat.completions.create({
         model: process.env.AI_MODEL?.trim() || DEFAULT_MODEL,
         messages,
         tools,
         tool_choice: "auto",
-        temperature: 0.35,
+        reasoning_effort: "none",
+      store: false,
         max_completion_tokens: 700,
       });
 
@@ -865,6 +874,7 @@ export async function createAiChatReply(
       messages.push(responseMessage);
 
       for (const toolCall of toolCalls) {
+        if (toolCall.type !== "function") throw new Error("AI_UNSUPPORTED_TOOL_TYPE");
         const result = await executeTool(
           toolCall.function.name,
           toolCall.function.arguments,
@@ -881,7 +891,7 @@ export async function createAiChatReply(
       }
     }
   } catch (error) {
-    console.error("AI provider request failed; using catalog fallback", error);
+    logAiError("AI provider request failed; using catalog fallback", error);
     return createAiFallbackReply(input);
   }
 
@@ -889,7 +899,7 @@ export async function createAiChatReply(
 
   return {
     message: await createGroundedFinalReply(
-      groq,
+      openai,
       input,
       toolResults,
       products,

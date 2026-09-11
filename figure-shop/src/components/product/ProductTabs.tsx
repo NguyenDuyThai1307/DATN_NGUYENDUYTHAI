@@ -15,7 +15,7 @@ export function ProductTabs({ description }: ProductTabsProps) {
     <section className="mt-12 rounded-lg border border-zinc-200 bg-white p-5 sm:p-7">
       <div className="flex flex-wrap gap-2 border-b border-zinc-200 pb-4">
         {tabs.map((tab) => (
-          <button key={tab} type="button" onClick={() => setActiveTab(tab)} className={`rounded-md px-3 py-2 text-sm font-bold transition ${activeTab === tab ? "bg-rose-50 text-[var(--brand-strong)]" : "text-zinc-600 hover:bg-zinc-100"}`}>
+          <button key={tab} type="button" aria-pressed={activeTab === tab} onClick={() => setActiveTab(tab)} className={`min-h-11 rounded-md px-3 py-2 text-sm font-bold transition ${activeTab === tab ? "bg-rose-50 text-[var(--brand-strong)]" : "text-zinc-600 hover:bg-zinc-100"}`}>
             {tab}
           </button>
         ))}

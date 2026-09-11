@@ -11,17 +11,22 @@
     "sync:categories": "tsx scripts/sync-categories.ts",
     "report:catalog": "tsx scripts/catalog-report.ts",
     "test:smoke": "tsx scripts/smoke-test.ts",
-    "test:ai": "tsx scripts/ai-tools-test.ts"
+    "test:ai": "tsx scripts/ai-tools-test.ts",
+    "test:payment": "tsx scripts/payment-test.ts",
+    "test:payment:http": "tsx scripts/payment-http-test.ts",
+    "payment:reconcile": "tsx scripts/reconcile-payments.ts",
+    "payment:backup": "tsx scripts/payment-backup.ts"
   },
   "dependencies": {
+    "@payos/node": "2.0.5",
     "@prisma/adapter-better-sqlite3": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "bcryptjs": "^3.0.3",
     "better-sqlite3": "^12.10.0",
-    "groq-sdk": "^1.5.0",
     "jose": "^6.2.3",
     "lucide-react": "^1.18.0",
     "next": "16.2.9",
+    "openai": "^7.15.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "zod": "^4.4.3"

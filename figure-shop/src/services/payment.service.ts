@@ -1,7 +1,10 @@
 import { prisma } from "@/lib/prisma";
+import { demoPaymentEnabled } from "@/lib/payment-config";
 
 export async function markDemoPaymentAsPaid(orderId: string, userId: string) {
-  const order = await prisma.order.findFirst({
+  if (!demoPaymentEnabled()) throw new Error("Thanh toán demo đang tắt");
+  return prisma.$transaction(async (tx) => {
+  const order = await tx.order.findFirst({
     where: {
       id: orderId,
       userId,
@@ -18,12 +21,12 @@ export async function markDemoPaymentAsPaid(orderId: string, userId: string) {
   if (order.paymentMethod !== "DEMO") {
     throw new Error("Đơn hàng không sử dụng thanh toán thử nghiệm");
   }
+  if (order.status === "CANCELLED" || order.paymentStatus === "REFUNDED") throw new Error("Đơn hàng không thể xác nhận thanh toán");
 
   if (order.paymentStatus === "PAID") {
     return order;
   }
 
-  return prisma.$transaction(async (tx) => {
     await tx.payment.update({
       where: {
         orderId: order.id,
@@ -41,7 +44,7 @@ export async function markDemoPaymentAsPaid(orderId: string, userId: string) {
       },
       data: {
         paymentStatus: "PAID",
-        status: "CONFIRMED",
+        ...(order.status === "PENDING" ? { status: "CONFIRMED" } : {}),
       },
       include: {
         items: true,

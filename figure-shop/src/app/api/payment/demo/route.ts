@@ -2,12 +2,14 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { markDemoPaymentAsPaid } from "@/services/payment.service";
 import { z } from "zod";
+import { assertSameOrigin, paymentError } from "@/lib/payment-http";
 
 const demoPaymentSchema = z.object({
   orderId: z.string().min(1, "Vui lòng chọn đơn hàng"),
 });
 
 export async function POST(request: Request) {
+  try { assertSameOrigin(request); } catch (error) { return paymentError(error); }
   const user = await getCurrentUser();
 
   if (!user) {

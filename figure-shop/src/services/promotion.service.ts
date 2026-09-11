@@ -36,6 +36,8 @@ export function getEffectiveProductPromotion(
   product: ProductWithPromotionTargets,
   now = new Date(),
 ): PromotionPricingInput | null {
+  if (product.type === "PREORDER") return null;
+
   const promotions = [
     product.promotion,
     ...(product.category?.promotions ?? []),

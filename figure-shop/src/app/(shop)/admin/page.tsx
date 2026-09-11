@@ -1,3 +1,6 @@
+import { RevenueOverview } from "@/components/admin/RevenueOverview";
+import { getAdminRevenueReport } from "@/services/admin-revenue.service";
+import { OrderStatusBadge } from "@/components/order/OrderStatusBadge";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { DashboardStats } from "@/components/admin/DashboardStats";
@@ -7,10 +10,13 @@ import {
 } from "@/services/admin.service";
 import { ProductPrice } from "@/components/product/ProductPrice";
 
-export default async function AdminDashboardPage() {
-  const [stats, recentOrders] = await Promise.all([
+export default async function AdminDashboardPage({ searchParams }: { searchParams: Promise<{ period?: string }> }) {
+  const { period } = await searchParams;
+  const days = period === "7" ? 7 : period === "90" ? 90 : 30;
+  const [stats, recentOrders, revenue] = await Promise.all([
     getAdminDashboardStats(),
     getRecentOrdersForAdmin(),
+    getAdminRevenueReport(days),
   ]);
 
   return (
@@ -38,6 +44,9 @@ export default async function AdminDashboardPage() {
         </Link>
         </div>
       </div>
+
+      <RevenueOverview report={revenue} />
+      {stats.needsReviewCount > 0 && <p className="mt-5 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">Có {stats.needsReviewCount} giao dịch cần đối soát trong hệ thống. Các giao dịch này không được tính vào báo cáo.</p>}
 
       <div className="mt-8">
         <DashboardStats stats={stats} />
@@ -70,11 +79,11 @@ export default async function AdminDashboardPage() {
                 <div>
                   <p className="font-medium">{order.orderNumber}</p>
                   <p className="mt-1 text-sm text-zinc-500">
-                    {order.user.name ?? order.user.email} - {order.status}
+                    {order.user.name ?? order.user.email}
                   </p>
                 </div>
 
-                <ProductPrice price={order.total} />
+                <div className="flex items-center gap-3"><OrderStatusBadge status={order.status} /><ProductPrice price={order.total} /></div>
               </Link>
             ))}
           </div>

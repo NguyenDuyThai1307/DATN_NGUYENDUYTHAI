@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { DemoPaymentButton } from "@/components/checkout/DemoPaymentButton";
+import { OnlinePaymentPanel } from "@/components/checkout/OnlinePaymentPanel";
+import { demoPaymentEnabled, isOnlinePayment } from "@/lib/payment-config";
 import { PaymentStatusBadge } from "@/components/order/PaymentStatusBadge";
 import { OrderStatusBadge } from "@/components/order/OrderStatusBadge";
 import { OrderProgress } from "@/components/order/OrderProgress";
@@ -197,7 +199,8 @@ export default async function AccountOrderDetailPage({
               </div>
             </div>
 
-            {order.paymentMethod === "DEMO" && order.paymentStatus !== "PAID" ? (
+            {isOnlinePayment(order.paymentMethod) && <OnlinePaymentPanel orderId={order.id} />}
+            {demoPaymentEnabled() && order.paymentMethod === "DEMO" && order.paymentStatus !== "PAID" && order.status !== "CANCELLED" ? (
               <div className="mt-4">
                 <DemoPaymentButton orderId={order.id} />
               </div>

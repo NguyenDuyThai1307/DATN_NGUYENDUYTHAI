@@ -1,9 +1,7 @@
-import { ProductPrice } from "@/components/product/ProductPrice";
 import {
   Boxes,
   CheckCircle2,
   Clock3,
-  Coins,
   ReceiptText,
   UsersRound,
 } from "lucide-react";
@@ -16,6 +14,11 @@ type DashboardStatsProps = {
     pendingOrders: number;
     completedOrders: number;
     paidRevenue: number;
+    demoRevenue: number;
+    sandboxRevenue: number;
+    legacyPaidRevenue: number;
+    liveTestRevenue: number;
+    needsReviewCount: number;
   };
 };
 
@@ -60,21 +63,6 @@ export function DashboardStats({ stats }: DashboardStatsProps) {
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-      <div className="rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-950 to-zinc-800 p-5 text-white shadow-sm sm:col-span-2 xl:col-span-5">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p className="text-sm text-zinc-300">Doanh thu đã thanh toán</p>
-            <p className="mt-2 text-3xl font-black tracking-tight">
-              <ProductPrice price={stats.paidRevenue} />
-            </p>
-          </div>
-
-          <span className="grid size-11 place-items-center rounded-full bg-white/10 text-amber-300 ring-1 ring-white/15">
-            <Coins size={22} aria-hidden="true" />
-          </span>
-        </div>
-      </div>
-
       {items.map((item) => {
         const Icon = item.icon;
 

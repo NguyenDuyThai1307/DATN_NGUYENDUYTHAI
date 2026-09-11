@@ -1,5 +1,7 @@
 # Figure Shop Notes
 
+> Current scope (2026-09-10): internal DEMO payment only. The notes below are historical; several “Later Improvements” already exist. See [CHECKLIST_AUDIT.md](CHECKLIST_AUDIT.md) for verified progress and remaining work, including admin order transitions and end-to-end DEMO tests.
+
 ## Technical Decisions
 
 - The project uses Next.js App Router as a full-stack framework.

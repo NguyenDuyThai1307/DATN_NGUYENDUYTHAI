@@ -8,6 +8,9 @@ export async function getAdminDashboardStats() {
     pendingOrders,
     completedOrders,
     revenueResult,
+    environmentTotals,
+    liveTestTotal,
+    needsReviewCount,
   ] = await Promise.all([
     prisma.product.count(),
     prisma.order.count(),
@@ -25,11 +28,17 @@ export async function getAdminDashboardStats() {
     prisma.order.aggregate({
       where: {
         paymentStatus: "PAID",
+        isTestOrder: false,
+        status: { not: "CANCELLED" },
+        payment: { is: { environment: "LIVE", needsReview: false } },
       },
       _sum: {
         total: true,
       },
     }),
+    prisma.payment.groupBy({ by: ["environment"], where: { status: "PAID" }, _sum: { amount: true } }),
+    prisma.payment.aggregate({ where: { status: "PAID", environment: "LIVE", order: { isTestOrder: true } }, _sum: { amount: true } }),
+    prisma.payment.count({ where: { needsReview: true } }),
   ]);
 
   return {
@@ -39,6 +48,11 @@ export async function getAdminDashboardStats() {
     pendingOrders,
     completedOrders,
     paidRevenue: revenueResult._sum.total ?? 0,
+    demoRevenue: environmentTotals.find((row) => row.environment === "DEMO")?._sum.amount ?? 0,
+    sandboxRevenue: environmentTotals.find((row) => row.environment === "SANDBOX")?._sum.amount ?? 0,
+    legacyPaidRevenue: environmentTotals.find((row) => row.environment === "LEGACY")?._sum.amount ?? 0,
+    liveTestRevenue: liveTestTotal._sum.amount ?? 0,
+    needsReviewCount,
   };
 }
 

@@ -95,18 +95,24 @@ export const latestNews = [
 
 export const videoReviews = [
   {
-    title: "Mở hộp Luffy Gear 5",
-    description: "Góc nhìn nhanh về độ hoàn thiện, màu sắc và cách trưng bày.",
+    title: "Luffy trong bộ sưu tập của bạn",
+    description: "Khám phá các phiên bản Luffy và chọn điểm nhấn cho kệ mô hình.",
+    href: "/products?q=Luffy",
+    linkLabel: "Xem mô hình Luffy",
     thumbnailUrl: "/images/products/luffy-gear-5.jpg",
   },
   {
     title: "Setup góc trưng bày Miku",
-    description: "Gợi ý phối màu và ánh sáng cho kệ mô hình nhỏ.",
+    description: "Tìm phiên bản Miku phù hợp với màu sắc và không gian yêu thích.",
+    href: "/products?q=Miku",
+    linkLabel: "Xem mô hình Miku",
     thumbnailUrl: "/images/products/miku-sakura.jpg",
   },
   {
     title: "Đặt trước mô hình cần lưu ý gì",
-    description: "Checklist ngắn trước khi đặt trước các phiên bản mới.",
+    description: "Kiểm tra thông tin sản phẩm và quy trình mua hàng trước khi đặt trước.",
+    href: "/guide",
+    linkLabel: "Xem hướng dẫn mua hàng",
     thumbnailUrl: "/images/products/yasuo-figure-riot.jpg",
   },
 ];

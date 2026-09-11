@@ -52,12 +52,12 @@ const figureGroups = [
 
 const navigation = [
   { href: "/", label: "Trang chủ", hasDropdown: false },
-  { href: "/products", label: "Sản phẩm khác", hasDropdown: true },
-  { href: "/products?sort=price_asc", label: "Khuyến mãi", hasDropdown: true },
+  { href: "/products", label: "Tất cả sản phẩm", hasDropdown: false },
+  { href: "/preorder", label: "Preorder", hasDropdown: false },
   { href: "/guide", label: "Hướng dẫn", hasDropdown: true },
   { href: "/news", label: "Tin tức", hasDropdown: true },
   { href: "/contact", label: "Liên hệ", hasDropdown: false },
-  { href: "/collections", label: "Khác", hasDropdown: true },
+  { href: "/brands", label: "Thương hiệu", hasDropdown: false },
 ] as const;
 
 export function MegaMenu() {
@@ -68,7 +68,7 @@ export function MegaMenu() {
       <div className="flex h-12 items-center justify-center gap-1">
         <Link
           href="/"
-          className="inline-flex h-10 items-center rounded-lg px-3 text-[15px] font-bold text-zinc-950 transition hover:bg-white/35 hover:text-zinc-800"
+          className="inline-flex h-10 items-center rounded-lg px-3 text-[15px] font-bold text-zinc-950 transition hover:bg-zinc-100 hover:text-zinc-800"
         >
           Trang chủ
         </Link>
@@ -77,10 +77,13 @@ export function MegaMenu() {
           className="relative"
           onMouseEnter={() => setIsOpen(true)}
           onMouseLeave={() => setIsOpen(false)}
+          onClick={(event) => { if (event.target instanceof Element && event.target.closest("a")) setIsOpen(false); }}
+          onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setIsOpen(false); }}
+          onKeyDown={(event) => { if (event.key === "Escape") { setIsOpen(false); event.currentTarget.querySelector("button")?.focus(); } }}
         >
           <button
             type="button"
-            className="inline-flex h-10 items-center gap-1.5 rounded-lg px-3 text-[15px] font-bold text-zinc-950 transition hover:bg-white/35 hover:text-zinc-800"
+            className="inline-flex h-10 items-center gap-1.5 rounded-lg px-3 text-[15px] font-bold text-zinc-950 transition hover:bg-zinc-100 hover:text-zinc-800"
             style={{ fontWeight: 700 }}
             onClick={() => setIsOpen((value) => !value)}
             aria-expanded={isOpen}
@@ -90,22 +93,22 @@ export function MegaMenu() {
           </button>
 
           {isOpen ? (
-            <div className="absolute left-0 top-full z-50 w-80 rounded-xl border border-zinc-200 bg-white py-2 shadow-xl">
+            <div className="motion-menu absolute left-0 top-full z-50 w-80 rounded-xl border border-zinc-200 bg-white py-2 shadow-xl">
               {figureGroups.map((item) => (
                 <div key={item.label} className="group/item relative">
                   <Link
                     href={item.href}
-                    className="flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-zinc-700 transition hover:bg-amber-50 hover:text-zinc-950"
+                    className="flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-zinc-700 transition hover:bg-rose-50 hover:text-zinc-950"
                   >
                     {item.label}
                     <ChevronRight size={15} aria-hidden="true" />
                   </Link>
-                  <div className="invisible absolute left-full top-0 w-60 rounded-r-xl border border-zinc-200 bg-white py-2 opacity-0 shadow-xl transition group-hover/item:visible group-hover/item:opacity-100">
+                  <div className="invisible absolute left-full top-0 w-60 rounded-r-xl border border-zinc-200 bg-white py-2 opacity-0 shadow-xl transition group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100">
                     {item.children.map(([label, href]) => (
                       <Link
                         key={label}
                         href={href}
-                        className="block px-4 py-2.5 text-sm font-semibold text-zinc-700 transition hover:bg-amber-50 hover:text-zinc-950"
+                        className="block px-4 py-2.5 text-sm font-semibold text-zinc-700 transition hover:bg-rose-50 hover:text-zinc-950"
                       >
                         {label}
                       </Link>
@@ -121,10 +124,10 @@ export function MegaMenu() {
           <Link
             key={item.label}
             href={item.href}
-            className="inline-flex h-10 items-center gap-1 rounded-lg px-3 text-[15px] font-bold text-zinc-950 transition hover:bg-white/35 hover:text-zinc-800"
+            className="inline-flex h-10 items-center gap-1 rounded-lg px-3 text-[15px] font-bold text-zinc-950 transition hover:bg-zinc-100 hover:text-zinc-800"
           >
             {item.label}
-            {item.hasDropdown ? <ChevronDown size={15} aria-hidden="true" /> : null}
+
           </Link>
         ))}
       </div>

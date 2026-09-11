@@ -5,6 +5,8 @@ import { OrderStatusBadge } from "@/components/order/OrderStatusBadge";
 import { PaymentStatusBadge } from "@/components/order/PaymentStatusBadge";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { prisma } from "@/lib/prisma";
+import { OnlinePaymentPanel } from "@/components/checkout/OnlinePaymentPanel";
+import { isOnlinePayment } from "@/lib/payment-config";
 
 type AdminOrderDetailPageProps = {
   params: Promise<{
@@ -30,7 +32,7 @@ export default async function AdminOrderDetailPage({
         },
       },
       items: true,
-      payment: true,
+      payment: { include: { attempts: { orderBy: { createdAt: "desc" }, include: { events: { orderBy: { receivedAt: "desc" }, take: 20 } } } } },
     },
   });
 
@@ -80,6 +82,14 @@ export default async function AdminOrderDetailPage({
       <div className="mt-8">
         <OrderProgress status={order.status} />
       </div>
+      {isOnlinePayment(order.paymentMethod) && <OnlinePaymentPanel orderId={order.id} allowPay={false} />}
+      {order.payment && <section className="mt-5 overflow-x-auto rounded-xl border p-5">
+        <h2 className="font-bold">Lịch sử thanh toán — {order.payment.environment}{order.isTestOrder ? " / Đơn thử nghiệm" : ""}</h2>
+        {order.payment.needsReview && <p className="mt-2 text-amber-800">Cần đối soát: {order.payment.reviewReason}</p>}
+        <table className="mt-3 w-full text-left text-sm"><thead><tr><th>Cổng / tham chiếu</th><th>Trạng thái</th><th>Số tiền</th><th>Giao dịch nhận được</th></tr></thead>
+          <tbody>{order.payment.attempts.map((attempt) => <tr key={attempt.id} className="border-t"><td className="py-3">{attempt.provider}<br />{attempt.providerReference}</td><td>{attempt.status}</td><td>{attempt.amount.toLocaleString("vi-VN")} đ</td><td>{attempt.events.map((event) => <p key={event.id}>{event.providerTransactionId ?? "Đối soát"}: {event.result} — {event.amount.toLocaleString("vi-VN")} đ</p>)}</td></tr>)}</tbody>
+        </table>
+      </section>}
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_340px]">
         <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { type ReactNode, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Check, LoaderCircle, TriangleAlert } from "lucide-react";
 
 type AddToCartButtonProps = {
   productId: string;
@@ -30,39 +31,47 @@ export function AddToCartButton({
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
+  const [succeeded, setSucceeded] = useState(false);
 
   async function handleAddToCart() {
+    if (isSubmitting) return;
     setIsSubmitting(true);
     setMessage("");
+    setSucceeded(false);
 
-    const response = await fetch("/api/cart/items", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        productId,
-        quantity,
-      }),
-    });
+    try {
+      const response = await fetch("/api/cart/items", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productId,
+          quantity,
+        }),
+      });
 
-    const data = await response.json().catch(() => null);
+      const data = await response.json().catch(() => null);
 
-    setIsSubmitting(false);
+      if (response.status === 401) {
+        router.push("/login");
+        return;
+      }
 
-    if (response.status === 401) {
-      router.push("/login");
-      return;
+      if (!response.ok) {
+        setMessage(data?.message ?? "Không thể thêm vào giỏ hàng");
+        return;
+      }
+
+      setMessage("Đã thêm vào giỏ hàng");
+      setSucceeded(true);
+      router.refresh();
+      onSuccess?.();
+    } catch {
+      setMessage("Không thể kết nối. Vui lòng thử lại.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    if (!response.ok) {
-      setMessage(data?.message ?? "Không thể thêm vào giỏ hàng");
-      return;
-    }
-
-    setMessage("Đã thêm vào giỏ hàng");
-    router.refresh();
-    onSuccess?.();
   }
 
   return (
@@ -72,17 +81,17 @@ export function AddToCartButton({
         onClick={handleAddToCart}
         disabled={disabled || isSubmitting}
         aria-label={ariaLabel ?? label}
+        aria-busy={isSubmitting}
+        title={message || ariaLabel || label}
         className={cn(
-          "rounded-md bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60",
+          "motion-button rounded-md bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60",
           className,
         )}
       >
-        {isSubmitting ? "Đang thêm..." : (children ?? label)}
+        {children ? (isSubmitting ? <LoaderCircle size={18} className="animate-spin" aria-hidden="true" /> : message ? (succeeded ? <Check size={18} aria-hidden="true" /> : <TriangleAlert size={18} aria-hidden="true" />) : children) : <span className="relative block"><span className={isSubmitting ? "invisible" : ""}>{label}</span>{isSubmitting && <span className="absolute inset-0 grid place-items-center"><LoaderCircle size={18} className="animate-spin" aria-hidden="true" /></span>}</span>}
       </button>
 
-      {showMessage && message ? (
-        <p className="mt-2 text-sm text-zinc-600">{message}</p>
-      ) : null}
+      <p role="status" className={showMessage ? "mt-2 min-h-5 text-sm text-zinc-600" : "sr-only"}>{message}</p>
     </div>
   );
 }

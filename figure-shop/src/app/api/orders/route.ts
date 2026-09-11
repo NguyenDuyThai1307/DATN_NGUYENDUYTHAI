@@ -7,6 +7,8 @@ import {
 } from "@/services/order.service";
 import { checkoutSchema } from "@/validations/order.schema";
 import { CouponValidationError } from "@/services/coupon.service";
+import { assertSameOrigin, paymentError, requestKey } from "@/lib/payment-http";
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   const user = await getCurrentUser();
@@ -26,6 +28,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  try { assertSameOrigin(request); requestKey(request); } catch (error) { return paymentError(error); }
   const user = await getCurrentUser();
 
   if (!user) {
@@ -35,7 +38,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const body = await request.json();
+  const body = await request.json().catch(() => null);
   const parsed = checkoutSchema.safeParse(body);
 
   if (!parsed.success) {
@@ -49,14 +52,15 @@ export async function POST(request: Request) {
   }
 
   try {
-    const order = await createOrderFromCart(user.id, parsed.data);
+    const replay = await prisma.order.findUnique({ where: { userId_checkoutKey: { userId: user.id, checkoutKey: requestKey(request) } }, select: { id: true } });
+    const order = await createOrderFromCart(user.id, parsed.data, requestKey(request));
 
     return NextResponse.json(
       {
         message: "Tạo đơn hàng thành công",
         order,
       },
-      { status: 201 },
+      { status: replay ? 200 : 201 },
     );
   } catch (error) {
     if (error instanceof StorefrontError) {
@@ -72,6 +76,6 @@ export async function POST(request: Request) {
         { status: 400 },
       );
     }
-    throw error;
+    return paymentError(error);
   }
 }

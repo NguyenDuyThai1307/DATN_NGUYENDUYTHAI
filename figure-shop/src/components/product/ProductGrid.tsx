@@ -1,6 +1,7 @@
 import type { ComponentProps, ReactNode } from "react";
 import { ProductCard } from "@/components/product/ProductCard";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { RevealSection } from "@/components/home/RevealSection";
 
 type ProductGridProps = {
   products: ComponentProps<typeof ProductCard>["product"][];
@@ -21,11 +22,11 @@ export function ProductGrid({
   }
 
   return (
-    <div className={`${gridClassName}${className ? ` ${className}` : ""}`}>
+    <RevealSection key={products.map(product => product.id).join(",")} className={`${gridClassName}${className ? ` ${className}` : ""}`}>
       {products.map((product) => (
         <ProductCard key={product.slug} product={product} />
       ))}
-    </div>
+    </RevealSection>
   );
 }
 
@@ -43,8 +44,8 @@ export function ProductGridSkeleton({ count = 10 }: { count?: number }) {
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-2/3" />
             <div className="flex items-center justify-between gap-3 pt-2">
-              <Skeleton className="h-5 w-24" />
-              <Skeleton className="h-8 w-20" />
+              <Skeleton className="h-5 w-1/2" />
+              <Skeleton className="size-11 shrink-0 rounded-full" />
             </div>
           </div>
         </div>

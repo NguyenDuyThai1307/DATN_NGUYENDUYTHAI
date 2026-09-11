@@ -72,7 +72,7 @@ export default async function ProductDetailPage({
           <p className="inline-flex rounded-full bg-rose-50 px-3 py-1 text-xs font-bold uppercase text-[var(--brand-strong)]">
             {product.type === "PREORDER" ? "Pre-order" : "Có sẵn"}
           </p>
-          <h1 className="mt-2 text-3xl font-black tracking-tight text-zinc-950 sm:text-4xl">
+          <h1 className="mt-2 text-2xl font-black tracking-tight text-zinc-950 sm:text-3xl">
             {product.name}
           </h1>
 
@@ -117,6 +117,12 @@ export default async function ProductDetailPage({
             </div>
           </div>
 
+          <ProductPurchasePanel
+            productId={product.id}
+            stock={product.stock}
+            isPreorder={product.type === "PREORDER"}
+          />
+
           {product.description ? (
             <p className="mt-6 leading-7 text-zinc-700">{product.description}</p>
           ) : null}
@@ -125,11 +131,6 @@ export default async function ProductDetailPage({
           {featuredCoupon ? (
             <PromoCodeBox code={featuredCoupon.code} name={featuredCoupon.name} />
           ) : null}
-          <ProductPurchasePanel
-            productId={product.id}
-            stock={product.stock}
-            isPreorder={product.type === "PREORDER"}
-          />
           <ServiceCommitments />
         </section>
       </div>

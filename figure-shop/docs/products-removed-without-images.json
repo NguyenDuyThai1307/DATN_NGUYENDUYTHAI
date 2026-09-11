@@ -1,0 +1,192 @@
+{
+  "removedAt": "2026-09-11T09:08:15.863Z",
+  "backup": "backups/before-remove-imageless-1789117695836.db",
+  "count": 37,
+  "products": [
+    {
+      "id": "cmsybu8k5001rksu5n2veh2hl",
+      "name": "Red Saber 1/7",
+      "slug": "red-saber-1-7"
+    },
+    {
+      "id": "cmsybu8sg002xksu5v7avqydy",
+      "name": "Nendoroid Monkey D. Luffy",
+      "slug": "nendoroid-monkey-d-luffy"
+    },
+    {
+      "id": "cmsybu8sn002yksu5kksmfjy8",
+      "name": "Nendoroid Roronoa Zoro",
+      "slug": "nendoroid-roronoa-zoro"
+    },
+    {
+      "id": "cmsybu8su002zksu5eiqsiaz4",
+      "name": "Nendoroid Nami",
+      "slug": "nendoroid-nami"
+    },
+    {
+      "id": "cmsybu8t40030ksu5jb6w4gof",
+      "name": "Nendoroid Tony Tony Chopper",
+      "slug": "nendoroid-tony-tony-chopper"
+    },
+    {
+      "id": "cmsyczfry003yygu5nmubznnd",
+      "name": "Taito Coreful Hatsune Miku Uniform Ver.",
+      "slug": "taito-coreful-hatsune-miku-uniform"
+    },
+    {
+      "id": "cmsyczfsf0040ygu5hpb31krx",
+      "name": "Taito Coreful Mai Sakurajima",
+      "slug": "taito-coreful-mai-sakurajima"
+    },
+    {
+      "id": "cmsyczfsu0042ygu580gsodnf",
+      "name": "Taito Desktop Cute Miku Nakano",
+      "slug": "taito-desktop-cute-miku-nakano"
+    },
+    {
+      "id": "cmsyczftv0046ygu54v4x2der",
+      "name": "Taito Aqua Float Girls Megumin",
+      "slug": "taito-aqua-float-girls-megumin"
+    },
+    {
+      "id": "cmsyczfv3004cygu5nva2ito2",
+      "name": "SEGA SPM Rei Ayanami",
+      "slug": "sega-spm-rei-ayanami"
+    },
+    {
+      "id": "cmsyczfwx004kygu5kin0efqm",
+      "name": "Prime 1 Studio Eren Attack Titan 1/4",
+      "slug": "prime1-eren-attack-titan-1-4"
+    },
+    {
+      "id": "cmsyczfx7004lygu5d0xk37rf",
+      "name": "Prime 1 Studio Levi Ackerman 1/4",
+      "slug": "prime1-levi-ackerman-1-4"
+    },
+    {
+      "id": "cmsyczfy6004pygu52r50ywie",
+      "name": "Prime 1 Studio Geralt of Rivia 1/4",
+      "slug": "prime1-geralt-rivia-1-4"
+    },
+    {
+      "id": "cmsyczfyj004qygu5adx414a0",
+      "name": "Prime 1 Studio Tifa Lockhart 1/4",
+      "slug": "prime1-tifa-lockhart-1-4"
+    },
+    {
+      "id": "cmsyczfyr004rygu5sb94ywcs",
+      "name": "Prime 1 Studio Vergil 1/4",
+      "slug": "prime1-vergil-1-4"
+    },
+    {
+      "id": "cmsyczfyx004sygu5vfb9xna7",
+      "name": "Prime 1 Studio Dante 1/4",
+      "slug": "prime1-dante-1-4"
+    },
+    {
+      "id": "cmsyczfzz004xygu5fugbemd8",
+      "name": "Tsume Art Ikigai Monkey D. Luffy",
+      "slug": "tsume-ikigai-monkey-d-luffy"
+    },
+    {
+      "id": "cmsyczg130051ygu58w1j9gor",
+      "name": "Tsume Art HQS+ Vegeta Final Flash",
+      "slug": "tsume-hqs-vegeta-final-flash"
+    },
+    {
+      "id": "cmsyczg1c0052ygu5wgqkghv0",
+      "name": "Infinity Studio Master Forge Geralt 1/4",
+      "slug": "infinity-studio-geralt-1-4"
+    },
+    {
+      "id": "cmsyczg1p0053ygu56tv1yhf2",
+      "name": "Infinity Studio Master Forge Yennefer 1/4",
+      "slug": "infinity-studio-yennefer-1-4"
+    },
+    {
+      "id": "cmsyczg1y0054ygu5i5zl6gi3",
+      "name": "Infinity Studio League of Legends Ahri 1/4",
+      "slug": "infinity-studio-ahri-1-4"
+    },
+    {
+      "id": "cmsyczg2f0056ygu5bgsg5tmx",
+      "name": "Infinity Studio Naruto Uzumaki 1/4",
+      "slug": "infinity-studio-naruto-1-4"
+    },
+    {
+      "id": "cmsyczg2q0057ygu53gzcxxdn",
+      "name": "Infinity Studio Sasuke Uchiha 1/4",
+      "slug": "infinity-studio-sasuke-1-4"
+    },
+    {
+      "id": "cmsyczg2y0058ygu5njc3uqp6",
+      "name": "Infinity Studio Dragon Ball Son Goku 1/4",
+      "slug": "infinity-studio-son-goku-1-4"
+    },
+    {
+      "id": "cmsyczg390059ygu52qkdo6ab",
+      "name": "Infinity Studio Dragon Ball Vegeta 1/4",
+      "slug": "infinity-studio-vegeta-1-4"
+    },
+    {
+      "id": "cmsyczg3h005aygu5t6w0a5cm",
+      "name": "Infinity Studio Evangelion Unit-01 1/4",
+      "slug": "infinity-studio-eva-unit-01-1-4"
+    },
+    {
+      "id": "cmsyczg3r005bygu5qy99az56",
+      "name": "Infinity Studio Evangelion Asuka 1/4",
+      "slug": "infinity-studio-asuka-1-4"
+    },
+    {
+      "id": "cmsyczgfv006sygu5tep0kapl",
+      "name": "Re-Ment Sumikko Gurashi Bakery",
+      "slug": "rement-sumikko-gurashi-bakery"
+    },
+    {
+      "id": "cmsyczgg2006tygu5v7b8u4fd",
+      "name": "Re-Ment Moomin Homestyle Dishes",
+      "slug": "rement-moomin-homestyle-dishes"
+    },
+    {
+      "id": "cmsyczggv006wygu5pebjp7ov",
+      "name": "Re-Ment Demon Slayer Hako Vision",
+      "slug": "rement-demon-slayer-hako-vision"
+    },
+    {
+      "id": "cmsyczgh3006xygu5l0vrgjyf",
+      "name": "Re-Ment Spy x Family Petit Rama",
+      "slug": "rement-spy-family-petit-rama"
+    },
+    {
+      "id": "cmsyczghg006yygu5repa98gd",
+      "name": "Re-Ment One Piece Terrarium Collection",
+      "slug": "rement-one-piece-terrarium"
+    },
+    {
+      "id": "cmsyczghn006zygu5gjnsbcg5",
+      "name": "Re-Ment Studio Ghibli Terrarium Collection",
+      "slug": "rement-ghibli-terrarium"
+    },
+    {
+      "id": "cmsyczgke007bygu5oodzk1cr",
+      "name": "Nendoroid Doll Link",
+      "slug": "nendoroid-doll-link"
+    },
+    {
+      "id": "cmsyczgkl007cygu5ieplthcf",
+      "name": "Nendoroid Doll Zelda",
+      "slug": "nendoroid-doll-zelda"
+    },
+    {
+      "id": "cmsyczgnd007pygu51yrzwqgy",
+      "name": "Azone PureNeemo Character Hatsune Miku",
+      "slug": "azone-pureneemo-hatsune-miku"
+    },
+    {
+      "id": "cmsyczgo0007sygu5pmw6avtb",
+      "name": "Azone PureNeemo Character Nezuko Kamado",
+      "slug": "azone-pureneemo-nezuko"
+    }
+  ]
+}

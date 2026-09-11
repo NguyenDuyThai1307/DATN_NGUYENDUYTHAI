@@ -25,7 +25,7 @@ export function MobileNav({ isAuthenticated }: MobileNavProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    function handlePointerDown(event: MouseEvent) {
+    function handlePointerDown(event: PointerEvent) {
       if (
         containerRef.current &&
         event.target instanceof Node &&
@@ -38,33 +38,37 @@ export function MobileNav({ isAuthenticated }: MobileNavProps) {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setIsOpen(false);
+        if (containerRef.current?.contains(document.activeElement)) {
+          containerRef.current.querySelector("button")?.focus();
+        }
       }
     }
 
-    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("pointerdown", handlePointerDown);
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("pointerdown", handlePointerDown);
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
   return (
-    <div ref={containerRef} className="relative md:hidden">
+    <div ref={containerRef} className="relative lg:hidden">
       <button
         type="button"
         onClick={() => setIsOpen((current) => !current)}
-        className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-zinc-300 text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-950"
+        className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-zinc-300 text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-950"
         aria-label={isOpen ? "Đóng menu" : "Mở menu"}
         aria-expanded={isOpen}
+        aria-controls="mobile-navigation"
         title={isOpen ? "Đóng menu" : "Mở menu"}
       >
         {isOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
       </button>
 
       {isOpen ? (
-        <div className="absolute right-0 top-full z-50 mt-2 w-60 rounded-md border border-zinc-200 bg-white p-2 shadow-lg">
+        <div id="mobile-navigation" className="motion-menu absolute right-0 top-full z-50 mt-2 max-h-[70dvh] w-64 overflow-y-auto rounded-xl border border-zinc-200 bg-white p-2 shadow-lg">
           <form action="/products" method="get" className="mb-2">
             <label htmlFor="mobile-site-search" className="sr-only">
               Tìm sản phẩm

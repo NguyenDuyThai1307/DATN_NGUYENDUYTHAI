@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { RevealSection } from "./RevealSection";
 
 type HomeSectionProps = {
   title: string;
@@ -19,8 +20,8 @@ export function HomeSection({
   className = "",
 }: HomeSectionProps) {
   return (
-    <section className={`py-7 sm:py-10 ${className}`}>
-      <div className="mb-5 flex items-end justify-between gap-4 sm:mb-6">
+    <RevealSection className={`py-7 sm:py-10 ${className}`}>
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3 sm:mb-6">
         <div>
           {eyebrow ? (
             <p className="mb-1 text-xs font-bold uppercase text-[var(--brand-strong)]">
@@ -31,13 +32,13 @@ export function HomeSection({
         </div>
 
         {href ? (
-          <Link href={href} className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--brand-strong)] hover:text-zinc-950">
+          <Link href={href} className="inline-flex min-h-11 shrink-0 items-center gap-1 text-sm font-semibold text-[var(--brand-strong)] hover:text-zinc-950">
             {linkLabel}
             <ArrowRight size={16} aria-hidden="true" />
           </Link>
         ) : null}
       </div>
       {children}
-    </section>
+    </RevealSection>
   );
 }

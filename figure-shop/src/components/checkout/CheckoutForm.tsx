@@ -68,7 +68,7 @@ function FieldError({ message }: { message?: string }) {
   return <p className="mt-1 text-xs font-medium text-red-600">{message}</p>;
 }
 
-export function CheckoutForm() {
+export function CheckoutForm({ methods }: { methods: { value: string; label: string }[] }) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -100,16 +100,22 @@ export function CheckoutForm() {
     setIsSubmitting(true);
 
     try {
+      const payload = {
+        ...values,
+        note: getFormValue(formData, "note"),
+        paymentMethod: formData.get("paymentMethod"),
+      };
+      const payloadText = JSON.stringify(payload);
+      const stored = JSON.parse(sessionStorage.getItem("figure-checkout-request") ?? "null") as { payload: string; key: string } | null;
+      const key = stored?.payload === payloadText ? stored.key : crypto.randomUUID();
+      sessionStorage.setItem("figure-checkout-request", JSON.stringify({ payload: payloadText, key }));
       const response = await fetch("/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Idempotency-Key": key,
         },
-        body: JSON.stringify({
-          ...values,
-          note: getFormValue(formData, "note"),
-          paymentMethod: formData.get("paymentMethod"),
-        }),
+        body: payloadText,
       });
 
       const data = await response.json().catch(() => null);
@@ -145,7 +151,17 @@ export function CheckoutForm() {
         return;
       }
 
-      router.push(`/checkout/success?orderId=${data.order.id}`);
+      sessionStorage.removeItem("figure-checkout-request");
+      const online = ["PAYOS", "VNPAY"].includes(data.order.paymentMethod);
+      if (online && data.order.paymentStatus !== "PAID") {
+        const paymentResponse = await fetch("/api/payment/requests", {
+          method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": crypto.randomUUID() },
+          body: JSON.stringify({ orderId: data.order.id }),
+        }).catch(() => null);
+        const payment = await paymentResponse?.json().catch(() => null);
+        if (paymentResponse?.ok && payment?.checkoutUrl) { window.location.assign(payment.checkoutUrl); return; }
+      }
+      router.push(`/checkout/${online ? "payment-result" : "success"}?orderId=${data.order.id}`);
     } catch {
       setError("Không thể kết nối đến máy chủ. Vui lòng thử lại.");
     } finally {
@@ -264,9 +280,7 @@ export function CheckoutForm() {
           defaultValue="COD"
           className="mt-2"
         >
-          <option value="COD">COD</option>
-          <option value="BANK_TRANSFER">Chuyển khoản</option>
-          <option value="DEMO">Thanh toán thử nghiệm</option>
+          {methods.map((method) => <option key={method.value} value={method.value}>{method.label}</option>)}
         </Select>
       </div>
 

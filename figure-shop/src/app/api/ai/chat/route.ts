@@ -55,11 +55,11 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (!process.env.GROQ_API_KEY?.trim()) {
+  if (!process.env.OPENAI_API_KEY?.trim()) {
     return NextResponse.json(
       {
         message:
-          "Trợ lý AI chưa được cấu hình. Vui lòng thêm GROQ_API_KEY vào file .env.",
+          "Trợ lý AI chưa được cấu hình. Vui lòng thêm OPENAI_API_KEY vào file .env.",
       },
       { status: 503 },
     );

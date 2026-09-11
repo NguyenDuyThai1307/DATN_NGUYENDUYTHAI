@@ -1,4 +1,7 @@
 import type { ProductCategorySlug } from "../src/constants/product-categories";
+import sourcedProductImages from "./sourced-product-images.json";
+
+const sourcedImageBySlug: Record<string, string> = sourcedProductImages;
 
 export type CatalogProduct = {
   name: string;
@@ -58,7 +61,6 @@ const scaleProducts: CatalogEntry[] = [
   ["Lucy Edgerunners 1/7", "lucy-edgerunners-1-7", "kotobukiya"],
   ["Lio Fotia 1/7", "lio-fotia-1-7", "kotobukiya"],
   ["Mamako Oosuki 1/7", "mamako-oosuki-1-7", "kotobukiya"],
-  ["Red Saber 1/7", "red-saber-1-7", "kotobukiya"],
   ["Senpai 1/7", "senpai-tejina-1-7", "kotobukiya"],
   ["Ai Hinatsuru 1/7", "ai-hinatsuru-1-7", "kotobukiya"],
   ["Megumin 1/7", "megumin-1-7", "good-smile-company"],
@@ -102,10 +104,6 @@ const nendoroidProducts: CatalogEntry[] = [
   ["Nendoroid Nezuko Kamado", "nendoroid-nezuko-kamado", "good-smile-company"],
   ["Nendoroid Zenitsu Agatsuma", "nendoroid-zenitsu-agatsuma", "good-smile-company"],
   ["Nendoroid Inosuke Hashibira", "nendoroid-inosuke-hashibira", "good-smile-company"],
-  ["Nendoroid Monkey D. Luffy", "nendoroid-monkey-d-luffy", "good-smile-company"],
-  ["Nendoroid Roronoa Zoro", "nendoroid-roronoa-zoro", "good-smile-company"],
-  ["Nendoroid Nami", "nendoroid-nami", "good-smile-company"],
-  ["Nendoroid Tony Tony Chopper", "nendoroid-tony-tony-chopper", "good-smile-company"],
   ["Nendoroid Naruto Uzumaki", "nendoroid-naruto-uzumaki", "good-smile-company"],
   ["Nendoroid Sasuke Uchiha", "nendoroid-sasuke-uchiha", "good-smile-company"],
   ["Nendoroid Sakura Haruno", "nendoroid-sakura-haruno", "good-smile-company"],
@@ -125,21 +123,16 @@ const prizeProducts: CatalogEntry[] = [
   ["Banpresto Q Posket Anya Forger", "banpresto-q-posket-anya-forger", "banpresto"],
   ["Banpresto Q Posket Sailor Moon", "banpresto-q-posket-sailor-moon", "banpresto"],
   ["Banpresto The Amazing Heroes Izuku Midoriya", "banpresto-amazing-heroes-izuku-midoriya", "banpresto"],
-  ["Taito Coreful Hatsune Miku Uniform Ver.", "taito-coreful-hatsune-miku-uniform", "taito"],
   ["Taito Coreful Kurumi Tokisaki", "taito-coreful-kurumi-tokisaki", "taito"],
-  ["Taito Coreful Mai Sakurajima", "taito-coreful-mai-sakurajima", "taito"],
   ["Taito Desktop Cute Rem", "taito-desktop-cute-rem", "taito"],
-  ["Taito Desktop Cute Miku Nakano", "taito-desktop-cute-miku-nakano", "taito"],
   ["Taito AMP+ Frieren", "taito-amp-plus-frieren", "taito"],
   ["Taito AMP+ Marin Kitagawa", "taito-amp-plus-marin-kitagawa", "taito"],
   ["Taito Artist MasterPiece Hatsune Miku", "taito-artist-masterpiece-hatsune-miku", "taito"],
-  ["Taito Aqua Float Girls Megumin", "taito-aqua-float-girls-megumin", "taito"],
   ["Taito Aqua Float Girls Albedo", "taito-aqua-float-girls-albedo", "taito"],
   ["SEGA Luminasta Power", "sega-luminasta-power", "sega-fave"],
   ["SEGA Luminasta Makima", "sega-luminasta-makima", "sega-fave"],
   ["SEGA Luminasta Bocchi Hitori Gotoh", "sega-luminasta-hitori-gotoh", "sega-fave"],
   ["SEGA SPM Asuka Shikinami Langley", "sega-spm-asuka-langley", "sega-fave"],
-  ["SEGA SPM Rei Ayanami", "sega-spm-rei-ayanami", "sega-fave"],
   ["FuRyu BiCute Bunnies Albedo", "furyu-bicute-bunnies-albedo", "furyu"],
   ["FuRyu BiCute Bunnies Hatsune Miku", "furyu-bicute-bunnies-hatsune-miku", "furyu"],
   ["FuRyu Trio-Try-iT Yor Forger", "furyu-trio-try-it-yor-forger", "furyu"],
@@ -150,34 +143,17 @@ const prizeProducts: CatalogEntry[] = [
 const resinProducts: CatalogEntry[] = [
   ["Prime 1 Studio Guts Berserker Armor 1/4", "prime1-guts-berserker-armor-1-4", "prime-1-studio"],
   ["Prime 1 Studio Griffith Falcon of Light 1/4", "prime1-griffith-falcon-of-light-1-4", "prime-1-studio"],
-  ["Prime 1 Studio Eren Attack Titan 1/4", "prime1-eren-attack-titan-1-4", "prime-1-studio"],
-  ["Prime 1 Studio Levi Ackerman 1/4", "prime1-levi-ackerman-1-4", "prime-1-studio"],
   ["Prime 1 Studio Alita Berserker 1/4", "prime1-alita-berserker-1-4", "prime-1-studio"],
   ["Prime 1 Studio Cloud Strife 1/4", "prime1-cloud-strife-1-4", "prime-1-studio"],
   ["Prime 1 Studio Sephiroth 1/4", "prime1-sephiroth-1-4", "prime-1-studio"],
-  ["Prime 1 Studio Geralt of Rivia 1/4", "prime1-geralt-rivia-1-4", "prime-1-studio"],
-  ["Prime 1 Studio Tifa Lockhart 1/4", "prime1-tifa-lockhart-1-4", "prime-1-studio"],
-  ["Prime 1 Studio Vergil 1/4", "prime1-vergil-1-4", "prime-1-studio"],
-  ["Prime 1 Studio Dante 1/4", "prime1-dante-1-4", "prime-1-studio"],
   ["Prime 1 Studio Jin Sakai 1/4", "prime1-jin-sakai-1-4", "prime-1-studio"],
   ["Tsume Art HQS Naruto Uzumaki", "tsume-hqs-naruto-uzumaki", "tsume-art"],
   ["Tsume Art HQS Sasuke Uchiha", "tsume-hqs-sasuke-uchiha", "tsume-art"],
   ["Tsume Art HQS Madara Uchiha", "tsume-hqs-madara-uchiha", "tsume-art"],
-  ["Tsume Art Ikigai Monkey D. Luffy", "tsume-ikigai-monkey-d-luffy", "tsume-art"],
   ["Tsume Art Ikigai Roronoa Zoro", "tsume-ikigai-roronoa-zoro", "tsume-art"],
   ["Tsume Art Ikigai Tanjiro Kamado", "tsume-ikigai-tanjiro-kamado", "tsume-art"],
   ["Tsume Art Ikigai Nezuko Kamado", "tsume-ikigai-nezuko-kamado", "tsume-art"],
-  ["Tsume Art HQS+ Vegeta Final Flash", "tsume-hqs-vegeta-final-flash", "tsume-art"],
-  ["Infinity Studio Master Forge Geralt 1/4", "infinity-studio-geralt-1-4", "infinity-studio"],
-  ["Infinity Studio Master Forge Yennefer 1/4", "infinity-studio-yennefer-1-4", "infinity-studio"],
-  ["Infinity Studio League of Legends Ahri 1/4", "infinity-studio-ahri-1-4", "infinity-studio"],
   ["Infinity Studio League of Legends Jinx 1/4", "infinity-studio-jinx-1-4", "infinity-studio"],
-  ["Infinity Studio Naruto Uzumaki 1/4", "infinity-studio-naruto-1-4", "infinity-studio"],
-  ["Infinity Studio Sasuke Uchiha 1/4", "infinity-studio-sasuke-1-4", "infinity-studio"],
-  ["Infinity Studio Dragon Ball Son Goku 1/4", "infinity-studio-son-goku-1-4", "infinity-studio"],
-  ["Infinity Studio Dragon Ball Vegeta 1/4", "infinity-studio-vegeta-1-4", "infinity-studio"],
-  ["Infinity Studio Evangelion Unit-01 1/4", "infinity-studio-eva-unit-01-1-4", "infinity-studio"],
-  ["Infinity Studio Evangelion Asuka 1/4", "infinity-studio-asuka-1-4", "infinity-studio"],
 ];
 
 const modelKitProducts: CatalogEntry[] = [
@@ -236,14 +212,8 @@ const miniBlindBoxProducts: CatalogEntry[] = [
   ["Re-Ment Kirby Dreamy Gear Collection", "rement-kirby-dreamy-gear", "re-ment"],
   ["Re-Ment Snoopy Coffee Roastery", "rement-snoopy-coffee-roastery", "re-ment"],
   ["Re-Ment Sanrio Cinnamoroll Cafe", "rement-sanrio-cinnamoroll-cafe", "re-ment"],
-  ["Re-Ment Sumikko Gurashi Bakery", "rement-sumikko-gurashi-bakery", "re-ment"],
-  ["Re-Ment Moomin Homestyle Dishes", "rement-moomin-homestyle-dishes", "re-ment"],
   ["Re-Ment Hatsune Miku Room", "rement-hatsune-miku-room", "re-ment"],
   ["Re-Ment My Hero Academia DesQ", "rement-my-hero-academia-desq", "re-ment"],
-  ["Re-Ment Demon Slayer Hako Vision", "rement-demon-slayer-hako-vision", "re-ment"],
-  ["Re-Ment Spy x Family Petit Rama", "rement-spy-family-petit-rama", "re-ment"],
-  ["Re-Ment One Piece Terrarium Collection", "rement-one-piece-terrarium", "re-ment"],
-  ["Re-Ment Studio Ghibli Terrarium Collection", "rement-ghibli-terrarium", "re-ment"],
 ];
 
 const nendoroidDollProducts: CatalogEntry[] = [
@@ -258,8 +228,6 @@ const nendoroidDollProducts: CatalogEntry[] = [
   ["Nendoroid Doll Nezuko Kamado", "nendoroid-doll-nezuko-kamado", "good-smile-company"],
   ["Nendoroid Doll Zenitsu Agatsuma", "nendoroid-doll-zenitsu-agatsuma", "good-smile-company"],
   ["Nendoroid Doll Inosuke Hashibira", "nendoroid-doll-inosuke-hashibira", "good-smile-company"],
-  ["Nendoroid Doll Link", "nendoroid-doll-link", "good-smile-company"],
-  ["Nendoroid Doll Zelda", "nendoroid-doll-zelda", "good-smile-company"],
   ["Nendoroid Doll Emily", "nendoroid-doll-emily", "good-smile-company"],
   ["Nendoroid Doll Ryo", "nendoroid-doll-ryo", "good-smile-company"],
 ];
@@ -275,10 +243,8 @@ const collectibleDollProducts: CatalogEntry[] = [
   ["Dollfie Dream Ranka Lee", "dollfie-dream-ranka-lee", "volks"],
   ["Dollfie Dream Sheryl Nome", "dollfie-dream-sheryl-nome", "volks"],
   ["Dollfie Dream 2B", "dollfie-dream-2b", "volks"],
-  ["Azone PureNeemo Character Hatsune Miku", "azone-pureneemo-hatsune-miku", "azone"],
   ["Azone PureNeemo Character Rem", "azone-pureneemo-rem", "azone"],
   ["Azone PureNeemo Character Ram", "azone-pureneemo-ram", "azone"],
-  ["Azone PureNeemo Character Nezuko Kamado", "azone-pureneemo-nezuko", "azone"],
   ["Azone Assault Lily Riri Hitotsuyanagi", "azone-assault-lily-riri", "azone"],
 ];
 
@@ -308,7 +274,7 @@ function createProducts(
       price: basePrice + (index % 10) * 170_000,
       stock: preorder ? 0 : 4 + (index % 17),
       type: preorder ? "PREORDER" : "IN_STOCK",
-      imageUrl: imageBySlug[slug],
+      imageUrl: imageBySlug[slug] ?? sourcedImageBySlug[slug],
     };
   });
 }

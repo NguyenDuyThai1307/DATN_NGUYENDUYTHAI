@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CirclePlay, Copy, PackageCheck } from "lucide-react";
+import { Copy, PackageCheck } from "lucide-react";
 import {
   featuredSeries,
   latestNews,
@@ -77,21 +77,21 @@ export function PromoShortcutGrid() {
 
 export function FeaturedCategoryGrid({ categories }: { categories: CategoryItem[] }) {
   return (
-    <div className="grid overflow-hidden rounded-lg border border-zinc-200 bg-white sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid overflow-hidden rounded-lg border border-zinc-200 bg-white grid-cols-2 lg:grid-cols-4">
       {categories.map((category) => (
         <Link
           key={category.id}
           href={`/collections/${category.slug}`}
-          className="group relative min-h-44 overflow-hidden border-b border-r border-zinc-200 p-5 transition hover:bg-rose-50 sm:last:border-b-0 lg:border-b-0"
+          className="group flex flex-col overflow-hidden border-b border-r border-zinc-200 p-4 transition hover:bg-rose-50"
         >
           {category.imageUrl ? (
-            <div className="pointer-events-none absolute bottom-3 right-3 h-24 w-24 overflow-hidden rounded-2xl opacity-20 transition duration-300 group-hover:scale-110 group-hover:opacity-35">
+            <div className="relative mx-auto mb-4 h-24 w-24 overflow-hidden rounded-2xl transition duration-200 group-hover:scale-[1.02]">
               <Image
                 src={category.imageUrl}
                 alt=""
                 fill
                 sizes="96px"
-                className="object-cover"
+                className="object-contain"
               />
             </div>
           ) : null}
@@ -104,7 +104,7 @@ export function FeaturedCategoryGrid({ categories }: { categories: CategoryItem[
             <PackageCheck size={20} className="text-[var(--brand)]" aria-hidden="true" />
           </div>
 
-          <span className="relative z-10 mt-12 inline-flex text-xs font-bold text-[var(--brand-strong)]">
+          <span className="mt-auto inline-flex pt-4 text-xs font-bold text-[var(--brand-strong)]">
             Xem danh mục
           </span>
         </Link>
@@ -120,7 +120,7 @@ export function ServiceBanners() {
         const Icon = item.icon;
 
         return (
-          <Link key={item.title} href="/products" className="group rounded-lg border border-rose-100 bg-rose-50 p-5 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm">
+          <Link key={item.title} href="/guide" className="group rounded-2xl border border-zinc-200 bg-white p-5 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm">
             <Icon size={24} className="text-[var(--brand-strong)]" aria-hidden="true" />
             <p className="mt-5 font-bold text-zinc-950">{item.title}</p>
             <p className="mt-1 text-sm leading-6 text-zinc-600">{item.description}</p>
@@ -145,20 +145,16 @@ export function VideoReviewSection() {
               alt={review.title}
               fill
               sizes="(min-width: 768px) 33vw, 100vw"
-              className="object-cover transition duration-300 group-hover:scale-105"
+              className="object-contain p-3 transition duration-200 group-hover:scale-[1.02]"
             />
-            <div className="absolute inset-0 bg-zinc-950/25 transition group-hover:bg-zinc-950/15" />
-            <div className="absolute inset-0 grid place-items-center">
-              <span className="grid size-12 place-items-center rounded-full bg-white/90 text-[var(--brand-strong)] shadow-sm">
-                <CirclePlay size={30} aria-hidden="true" />
-              </span>
-            </div>
+
           </div>
           <div className="p-4">
             <p className="font-bold text-zinc-950">{review.title}</p>
             <p className="mt-1 text-sm leading-6 text-zinc-500">
               {review.description}
             </p>
+            <Link href={review.href} className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-[var(--brand-strong)]">{review.linkLabel}</Link>
           </div>
         </article>
       ))}
@@ -187,7 +183,7 @@ export function LatestNewsSection() {
           <h3 className="mt-3 text-lg font-bold text-zinc-950">{article.title}</h3>
           <p className="mt-2 text-sm leading-6 text-zinc-600">{article.excerpt}</p>
           <Link href={article.href} className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[var(--brand-strong)] hover:text-zinc-950">
-            Đọc thêm <Copy size={14} aria-hidden="true" />
+            Khám phá sản phẩm liên quan <Copy size={14} aria-hidden="true" />
           </Link>
         </article>
       ))}

@@ -2,6 +2,8 @@
 
 Figure Shop is a graduation project for a collectible figure e-commerce website.
 
+Current payment scope (2026-09-10): internal DEMO only; payOS/VNPAY are disabled. See [verified checklist and remaining work](docs/CHECKLIST_AUDIT.md).
+
 ## Tech Stack
 
 - Next.js App Router
@@ -20,6 +22,7 @@ Figure Shop is a graduation project for a collectible figure e-commerce website.
 - Cart
 - Checkout and order creation
 - Demo payment
+- payOS and VNPAY Sandbox: see [payment setup](docs/PAYMENT_SETUP.md)
 - Customer order history
 - Admin dashboard
 - Admin order and product overview

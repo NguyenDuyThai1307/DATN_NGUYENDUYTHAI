@@ -2,6 +2,8 @@
 
 File nay la ban ghi nho chung cho do an. Moi khi lam viec voi code, doc file nay truoc de bam dung tech stack, structure, bao mat va thu tu trien khai da chot.
 
+**Rà soát 10/09/2026:** chủ dự án chốt chỉ thanh toán DEMO nội bộ. Xem [checklist kiểm chứng và việc còn lại](figure-shop/docs/CHECKLIST_AUDIT.md). Các checklist lịch sử phía dưới không đồng nghĩa toàn bộ hồ sơ báo cáo hoặc UI/E2E đã được nghiệm thu.
+
 ## 1. Muc Tieu Du An
 
 Xay dung website thuong mai dien tu cho cua hang mo hinh suu tam, ho tro:
@@ -26,7 +28,7 @@ Authentication: JWT only
 Password hashing: bcryptjs
 Validation: Zod
 Upload anh: Cloudinary hoac local truoc, Cloudinary sau
-Payment: COD + chuyen khoan/demo payment truoc
+Payment: pham vi demo noi bo; payOS/VNPAY da co code nhung tat, khong nghiem thu cong
 Package manager: npm
 Code editor: VSCode
 Version control: Git + GitHub
@@ -302,7 +304,7 @@ Tien do hien tai:
 [x] 11. Lam admin dashboard
 [x] 12. Lam preorder
 [x] 13. Lam payment demo
-[x] 14. Polish UI va chuan bi bao cao
+[~] 14. Polish UI da co; nghiem thu truc quan va ho so bao cao can xac nhan
 ```
 
 ## 7. Quy Tac Lam Viec
@@ -410,7 +412,7 @@ src/app/api/admin/products/[id]/route.ts
 
 ### 8.5. Logic Khuyen Mai
 
-````text
+```text
 [x] Them pricing.service.ts de tinh gia tap trung
 [x] Ho tro gia goc, gia sau giam, phan tram giam
 [x] Promotion theo san pham: admin tao, sua, tat, co thoi gian ap dung
@@ -419,15 +421,24 @@ src/app/api/admin/products/[id]/route.ts
 [x] Coupon: ap dung/go ma tai gio hang va hien thi o checkout
 [x] Coupon: server kiem tra lai khi tao order va cap nhat usedCount
 [x] Luu snapshot promotion/coupon vao Order va OrderItem
+```
 
-### 8.6. Thanh Toan That Sau Nay
+### 8.6. Kế Hoạch Thanh Toán Online
+
+Kế hoạch chi tiết: [Tích hợp payOS và VNPAY Sandbox](figure-shop/docs/PAYMENT_INTEGRATION_PLAN.md).
+
+Trạng thái 10/09/2026: code nền tảng và hai adapter đã triển khai, test nội bộ đã qua. Chủ dự án chuyển sang chỉ DEMO; nghiệm thu cổng thật/Sandbox, tunnel và scheduler không còn thuộc phạm vi. Checkout/dashboard còn cần đồng bộ giao diện DEMO theo CHECKLIST_AUDIT.md.
 
 ```text
 [x] Giu payment demo cho bao cao hien tai
-[ ] Sau khi khung do an on dinh moi tich hop VNPay sandbox
-[ ] Neu them VNPay: them PaymentMethod VNPAY, env VNPAY_*, helper ky/verify, route create/return
-[ ] Secret thanh toan chi nam trong .env, khong dua ra client
-````
+[x] Lap ke hoach chi tiet payOS + VNPAY Sandbox
+[x] Luot TT1: schema, payment attempt, chong xu ly lap, ton kho/coupon, cau hinh
+[x] Luot TT2: payOS code + mock test; chua nghiem thu cong
+[x] Luot TT3: VNPAY code + mock test; chua nghiem thu cong
+[~] Luot TT4: UI/API da co; E2E DEMO, truc quan va bao cao con lai; van hanh cong ngoai pham vi
+```
+
+Thực hiện từng lượt thanh toán, ghi bằng chứng kiểm thử trước khi đánh dấu hoàn thành. Tài khoản, khóa kết nối và giao dịch thật do chủ dự án chuẩn bị/thực hiện; khóa chỉ lưu phía server.
 
 ### 8.7. Uu Tien Lan Lam Tiep Theo
 
@@ -648,7 +659,7 @@ Hang muc con lai de phat trien sau moc nay:
 [ ] Lay video review/thumbnail tu nguon noi dung that thay cho du lieu tinh
 [ ] Danh gia lai nhu cau shadcn/ui, framer-motion va sonner de tranh trung lap UI primitives hien co
 [ ] Bo sung cac model Series, Review, Wishlist, InventoryLog neu dua vao pham vi khoa luan
-[ ] Tich hop VNPay sandbox sau khi chot luong thanh toan demo
+[-] Nghiem thu payOS/VNPAY: ngoai pham vi theo quyet dinh chi DEMO ngay 10/09/2026
 ```
 
 Role and Tech Stack:

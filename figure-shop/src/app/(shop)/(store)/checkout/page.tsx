@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CheckoutForm } from "@/components/checkout/CheckoutForm";
+import { paymentMethods } from "@/lib/payment-config";
 import { getCurrentUser } from "@/lib/auth";
 import { Breadcrumbs } from "@/components/product/Breadcrumbs";
 import { ProductPrice } from "@/components/product/ProductPrice";
@@ -68,7 +69,7 @@ export default async function CheckoutPage() {
               Thông tin giao hàng
             </h2>
           </div>
-          <CheckoutForm />
+          <CheckoutForm methods={paymentMethods()} />
         </section>
 
         <aside className="h-fit rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm lg:sticky lg:top-36">

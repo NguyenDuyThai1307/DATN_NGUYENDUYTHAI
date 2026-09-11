@@ -58,6 +58,25 @@ enum PaymentMethod {
   COD
   BANK_TRANSFER
   DEMO
+  PAYOS
+  VNPAY
+}
+
+enum PaymentEnvironment {
+  LEGACY
+  DEMO
+  SANDBOX
+  LIVE
+}
+
+enum PaymentAttemptStatus {
+  CREATING
+  PENDING
+  UNKNOWN
+  SUCCEEDED
+  FAILED
+  CANCELLED
+  EXPIRED
 }
 
 enum PaymentStatus {
@@ -257,6 +276,13 @@ model Order {
   status        OrderStatus   @default(PENDING)
   paymentMethod PaymentMethod @default(COD)
   paymentStatus PaymentStatus @default(UNPAID)
+  checkoutKey String?
+  checkoutPayloadHash String?
+  paymentExpiresAt DateTime?
+  cancelRequestedAt DateTime?
+  reservationReleasedAt DateTime?
+  couponUsageReserved Boolean @default(false)
+  isTestOrder Boolean @default(false)
 
   subtotal             Int
   discountAmount       Int     @default(0)
@@ -281,6 +307,9 @@ model Order {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([userId, checkoutKey])
+  @@index([paymentExpiresAt, reservationReleasedAt])
 }
 
 model OrderItem {
@@ -294,6 +323,7 @@ model OrderItem {
   finalPrice     Int    @default(0)
   discountAmount Int    @default(0)
   quantity       Int
+  reservedQuantity Int @default(0)
   total          Int
 
   order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
@@ -310,9 +340,53 @@ model Payment {
   status          PaymentStatus @default(UNPAID)
   transactionCode String?
   paidAt          DateTime?
+  environment PaymentEnvironment @default(LEGACY)
+  needsReview Boolean @default(false)
+  reviewReason String?
+  attempts PaymentAttempt[]
 
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model PaymentAttempt {
+  id String @id @default(cuid())
+  paymentId String
+  payment Payment @relation(fields: [paymentId], references: [id])
+  provider PaymentMethod
+  environment PaymentEnvironment
+  merchantAccountId String
+  providerReference String @unique
+  providerPaymentId String?
+  providerCreatedAt String
+  amount Int
+  currency String @default("VND")
+  status PaymentAttemptStatus @default(CREATING)
+  activePaymentId String? @unique
+  requestKey String @unique
+  checkoutUrl String?
+  expiresAt DateTime
+  lastReconciledAt DateTime?
+  leaseUntil DateTime?
+  leaseToken String?
+  events PaymentEvent[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, expiresAt])
+  @@index([paymentId, createdAt])
+}
+
+model PaymentEvent {
+  id String @id @default(cuid())
+  attemptId String
+  attempt PaymentAttempt @relation(fields: [attemptId], references: [id])
+  eventKey String @unique
+  providerTransactionId String?
+  amount Int
+  result String
+  receivedAt DateTime @default(now())
+  processedAt DateTime @default(now())
 }

@@ -3,7 +3,7 @@
 :root {
   --background: #f7f7f8;
   --foreground: #1d1d22;
-  --brand: #e75a63;
+  --brand: #bc3440;
   --brand-strong: #bc3440;
   --brand-soft: #fff0f1;
   --header-yellow: #ffc928;
@@ -33,4 +33,128 @@ textarea {
 
 button {
   font-family: inherit;
+}
+
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--brand-strong);
+  outline-offset: 3px;
+}
+
+.reveal-section {
+  transition: opacity 600ms ease, transform 600ms cubic-bezier(.2,.7,.2,1);
+}
+.reveal-section[data-reveal="pending"] {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.reveal-section:focus-within {
+  opacity: 1;
+  transform: none;
+}
+.hero-copy > * {
+  animation: hero-enter 650ms cubic-bezier(.2,.7,.2,1) both;
+}
+.hero-copy > :nth-child(2) { animation-delay: 80ms; }
+.hero-copy > :nth-child(3) { animation-delay: 160ms; }
+.hero-copy > :nth-child(4) { animation-delay: 240ms; }
+.hero-art img { animation: hero-image-enter 1000ms ease-out both; }
+.hero-copy a, .reveal-section a {
+  transition: color 180ms ease, background-color 180ms ease, box-shadow 220ms ease;
+}
+.hero-copy a svg, .reveal-section a svg { transition: transform 220ms ease; }
+.product-card {
+  transition: transform 280ms cubic-bezier(.2,.7,.2,1), box-shadow 280ms ease, border-color 280ms ease;
+}
+.product-card-image { transition: transform 450ms cubic-bezier(.2,.7,.2,1); }
+.product-card-cart {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--brand-strong);
+  border-radius: 10px;
+  background: #27272a;
+  color: #fb7185;
+  visibility: visible;
+  opacity: 1;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+}
+.product-card-cart:hover:not(:disabled) {
+  background: var(--brand-strong);
+  color: white;
+}
+.product-card-cart:disabled {
+  opacity: .6;
+}
+@media (hover: hover) and (pointer: fine) {
+  .product-card:hover {
+    transform: translateY(-5px);
+    border-color: #dfb9bd;
+    box-shadow: 0 14px 30px -16px rgb(62 25 32 / 30%);
+  }
+  .product-card:hover .product-card-image { transform: scale(1.045); }
+  .hero-copy a:hover svg, .reveal-section a:hover svg { transform: translateX(3px); }
+}
+@keyframes hero-enter {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes hero-image-enter {
+  from { opacity: .65; transform: scale(1.035); }
+  to { opacity: 1; transform: scale(1); }
+}
+/* Short, one-shot entrances; movement uses compositor-friendly properties. */
+.reveal-section[data-reveal="visible"] .product-card {
+  animation: product-arrive 520ms cubic-bezier(.2,.7,.2,1) backwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+.reveal-section:focus-within .product-card { animation: none; }
+.hero-copy { position: relative; isolation: isolate; }
+.hero-copy::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 5% -10% 5% 10%;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgb(188 52 64 / 10%), transparent 65%);
+  animation: hero-glow 7s ease-in-out 3 alternate;
+}
+.motion-menu {
+  transform-origin: top center;
+  animation: menu-arrive 200ms cubic-bezier(.2,.7,.2,1);
+}
+.motion-menu a { transition: background-color 180ms ease, color 180ms ease; }
+.motion-button, .hero-copy a {
+  transition: transform 180ms ease, background-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+.motion-button:active:not(:disabled), .hero-copy a:active { transform: scale(.95); }
+.product-card-cart svg { transition: transform 220ms ease; }
+@media (hover: hover) and (pointer: fine) {
+  .product-card-cart:hover:not(:disabled) svg { transform: rotate(-8deg) scale(1.12); }
+  .hero-copy a:first-child:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgb(188 52 64 / 20%); }
+}
+@keyframes product-arrive {
+  from { opacity: 0; translate: 0 18px; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes menu-arrive {
+  from { opacity: 0; transform: translateY(-6px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes hero-glow {
+  from { transform: translate(-3%, -3%) scale(.9); opacity: .55; }
+  to { transform: translate(3%, 3%) scale(1.1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motion-button, .hero-copy a, .product-card-cart svg { transform: none !important; }
+  .reveal-section[data-reveal="pending"] { opacity: 1; transform: none; }
+  .product-card:hover, .product-card:hover .product-card-image { transform: none; }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

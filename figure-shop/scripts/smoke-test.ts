@@ -9,6 +9,7 @@ type DisconnectablePrisma = {
 };
 
 async function main() {
+process.env.DEMO_PAYMENT_ENABLED = "true";
 for (const [scope, target] of [
   ["PRODUCT", "productId"],
   ["CATEGORY", "categoryId"],

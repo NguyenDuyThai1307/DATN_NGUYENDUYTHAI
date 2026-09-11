@@ -1,4 +1,6 @@
 import { prisma } from "@/lib/prisma";
+import { createHash } from "node:crypto";
+import { assertPaymentEnabled, isOnlinePayment, reservationMinutes } from "@/lib/payment-config";
 import { StorefrontError } from "@/lib/storefront-error";
 import type { CheckoutInput } from "@/validations/order.schema";
 import {
@@ -24,10 +26,20 @@ function generateOrderNumber() {
 export async function createOrderFromCart(
   userId: string,
   input: CheckoutInput,
+  checkoutKey?: string,
 ) {
   const shippingFee = 0;
+  const payloadHash = createHash("sha256").update(JSON.stringify(input)).digest("hex");
 
   return prisma.$transaction(async (tx) => {
+    if (checkoutKey) {
+      const previous = await tx.order.findUnique({ where: { userId_checkoutKey: { userId, checkoutKey } }, include: { items: true, payment: true } });
+      if (previous) {
+        if (previous.checkoutPayloadHash !== payloadHash) throw new StorefrontError("Mã đặt hàng đã được dùng với nội dung khác", 409);
+        return previous;
+      }
+    }
+    assertPaymentEnabled(input.paymentMethod);
     const now = new Date();
     const cart = await tx.cart.findUnique({
       where: {
@@ -129,9 +141,14 @@ export async function createOrderFromCart(
       data: {
         orderNumber: generateOrderNumber(),
         userId,
-        status: "PENDING",
+        checkoutKey,
+        checkoutPayloadHash: checkoutKey ? payloadHash : null,
+        paymentExpiresAt: isOnlinePayment(input.paymentMethod) && pricing.total > 0 ? new Date(now.getTime() + reservationMinutes() * 60_000) : null,
+        couponUsageReserved: Boolean(coupon && pricing.couponDiscountAmount > 0),
+        isTestOrder: input.paymentMethod === "VNPAY" || input.paymentMethod === "DEMO" || (input.paymentMethod === "PAYOS" && process.env.PAYOS_TEST_ORDERS === "true"),
+        status: pricing.total === 0 ? "CONFIRMED" : "PENDING",
         paymentMethod: input.paymentMethod,
-        paymentStatus: "UNPAID",
+        paymentStatus: pricing.total === 0 ? "PAID" : "UNPAID",
         subtotal: pricing.subtotal,
         discountAmount: pricing.discountAmount,
         shippingFee: pricing.shippingFee,
@@ -165,6 +182,7 @@ export async function createOrderFromCart(
               finalPrice: linePricing.finalUnitPrice,
               discountAmount: linePricing.discountAmount,
               quantity: item.quantity,
+              reservedQuantity: item.product.type === "IN_STOCK" ? item.quantity : 0,
               total: linePricing.finalTotal,
             };
           }),
@@ -173,7 +191,9 @@ export async function createOrderFromCart(
           create: {
             amount: pricing.total,
             method: input.paymentMethod,
-            status: "UNPAID",
+            status: pricing.total === 0 ? "PAID" : "UNPAID",
+            paidAt: pricing.total === 0 ? now : null,
+            environment: input.paymentMethod === "DEMO" ? "DEMO" : input.paymentMethod === "VNPAY" ? "SANDBOX" : "LIVE",
           },
         },
       },
@@ -184,9 +204,10 @@ export async function createOrderFromCart(
     });
 
     if (coupon && pricing.couponDiscountAmount > 0) {
-      await tx.coupon.update({
+      const held = await tx.coupon.updateMany({
         where: {
           id: coupon.id,
+          ...(coupon.usageLimit !== null ? { usedCount: { lt: coupon.usageLimit } } : {}),
         },
         data: {
           usedCount: {
@@ -194,13 +215,15 @@ export async function createOrderFromCart(
           },
         },
       });
+      if (held.count !== 1) throw new StorefrontError("Coupon đã hết lượt sử dụng", 409);
     }
 
     for (const item of cart.items) {
       if (item.product.type === "IN_STOCK") {
-        await tx.product.update({
+        const held = await tx.product.updateMany({
           where: {
             id: item.productId,
+            stock: { gte: item.quantity },
           },
           data: {
             stock: {
@@ -208,6 +231,7 @@ export async function createOrderFromCart(
             },
           },
         });
+        if (held.count !== 1) throw new StorefrontError("Sản phẩm không còn đủ hàng", 409);
       }
     }
 
