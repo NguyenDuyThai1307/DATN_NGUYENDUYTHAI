@@ -1,5 +1,5 @@
-import { AIChatWidget } from "@/components/ai/AIChatWidget";
 import { Footer } from "@/components/layout/Footer";
+import { CartNotification } from "@/components/cart/CartNotification";
 import { FloatingSupport } from "@/components/layout/FloatingSupport";
 import { Header } from "@/components/layout/Header";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
@@ -18,7 +18,8 @@ export default async function ShopLayout({
       <div className="flex-1">{children}</div>
       <Footer />
       <FloatingSupport />
-      <AIChatWidget />
+      <CartNotification />
+
       <MobileBottomNav isAuthenticated={Boolean(user)} />
     </div>
   );

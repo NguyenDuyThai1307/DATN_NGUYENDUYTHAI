@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { Expand, X } from "lucide-react";
 
 type ProductGalleryProps = {
   productName: string;
@@ -17,6 +18,7 @@ export function ProductGallery({
   images,
 }: ProductGalleryProps) {
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
+  const dialog = useRef<HTMLDialogElement>(null);
   const [failedUrls, setFailedUrls] = useState<string[]>([]);
 
   const availableImages = images.filter(
@@ -53,7 +55,15 @@ export function ProductGallery({
           className="object-contain p-3"
           onError={() => markImageAsFailed(selectedImage.url)}
         />
+        <button type="button" onClick={() => dialog.current?.showModal()} aria-label="Phóng to ảnh sản phẩm" className="absolute bottom-3 right-3 flex min-h-11 items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3 text-sm shadow-sm"><Expand size={18} />Phóng to</button>
       </div>
+
+      <dialog ref={dialog} aria-label={`Ảnh ${productName}`} className="fixed inset-0 m-auto h-[85dvh] max-h-none w-[94vw] max-w-5xl rounded-2xl border-0 bg-white p-4 backdrop:bg-black/70" onClick={event => { if (event.target === event.currentTarget) dialog.current?.close(); }}>
+        <div className="relative h-full">
+          <Image src={selectedImage.url} alt={selectedImage.alt ?? productName} fill sizes="94vw" className="object-contain p-6" />
+          <button type="button" autoFocus onClick={() => dialog.current?.close()} aria-label="Đóng ảnh phóng to" className="absolute right-0 top-0 z-10 grid size-11 place-items-center rounded-full border bg-white"><X size={22} /></button>
+        </div>
+      </dialog>
 
       {availableImages.length > 1 ? (
         <div className="mt-3 grid grid-cols-5 gap-2">
@@ -68,6 +78,7 @@ export function ProductGallery({
                   : "border-zinc-200"
               }`}
               aria-label={`Xem ảnh ${index + 1} của ${productName}`}
+              aria-pressed={image.url === selectedImage.url}
             >
               <Image
                 src={image.url}

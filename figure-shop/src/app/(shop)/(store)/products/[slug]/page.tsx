@@ -5,6 +5,7 @@ import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { ProductPurchasePanel } from "@/components/product/ProductPurchasePanel";
+import { WishlistButton } from "@/components/product/Wishlist";
 import { ProductTabs } from "@/components/product/ProductTabs";
 import { PromoCodeBox } from "@/components/product/PromoCodeBox";
 import { ServiceCommitments } from "@/components/product/ServiceCommitments";
@@ -70,11 +71,12 @@ export default async function ProductDetailPage({
 
         <section className="h-fit rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm lg:sticky lg:top-36">
           <p className="inline-flex rounded-full bg-rose-50 px-3 py-1 text-xs font-bold uppercase text-[var(--brand-strong)]">
-            {product.type === "PREORDER" ? "Pre-order" : "Có sẵn"}
+            {product.type === "PREORDER" ? "Pre-order" : product.stock > 0 ? "Có sẵn" : "Hết hàng"}
           </p>
           <h1 className="mt-2 text-2xl font-black tracking-tight text-zinc-950 sm:text-3xl">
             {product.name}
           </h1>
+          <div className="mt-3 flex items-center gap-2"><WishlistButton productId={product.id} name={product.name} /><span className="text-sm text-zinc-500">Lưu vào danh sách yêu thích</span></div>
 
           <div className="mt-5">
             <ProductPrice
@@ -91,6 +93,7 @@ export default async function ProductDetailPage({
           </div>
 
           <div className="mt-6 grid gap-2 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-600">
+            {product.name.match(/\b1\/\d+\b/) ? <div className="flex justify-between gap-4"><span>Tỷ lệ theo tên sản phẩm</span><span className="font-semibold text-zinc-900">{product.name.match(/\b1\/\d+\b/)?.[0]}</span></div> : null}
             {product.brand ? (
               <div className="flex items-center justify-between gap-4">
                 <span>Thương hiệu</span>
@@ -116,6 +119,15 @@ export default async function ProductDetailPage({
               </span>
             </div>
           </div>
+
+          <details className="mt-4 rounded-xl border border-zinc-200 p-4 text-sm">
+            <summary className="cursor-pointer font-semibold">Thông số và phụ kiện</summary>
+            <dl className="mt-3 grid grid-cols-2 gap-3 text-zinc-600">
+              <dt>Chiều cao</dt><dd>Đang cập nhật</dd>
+              <dt>Chất liệu</dt><dd>Đang cập nhật</dd>
+              <dt>Phụ kiện đi kèm</dt><dd>Liên hệ để xác nhận</dd>
+            </dl>
+          </details>
 
           <ProductPurchasePanel
             productId={product.id}

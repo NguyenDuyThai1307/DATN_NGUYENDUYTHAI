@@ -10,6 +10,7 @@ export function PreorderInfo({ isPreorder }: PreorderInfoProps) {
   return (
     <div className="mt-6 rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-900">
       <p className="font-semibold">Thông tin pre-order</p>
+      <p className="mt-2 font-medium">Lịch về hàng: đang cập nhật — liên hệ cửa hàng để xác nhận.</p>
       <p className="mt-2 leading-6">
         Sản phẩm này đang nhận đặt trước. Thời gian về hàng có thể thay đổi tùy
         theo lịch phát hành và nhà phân phối. Cửa hàng sẽ liên hệ xác nhận trước

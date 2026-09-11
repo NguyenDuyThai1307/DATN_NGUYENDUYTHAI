@@ -65,6 +65,7 @@ export function AddToCartButton({
 
       setMessage("Đã thêm vào giỏ hàng");
       setSucceeded(true);
+      window.dispatchEvent(new Event("cart-added"));
       router.refresh();
       onSuccess?.();
     } catch {

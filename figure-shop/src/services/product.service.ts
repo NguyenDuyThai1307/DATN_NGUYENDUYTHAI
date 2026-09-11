@@ -85,6 +85,9 @@ function buildActiveProductWhere(
       OR: [
         { name: { contains: query } },
         { description: { contains: query } },
+        { brand: { name: { contains: query } } },
+        { category: { name: { contains: query } } },
+        { slug: { contains: query.toLowerCase().replace(/\s+/g, "-") } },
       ],
     });
   }

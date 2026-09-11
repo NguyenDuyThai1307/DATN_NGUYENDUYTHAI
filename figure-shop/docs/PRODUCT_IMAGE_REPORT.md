@@ -1,9 +1,8 @@
 # Báo cáo ảnh sản phẩm
 
-Cập nhật: 2026-09-11T09:08:44.046Z.
+Cập nhật: 2026-09-11T16:24:05.571Z.
 
 - Tổng sản phẩm: **206**.
-- Ban đầu có ảnh: **8**; thiếu **235**.
 - Đã bổ sung: **198**.
 - Hiện có ảnh: **206**; còn thiếu **0**.
 - Đã tìm kiếm từng mục thiếu ảnh. Kết quả tìm kiếm không đồng nghĩa đã xác minh đúng sản phẩm.

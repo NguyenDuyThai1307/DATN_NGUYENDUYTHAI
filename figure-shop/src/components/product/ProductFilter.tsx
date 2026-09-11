@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { SlidersHorizontal, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useId, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
@@ -44,11 +44,20 @@ export function ProductFilter({
   onApplied,
 }: ProductFilterProps) {
   const router = useRouter();
+  const prefix = useId();
+  const [error, setError] = useState("");
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
+    const min = String(formData.get("minPrice") ?? "");
+    const max = String(formData.get("maxPrice") ?? "");
+    if (min && max && Number(min) > Number(max)) {
+      setError("Giá tối đa phải lớn hơn hoặc bằng giá tối thiểu.");
+      return;
+    }
+    setError("");
     const nextParams = new URLSearchParams();
     const fields = [
       "q",
@@ -76,6 +85,7 @@ export function ProductFilter({
 
   return (
     <form
+      key={JSON.stringify(values)}
       action={action}
       method="get"
       onSubmit={handleSubmit}
@@ -86,26 +96,26 @@ export function ProductFilter({
       }`}
     >
       <div className={layout === "toolbar" ? "lg:col-span-2" : ""}>
-        <label htmlFor="q" className="text-sm font-medium">
+        <label htmlFor={`${prefix}-q`} className="text-sm font-medium">
           Tìm sản phẩm
         </label>
         <Input
-          id="q"
+          id={`${prefix}-q`}
           name="q"
           type="search"
           defaultValue={values.query}
-          placeholder="Tên mô hình hoặc mô tả"
+          placeholder="Nhân vật, anime, thương hiệu…"
           className="mt-2"
         />
       </div>
 
       {showCategory ? (
         <div>
-          <label htmlFor="categoryId" className="text-sm font-medium">
+          <label htmlFor={`${prefix}-categoryId`} className="text-sm font-medium">
             Danh mục
           </label>
           <Select
-            id="categoryId"
+            id={`${prefix}-categoryId`}
             name="categoryId"
             defaultValue={values.categoryId ?? ""}
             className="mt-2"
@@ -121,11 +131,11 @@ export function ProductFilter({
       ) : null}
 
       <div>
-        <label htmlFor="brandId" className="text-sm font-medium">
+        <label htmlFor={`${prefix}-brandId`} className="text-sm font-medium">
           Thương hiệu
         </label>
         <Select
-          id="brandId"
+          id={`${prefix}-brandId`}
           name="brandId"
           defaultValue={values.brandId ?? ""}
           className="mt-2"
@@ -140,11 +150,11 @@ export function ProductFilter({
       </div>
 
       <div>
-        <label htmlFor="sort" className="text-sm font-medium">
+        <label htmlFor={`${prefix}-sort`} className="text-sm font-medium">
           Sắp xếp
         </label>
         <Select
-          id="sort"
+          id={`${prefix}-sort`}
           name="sort"
           defaultValue={values.sort ?? "newest"}
           className="mt-2"
@@ -159,11 +169,11 @@ export function ProductFilter({
       </div>
 
       <div>
-        <label htmlFor="type" className="text-sm font-medium">
+        <label htmlFor={`${prefix}-type`} className="text-sm font-medium">
           Loại sản phẩm
         </label>
         <Select
-          id="type"
+          id={`${prefix}-type`}
           name="type"
           defaultValue={values.type ?? ""}
           className="mt-2"
@@ -176,11 +186,11 @@ export function ProductFilter({
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label htmlFor="minPrice" className="text-sm font-medium">
+          <label htmlFor={`${prefix}-minPrice`} className="text-sm font-medium">
             Giá từ
           </label>
           <Input
-            id="minPrice"
+            id={`${prefix}-minPrice`}
             name="minPrice"
             type="number"
             min={0}
@@ -192,11 +202,11 @@ export function ProductFilter({
         </div>
 
         <div>
-          <label htmlFor="maxPrice" className="text-sm font-medium">
+          <label htmlFor={`${prefix}-maxPrice`} className="text-sm font-medium">
             Đến
           </label>
           <Input
-            id="maxPrice"
+            id={`${prefix}-maxPrice`}
             name="maxPrice"
             type="number"
             min={0}
@@ -208,6 +218,7 @@ export function ProductFilter({
         </div>
       </div>
 
+      {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
       <div
         className={`flex items-center gap-2 ${
           layout === "toolbar" ? "lg:col-span-2" : ""
@@ -227,7 +238,7 @@ export function ProductFilter({
 }
 
 export function ProductFilterMobileDrawer(props: ProductFilterProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   return (
     <div className="lg:hidden">
@@ -235,22 +246,14 @@ export function ProductFilterMobileDrawer(props: ProductFilterProps) {
         type="button"
         variant="secondary"
         className="w-full gap-2"
-        onClick={() => setIsOpen(true)}
+        onClick={() => dialogRef.current?.showModal()}
       >
         <SlidersHorizontal size={17} aria-hidden="true" />
         Bộ lọc và sắp xếp
       </Button>
 
-      {isOpen ? (
-        <div className="fixed inset-0 z-50">
-          <button
-            type="button"
-            aria-label="Đóng bộ lọc"
-            className="absolute inset-0 bg-zinc-950/45"
-            onClick={() => setIsOpen(false)}
-          />
-
-          <aside className="absolute inset-y-0 left-0 w-[min(88vw,360px)] overflow-y-auto bg-white p-4 shadow-2xl">
+      <dialog ref={dialogRef} aria-label="Bộ lọc sản phẩm" className="fixed inset-y-0 left-0 m-0 h-dvh max-h-none w-[min(88vw,360px)] max-w-none border-0 bg-white p-0 backdrop:bg-zinc-950/45">
+<aside className="h-full overflow-y-auto bg-white p-4 shadow-2xl">
             <div className="mb-4 flex items-center justify-between gap-3">
               <div>
                 <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
@@ -264,7 +267,7 @@ export function ProductFilterMobileDrawer(props: ProductFilterProps) {
               <button
                 type="button"
                 className="grid size-9 place-items-center rounded-full border border-zinc-200 text-zinc-700 transition hover:bg-zinc-100"
-                onClick={() => setIsOpen(false)}
+                onClick={() => dialogRef.current?.close()}
                 aria-label="Đóng bộ lọc"
               >
                 <X size={18} aria-hidden="true" />
@@ -274,11 +277,10 @@ export function ProductFilterMobileDrawer(props: ProductFilterProps) {
             <ProductFilter
               {...props}
               layout="sidebar"
-              onApplied={() => setIsOpen(false)}
+              onApplied={() => dialogRef.current?.close()}
             />
           </aside>
-        </div>
-      ) : null}
+        </dialog>
     </div>
   );
 }

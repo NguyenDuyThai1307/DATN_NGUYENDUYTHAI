@@ -1,52 +1,34 @@
+"use client";
 import Link from "next/link";
-import { ArrowUp, Gift, MessageCircle, Phone } from "lucide-react";
-
-const supportActions = [
-  {
-    href: "tel:0900000000",
-    label: "Goi tư vấn",
-    icon: Phone,
-  },
-  {
-    href: "/contact",
-    label: "Nhắn tin",
-    icon: MessageCircle,
-  },
-  {
-    href: "#top",
-    label: "Trở về đầu trang",
-    icon: ArrowUp,
-  },
-];
+import { ArrowUp, Bot, Headphones, Mail, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { AIChatWidget } from "@/components/ai/AIChatWidget";
 
 export function FloatingSupport() {
-  return (
-    <>
-      <Link
-        href="/register"
-        className="fixed bottom-20 left-4 z-30 hidden items-center gap-2 rounded-full bg-[var(--brand-strong)] px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#982934] lg:inline-flex"
-      >
-        <Gift size={18} aria-hidden="true" />
-        Ưu đãi thành viên
-      </Link>
-
-      <div className="fixed bottom-20 right-4 z-30 hidden flex-col gap-2 md:flex">
-        {supportActions.map((action) => {
-          const Icon = action.icon;
-
-          return (
-            <Link
-              key={action.label}
-              href={action.href}
-              aria-label={action.label}
-              title={action.label}
-              className="grid h-12 w-12 place-items-center rounded-full border-2 border-white bg-[var(--brand)] text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[var(--brand-strong)]"
-            >
-              <Icon size={21} aria-hidden="true" />
-            </Link>
-          );
-        })}
-      </div>
-    </>
-  );
+  const [open, setOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const close = (event: PointerEvent) => {
+      if (event.target instanceof Node && !ref.current?.contains(event.target)) setOpen(false);
+    };
+    document.addEventListener("pointerdown", close);
+    return () => document.removeEventListener("pointerdown", close);
+  }, []);
+  return <>
+    {!chatOpen && <div ref={ref} className="fixed bottom-20 right-3 z-40 md:bottom-6 md:right-5" onKeyDown={event => {
+      if (event.key === "Escape") { setOpen(false); ref.current?.querySelector<HTMLButtonElement>("[aria-controls]")?.focus(); }
+    }}>
+      {open && <div id="support-actions" className="motion-menu mb-3 w-60 rounded-2xl border border-zinc-200 bg-white p-2 shadow-xl">
+        <p className="px-3 py-2 text-sm font-bold">Figure Shop hỗ trợ bạn</p>
+        <button className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-sm hover:bg-rose-50" onClick={() => { setOpen(false); setChatOpen(true); }}><Bot size={19} />Tư vấn sản phẩm với AI</button>
+        <Link href="/contact" onClick={() => setOpen(false)} className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm hover:bg-rose-50"><Mail size={19} />Liên hệ cửa hàng</Link>
+        <a href="#top" onClick={() => setOpen(false)} className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm hover:bg-rose-50"><ArrowUp size={19} />Về đầu trang</a>
+      </div>}
+      <button aria-label={open ? "Đóng hỗ trợ" : "Mở hỗ trợ và trợ lý AI"} aria-expanded={open} aria-controls="support-actions" onClick={() => setOpen(!open)} className="ml-auto grid size-12 place-items-center rounded-full border-2 border-white bg-[var(--brand-strong)] text-white shadow-lg">
+        {open ? <X size={22} /> : <Headphones size={22} />}
+      </button>
+    </div>}
+    <AIChatWidget isOpen={chatOpen} onClose={() => setChatOpen(false)} />
+  </>;
 }

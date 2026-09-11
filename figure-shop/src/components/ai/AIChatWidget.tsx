@@ -6,7 +6,6 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import {
   Bot,
   LoaderCircle,
-  MessageCircle,
   RotateCcw,
   Send,
   ShoppingBag,
@@ -105,8 +104,8 @@ function ProductResult({ product }: { product: AiProductReference }) {
   );
 }
 
-export function AIChatWidget() {
-  const [isOpen, setIsOpen] = useState(false);
+export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+
   const [messages, setMessages] = useState<UiMessage[]>([initialMessage]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -217,7 +216,7 @@ export function AIChatWidget() {
             </button>
             <button
               type="button"
-              onClick={() => setIsOpen(false)}
+              onClick={onClose}
               aria-label="Đóng trợ lý AI"
               title="Đóng"
               className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-white/15"
@@ -321,20 +320,7 @@ export function AIChatWidget() {
             </button>
           </form>
         </section>
-      ) : (
-        <button
-          type="button"
-          onClick={() => setIsOpen(true)}
-          aria-label="Mở trợ lý mua sắm AI"
-          title="Trợ lý AI"
-          className="fixed bottom-20 right-4 z-40 grid h-14 w-14 place-items-center rounded-full border-2 border-white bg-zinc-950 text-white shadow-xl transition hover:-translate-y-0.5 hover:bg-[var(--brand-strong)] md:bottom-[17rem]"
-        >
-          <MessageCircle size={24} aria-hidden="true" />
-          <span className="absolute -right-1 -top-1 rounded-full bg-[var(--brand)] px-1.5 py-0.5 text-[10px] font-bold text-white">
-            AI
-          </span>
-        </button>
-      )}
+      ) : null}
     </>
   );
 }

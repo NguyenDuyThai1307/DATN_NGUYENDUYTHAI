@@ -8,6 +8,7 @@ import {
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { Badge } from "@/components/ui/Badge";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
+import { WishlistButton } from "@/components/product/Wishlist";
 
 type ProductCardProps = {
   product: {
@@ -71,9 +72,10 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
 
+        <div className="absolute inset-x-2 top-2 flex flex-wrap items-start justify-between gap-1.5 sm:inset-x-3 sm:top-3">
         <Badge
           variant={product.type === "PREORDER" ? "warning" : "success"}
-          className="absolute left-3 top-3 bg-white shadow-sm"
+          className="bg-white shadow-sm"
         >
           {product.type === "PREORDER" ? "Pre-order" : product.stock > 0 ? "Có sẵn" : "Hết hàng"}
         </Badge>
@@ -81,23 +83,24 @@ export function ProductCard({ product }: ProductCardProps) {
         {activePromotion ? (
           <Badge
             variant="danger"
-            className="absolute right-3 top-3 shadow-sm"
+            className="shadow-sm"
           >
             {activePromotion.type === "PERCENTAGE"
               ? `Giảm ${activePromotion.value}%`
               : `Giảm ${activePromotion.value.toLocaleString("vi-VN")} đ`}
           </Badge>
         ) : null}
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col space-y-2 p-3.5 sm:p-4">
-        <p className="min-h-4 text-xs font-medium uppercase text-zinc-500">{product.brand?.name ?? "Figure Shop"}</p>
+        <p className="line-clamp-1 h-4 text-xs font-medium uppercase text-zinc-500">{product.brand?.name ?? "Figure Shop"}</p>
 
         <h3 className="line-clamp-2 min-h-10 text-sm font-bold leading-5 text-zinc-950 transition group-hover:text-[var(--brand-strong)]">
           {product.name}
         </h3>
 
-        <div className="flex min-h-12 flex-col justify-between gap-1">
+        <div className="flex min-h-24 flex-col gap-1">
           <ProductPrice
             price={linePricing.finalUnitPrice}
             originalPrice={activePromotion ? product.price : undefined}
@@ -114,7 +117,8 @@ export function ProductCard({ product }: ProductCardProps) {
           </span>
         </div>
 
-        <div className="mt-auto flex items-center justify-center pt-2">
+        <div className="mt-auto flex items-center justify-between pt-2">
+          <WishlistButton productId={product.id} name={product.name} />
           <div className="relative z-20">
             <AddToCartButton
               productId={product.id}

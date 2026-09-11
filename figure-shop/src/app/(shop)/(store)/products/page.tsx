@@ -1,4 +1,5 @@
 import { Breadcrumbs } from "@/components/product/Breadcrumbs";
+import { ActiveFilters } from "@/components/product/ActiveFilters";
 import {
   ProductFilter,
   ProductFilterMobileDrawer,
@@ -139,10 +140,11 @@ export default async function ProductsPage({
               Tìm thấy {result.total} sản phẩm.
             </p>
             <p className="text-xs font-semibold uppercase text-zinc-500">
-              Sắp xếp: {sort.replace("_", " ")}
+              Sắp xếp: {{newest: "Mới nhất", oldest: "Cũ nhất", name_asc: "Tên A–Z", name_desc: "Tên Z–A", price_asc: "Giá thấp đến cao", price_desc: "Giá cao đến thấp"}[sort]}
             </p>
           </div>
 
+          <ActiveFilters params={params} categories={options.categories} brands={options.brands} />
           {result.products.length > 0 ? (
             <>
               <ProductGrid products={result.products} />

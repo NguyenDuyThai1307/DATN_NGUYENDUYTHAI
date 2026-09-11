@@ -65,11 +65,11 @@ async function HomePageContent() {
                   </div>
                 </div>
                 <span className="rounded-full border border-rose-200 bg-white px-4 py-2 text-sm font-bold text-[var(--brand-strong)]">
-                  {discountedProducts.length} sản phẩm đang ưu đãi
+                  {Math.min(discountedProducts.length, 8)} sản phẩm đang ưu đãi
                 </span>
               </div>
               <p className="mb-5 text-sm leading-6 text-zinc-600">Giá ưu đãi, giá gốc và số tiền tiết kiệm được hiển thị trên từng sản phẩm.</p>
-              <ProductShelf products={discountedProducts} />
+              <ProductShelf products={discountedProducts.slice(0, 8)} />
             </RevealSection>
           ) : null}
 
