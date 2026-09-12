@@ -54,9 +54,7 @@ const navigation = [
   { href: "/", label: "Trang chủ", hasDropdown: false },
   { href: "/products", label: "Tất cả sản phẩm", hasDropdown: false },
   { href: "/preorder", label: "Preorder", hasDropdown: false },
-  { href: "/guide", label: "Hướng dẫn", hasDropdown: true },
   { href: "/news", label: "Tin tức", hasDropdown: true },
-  { href: "/contact", label: "Liên hệ", hasDropdown: false },
   { href: "/brands", label: "Thương hiệu", hasDropdown: false },
 ] as const;
 
