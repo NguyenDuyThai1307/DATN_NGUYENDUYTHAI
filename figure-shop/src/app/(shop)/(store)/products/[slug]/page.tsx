@@ -1,4 +1,7 @@
 import { notFound } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
+import { getProductReviews } from "@/services/review.service";
+import { ProductReviews } from "@/components/product/ProductReviews";
 import { Breadcrumbs } from "@/components/product/Breadcrumbs";
 import { PreorderInfo } from "@/components/product/PreorderInfo";
 import { ProductGallery } from "@/components/product/ProductGallery";
@@ -39,6 +42,8 @@ export default async function ProductDetailPage({
     notFound();
   }
 
+  const user = await getCurrentUser();
+  const reviews = await getProductReviews(product.id, user?.id ?? null);
   const activePromotion =
     product.promotion && isPromotionActive(product.promotion)
       ? product.promotion
@@ -76,6 +81,7 @@ export default async function ProductDetailPage({
           <h1 className="mt-2 text-2xl font-black tracking-tight text-zinc-950 sm:text-3xl">
             {product.name}
           </h1>
+          <a href="#reviews" className="mt-2 inline-block text-sm text-amber-700 hover:underline">{reviews.total ? `★ ${reviews.average.toFixed(1)}/5 · ${reviews.total} đánh giá` : "Chưa có đánh giá · Viết đánh giá"}</a>
           <div className="mt-3 flex items-center gap-2"><WishlistButton productId={product.id} name={product.name} /><span className="text-sm text-zinc-500">Lưu vào danh sách yêu thích</span></div>
 
           <div className="mt-5">
@@ -148,6 +154,7 @@ export default async function ProductDetailPage({
       </div>
 
       <ProductTabs description={product.description} />
+      <ProductReviews key={`${product.id}:${user?.id ?? "guest"}`} productId={product.id} slug={product.slug} initial={reviews} />
 
       {relatedProducts.length > 0 ? (
         <section className="mt-12">

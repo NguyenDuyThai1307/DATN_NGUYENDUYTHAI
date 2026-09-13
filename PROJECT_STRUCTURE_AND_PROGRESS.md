@@ -658,7 +658,8 @@ Hang muc con lai de phat trien sau moc nay:
 [ ] Nang cap admin anh tu mot anh chinh thanh nhieu anh, sap xep va xoa rieng tung anh
 [ ] Lay video review/thumbnail tu nguon noi dung that thay cho du lieu tinh
 [ ] Danh gia lai nhu cau shadcn/ui, framer-motion va sonner de tranh trung lap UI primitives hien co
-[ ] Bo sung cac model Series, Review, Wishlist, InventoryLog neu dua vao pham vi khoa luan
+[x] Bo sung WishlistItem, AiConversation, AiMessage va ProductReview; da co migration va kiem thu phan quyen
+[ ] Bo sung Series va InventoryLog neu dua vao pham vi khoa luan
 [-] Nghiem thu payOS/VNPAY: ngoai pham vi theo quyet dinh chi DEMO ngay 10/09/2026
 ```
 

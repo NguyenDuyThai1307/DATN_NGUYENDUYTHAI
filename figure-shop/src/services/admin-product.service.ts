@@ -269,3 +269,16 @@ export async function archiveAdminProduct(id: string) {
     },
   });
 }
+
+export async function updateProductAvailability(id: string, input: { type: "IN_STOCK" | "PREORDER"; stock?: number }) {
+  return prisma.$transaction(async tx => {
+    const product = await tx.product.update({ where: { id }, data: {
+      type: input.type,
+      ...(input.type === "IN_STOCK" ? { stock: input.stock } : {}),
+    } });
+    if (input.type === "PREORDER") {
+      await tx.promotion.updateMany({ where: { productId: id, isActive: true }, data: { isActive: false } });
+    }
+    return product;
+  });
+}

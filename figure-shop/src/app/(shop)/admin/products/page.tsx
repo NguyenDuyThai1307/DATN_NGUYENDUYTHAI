@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Plus, PackageSearch } from "lucide-react";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { ArchiveProductButton } from "@/components/admin/ArchiveProductButton";
+import { ProductAvailabilityEditor } from "@/components/admin/ProductAvailabilityEditor";
 import Image from "next/image";
 import { AdminProductFilter } from "@/components/admin/AdminProductFilter";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -123,7 +124,8 @@ export default async function AdminProductsPage({
 
                 <div className="text-sm text-zinc-600">
                   <p>{product.status}</p>
-                  <p>{product.type}</p>
+                  <p>{product.type === "PREORDER" ? "Pre-order — Đặt trước" : "In-stock — Có sẵn"}</p>
+                  <ProductAvailabilityEditor productId={product.id} name={product.name} type={product.type} stock={product.stock} />
                 </div>
 
                 <div className="flex flex-col items-start gap-3 lg:items-end">

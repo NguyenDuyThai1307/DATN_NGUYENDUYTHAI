@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { consumeAiRateLimit } from "@/lib/ai-rate-limit";
 import { createAiChatReply } from "@/services/ai.service";
 import { aiChatRequestSchema } from "@/validations/ai.schema";
+import { getCurrentUser } from "@/lib/auth";
+import { isSameOriginRequest } from "@/lib/same-origin";
+import { getConversation, saveChatReply } from "@/services/account-data.service";
 
 export const runtime = "nodejs";
 
@@ -16,6 +19,9 @@ function getClientIdentifier(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  if (!isSameOriginRequest(request)) return NextResponse.json({ message: "Nguồn yêu cầu không hợp lệ." }, { status: 403 });
+  const user = await getCurrentUser();
+  if (request.headers.get("x-account-id") !== (user?.id ?? "guest")) return NextResponse.json({ message: "Phiên đăng nhập đã thay đổi. Vui lòng tải lại trang." }, { status: 409 });
   const rateLimit = consumeAiRateLimit(getClientIdentifier(request));
 
   if (!rateLimit.allowed) {
@@ -66,8 +72,14 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const result = await createAiChatReply(parsed.data);
-    return NextResponse.json(result);
+    const { conversationId, message } = parsed.data;
+    if (conversationId && !user) return NextResponse.json({ message: "Vui lòng đăng nhập lại." }, { status: 401 });
+    const conversation = user && conversationId ? await getConversation(user.id, conversationId) : null;
+    if (conversationId && !conversation) return NextResponse.json({ message: "Không tìm thấy cuộc trò chuyện." }, { status: 404 });
+    const history = user ? (conversation?.messages ?? []).slice(-10).map(item => ({ role: item.role as "user" | "assistant", content: item.content })) : parsed.data.history;
+    const result = await createAiChatReply({ message, history });
+    const savedId = user ? await saveChatReply(user.id, conversationId, message, result) : undefined;
+    return NextResponse.json({ ...result, conversationId: savedId });
   } catch (error) {
     console.error("AI chat request failed", error);
 

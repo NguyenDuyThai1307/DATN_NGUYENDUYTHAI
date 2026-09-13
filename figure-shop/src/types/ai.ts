@@ -20,6 +20,7 @@ export type AiProductReference = {
 };
 
 export type AiChatResponse = {
+  conversationId?: string;
   message: string;
   products: AiProductReference[];
 };

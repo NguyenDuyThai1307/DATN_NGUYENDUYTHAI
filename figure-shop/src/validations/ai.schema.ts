@@ -6,6 +6,7 @@ export const aiChatMessageSchema = z.object({
 });
 
 export const aiChatRequestSchema = z.object({
+  conversationId: z.string().min(1).max(100).optional(),
   message: z.string().trim().min(1).max(800),
   history: z.array(aiChatMessageSchema).max(10).default([]),
 });

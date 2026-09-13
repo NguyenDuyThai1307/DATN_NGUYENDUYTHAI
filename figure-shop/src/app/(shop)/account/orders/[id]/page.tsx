@@ -100,6 +100,7 @@ export default async function AccountOrderDetailPage({
                 >
                   <div className="min-w-0">
                     <p className="font-medium">{item.productName}</p>
+                    {order.status === "COMPLETED" && item.product?.status === "ACTIVE" && <Link href={`/products/${item.product.slug}#reviews`} className="mt-2 inline-flex rounded-lg border border-rose-200 px-3 py-2 text-sm font-semibold text-[var(--brand-strong)]">Đánh giá sản phẩm</Link>}
 
                     <p className="mt-1 text-sm text-zinc-500">
                       {item.quantity} x{" "}

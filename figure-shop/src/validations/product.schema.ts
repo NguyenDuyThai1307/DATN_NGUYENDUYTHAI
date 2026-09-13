@@ -16,3 +16,10 @@ export const adminProductSchema = z.object({
 });
 
 export type AdminProductInput = z.infer<typeof adminProductSchema>;
+
+export const productAvailabilitySchema = z.object({
+  type: z.enum(["IN_STOCK", "PREORDER"]),
+  stock: z.number().int().min(0).max(2147483647).optional(),
+}).strict().refine(input => input.type !== "IN_STOCK" || input.stock !== undefined, {
+  message: "Vui lòng nhập tồn kho khi chuyển sang Có sẵn", path: ["stock"],
+});

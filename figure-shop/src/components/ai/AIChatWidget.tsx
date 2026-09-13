@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useAccountData } from "@/components/account/AccountDataProvider";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import {
   Bot,
@@ -110,6 +111,48 @@ export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: ()
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { userId } = useAccountData();
+  const [conversationId, setConversationId] = useState<string>();
+  const [conversations, setConversations] = useState<{ id: string; title: string }[]>([]);
+  const [historyLoading, setHistoryLoading] = useState(Boolean(userId));
+  const [historyError, setHistoryError] = useState("");
+  const requestInFlight = useRef(false);
+
+  useEffect(() => {
+    if (!userId) return;
+    const controller = new AbortController();
+    async function restore() {
+      try {
+        const response = await fetch("/api/ai/conversations", { cache: "no-store", signal: controller.signal });
+        if (!response.ok) throw new Error("Không tải được lịch sử. Vui lòng tải lại trang.");
+        const data = await response.json();
+        setConversations(data.conversations);
+        if (data.conversations[0]) {
+          const detail = await fetch(`/api/ai/conversations?id=${encodeURIComponent(data.conversations[0].id)}`, { cache: "no-store", signal: controller.signal });
+          if (!detail.ok) throw new Error("Không tải được cuộc trò chuyện.");
+          const { conversation } = await detail.json();
+          setConversationId(conversation.id); setMessages([initialMessage, ...conversation.messages]);
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) setHistoryError(error instanceof Error ? error.message : "Không tải được lịch sử.");
+      } finally { if (!controller.signal.aborted) setHistoryLoading(false); }
+    }
+    void restore();
+    return () => controller.abort();
+  }, [userId]);
+
+  async function selectConversation(id: string) {
+    if (requestInFlight.current || historyLoading) return;
+    if (!id) { resetConversation(); return; }
+    setHistoryLoading(true); setHistoryError("");
+    try {
+      const response = await fetch(`/api/ai/conversations?id=${encodeURIComponent(id)}`, { cache: "no-store" });
+      if (!response.ok) throw new Error("History unavailable");
+      const { conversation } = await response.json();
+      setMessages([initialMessage, ...conversation.messages]); setConversationId(id); setInput("");
+    } catch { setHistoryError("Không tải được cuộc trò chuyện. Vui lòng thử lại."); }
+    finally { setHistoryLoading(false); }
+  }
 
   useEffect(() => {
     if (isOpen) {
@@ -120,10 +163,11 @@ export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: ()
   async function sendMessage(content: string) {
     const message = content.trim();
 
-    if (!message || isLoading) {
+    if (!message || requestInFlight.current || historyLoading) {
       return;
     }
 
+    requestInFlight.current = true;
     const userMessage: UiMessage = {
       id: createMessageId(),
       role: "user",
@@ -147,8 +191,9 @@ export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: ()
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-Account-Id": userId ?? "guest",
         },
-        body: JSON.stringify({ message, history }),
+        body: JSON.stringify({ message, history: userId ? [] : history, conversationId }),
       });
 
       const data = (await response.json().catch(() => null)) as
@@ -164,6 +209,11 @@ export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: ()
         products: response.ok ? data?.products : undefined,
       };
 
+      if (response.ok && data?.conversationId) {
+        setConversationId(data.conversationId);
+        const id = data.conversationId;
+        setConversations(current => [{ id, title: current.find(item => item.id === id)?.title ?? message.slice(0, 80) }, ...current.filter(item => item.id !== id)]);
+      }
       setMessages((current) => [...current, assistantMessage]);
     } catch {
       setMessages((current) => [
@@ -176,6 +226,7 @@ export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: ()
         },
       ]);
     } finally {
+      requestInFlight.current = false;
       setIsLoading(false);
     }
   }
@@ -186,6 +237,8 @@ export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: ()
   }
 
   function resetConversation() {
+    if (requestInFlight.current || historyLoading) return;
+    setConversationId(undefined); setHistoryError("");
     setMessages([initialMessage]);
     setInput("");
   }
@@ -208,6 +261,7 @@ export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             <button
               type="button"
               onClick={resetConversation}
+              disabled={isLoading || historyLoading}
               aria-label="Bắt đầu cuộc trò chuyện mới"
               title="Cuộc trò chuyện mới"
               className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-white/15"
@@ -224,6 +278,17 @@ export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               <X size={20} aria-hidden="true" />
             </button>
           </header>
+
+          {userId ? <div className="border-b bg-white px-3 py-2">
+            <label className="text-xs text-zinc-600">Lịch sử theo tài khoản
+              <select aria-label="Chọn cuộc trò chuyện" value={conversationId ?? ""} disabled={isLoading || historyLoading} onChange={event => void selectConversation(event.target.value)} className="mt-1 w-full rounded border border-zinc-200 p-2 text-sm">
+                <option value="">Cuộc trò chuyện mới</option>
+                {conversations.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}
+              </select>
+            </label>
+            {historyLoading && <p role="status" className="text-xs">Đang tải lịch sử…</p>}
+            {historyError && <p role="alert" className="text-xs text-red-600">{historyError}</p>}
+          </div> : <p className="border-b px-3 py-2 text-xs text-zinc-500"><Link href="/login" className="underline">Đăng nhập</Link> để lưu lịch sử trò chuyện theo tài khoản.</p>}
 
           <div className="flex-1 space-y-4 overflow-y-auto bg-zinc-50 p-4">
             {messages.map((message) => (
@@ -306,12 +371,12 @@ export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               maxLength={800}
               rows={1}
               placeholder="Hỏi tự do về mô hình hoặc sản phẩm..."
-              disabled={isLoading}
+              disabled={isLoading || historyLoading}
               className="max-h-24 min-h-10 flex-1 resize-none rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none transition placeholder:text-zinc-400 focus:border-zinc-950 disabled:bg-zinc-100"
             />
             <button
               type="submit"
-              disabled={isLoading || !input.trim()}
+              disabled={isLoading || historyLoading || !input.trim()}
               aria-label="Gửi tin nhắn"
               title="Gửi"
               className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-zinc-950 text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
