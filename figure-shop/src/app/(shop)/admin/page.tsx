@@ -21,16 +21,16 @@ export default async function AdminDashboardPage({ searchParams }: { searchParam
 
   return (
     <main>
-      <div className="rounded-3xl bg-gradient-to-br from-zinc-950 to-zinc-800 p-6 text-white">
+      <div className="mb-6 rounded-lg py-2 text-zinc-950">
         <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-bold uppercase text-amber-300">
+          <p className="text-xs font-bold uppercase text-blue-600">
             Trung tâm quản trị
           </p>
           <h1 className="mt-2 text-3xl font-black tracking-tight">
-            Tổng quan
+            Xin chào, quản trị viên!
           </h1>
-          <p className="mt-2 text-zinc-300">
+          <p className="mt-2 text-zinc-500">
             Tổng quan sản phẩm, đơn hàng và doanh thu.
           </p>
         </div>
@@ -45,12 +45,10 @@ export default async function AdminDashboardPage({ searchParams }: { searchParam
         </div>
       </div>
 
+      <DashboardStats stats={stats} />
       <RevenueOverview report={revenue} />
       {stats.needsReviewCount > 0 && <p className="mt-5 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">Có {stats.needsReviewCount} giao dịch cần đối soát trong hệ thống. Các giao dịch này không được tính vào báo cáo.</p>}
 
-      <div className="mt-8">
-        <DashboardStats stats={stats} />
-      </div>
 
       <section className="mt-8 overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
         <div className="flex items-center justify-between gap-4 border-b border-zinc-200 px-5 py-4">

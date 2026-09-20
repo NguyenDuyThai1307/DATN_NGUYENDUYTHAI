@@ -6,6 +6,7 @@ import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { getCurrentUser } from "@/lib/auth";
 import { AccountDataProvider } from "@/components/account/AccountDataProvider";
 import { wishlistIds } from "@/services/account-data.service";
+import { ShopChrome } from "@/components/layout/ShopChrome";
 
 export default async function ShopLayout({
   children,
@@ -17,13 +18,12 @@ export default async function ShopLayout({
   return (
     <AccountDataProvider key={user?.id ?? "guest"} userId={user?.id ?? null} initialIds={user ? await wishlistIds(user.id) : []}>
     <div id="top" className="flex min-h-screen flex-col">
-      <Header />
+      <ShopChrome><Header /></ShopChrome>
       <div className="flex-1">{children}</div>
-      <Footer />
-      <FloatingSupport />
+      <ShopChrome><Footer /><FloatingSupport /></ShopChrome>
       <CartNotification />
 
-      <MobileBottomNav isAuthenticated={Boolean(user)} />
+      <ShopChrome><MobileBottomNav isAuthenticated={Boolean(user)} /></ShopChrome>
     </div>
     </AccountDataProvider>
   );

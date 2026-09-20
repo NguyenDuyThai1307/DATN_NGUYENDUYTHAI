@@ -1,167 +1,26 @@
 import Link from "next/link";
-import { Plus, PackageSearch } from "lucide-react";
+import Image from "next/image";
+import { Box, Plus, Pencil } from "lucide-react";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { ArchiveProductButton } from "@/components/admin/ArchiveProductButton";
 import { ProductAvailabilityEditor } from "@/components/admin/ProductAvailabilityEditor";
-import Image from "next/image";
 import { AdminProductFilter } from "@/components/admin/AdminProductFilter";
-import { EmptyState } from "@/components/ui/EmptyState";
-import {
-  getAdminProductFilterOptions,
-  getAdminProducts,
-  type AdminProductFilters,
-} from "@/services/admin-product.service";
-
-type AdminProductsPageProps = {
-  searchParams: Promise<{
-    query?: string;
-    categoryId?: string;
-    brandId?: string;
-    status?: string;
-    type?: string;
-  }>;
-};
-
-export default async function AdminProductsPage({
-  searchParams,
-}: AdminProductsPageProps) {
+import { getAdminProductFilterOptions, getAdminProducts, type AdminProductFilters } from "@/services/admin-product.service";
+export default async function AdminProductsPage({ searchParams }: { searchParams: Promise<{ query?: string; categoryId?: string; brandId?: string; status?: string; type?: string; page?: string }> }) {
   const params = await searchParams;
-
-  const status =
-    params.status === "ACTIVE" ||
-    params.status === "DRAFT" ||
-    params.status === "ARCHIVED"
-      ? params.status
-      : undefined;
-
-  const type =
-    params.type === "IN_STOCK" || params.type === "PREORDER"
-      ? params.type
-      : undefined;
-
-  const filters: AdminProductFilters = {
-    query: params.query,
-    categoryId: params.categoryId,
-    brandId: params.brandId,
-    status,
-    type,
-  };
-
-  const [products, options] = await Promise.all([
-    getAdminProducts(filters),
-    getAdminProductFilterOptions(),
-  ]);
-
-  return (
-    <main>
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <p className="text-xs font-bold uppercase text-[var(--brand-strong)]">
-            Kho hàng
-          </p>
-          <h1 className="mt-1 text-3xl font-black tracking-tight text-zinc-950">
-            Sản phẩm
-          </h1>
-          <p className="mt-2 text-zinc-600">
-            Quản lý sản phẩm có sẵn và pre-order.
-          </p>
-        </div>
-
-        <Link
-          href="/admin/products/create"
-          className="inline-flex items-center gap-2 rounded-md bg-zinc-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-zinc-800"
-        >
-          <Plus size={16} aria-hidden="true" />
-          Thêm sản phẩm
-        </Link>
-      </div>
-      <AdminProductFilter
-        categories={options.categories}
-        brands={options.brands}
-        values={filters}
-      />
-
-      <section className="mt-6 overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-        {products.length > 0 ? (
-          <div className="divide-y divide-zinc-100">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="grid gap-4 px-5 py-4 transition hover:bg-amber-50/50 sm:grid-cols-[72px_1.4fr_1fr_1fr_1fr]"
-              >
-                <div className="relative aspect-square overflow-hidden rounded-md border border-zinc-200 bg-zinc-100">
-                  {product.images[0] ? (
-                    <Image
-                      src={product.images[0].url}
-                      alt={product.images[0].alt ?? product.name}
-                      fill
-                      sizes="72px"
-                      className="object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full items-center justify-center px-2 text-center text-xs text-zinc-500">
-                      Chưa có ảnh
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <p className="font-semibold text-zinc-950">{product.name}</p>
-                  <p className="mt-1 text-sm text-zinc-500">
-                    {product.slug}
-                  </p>
-                </div>
-
-                <div className="text-sm text-zinc-600">
-                  <p>{product.brand?.name ?? "Chưa có brand"}</p>
-                  <p>
-                    {product.categories.length > 0
-                      ? product.categories
-                          .map((item) => item.category.name)
-                          .join(", ")
-                      : product.category?.name ?? "Chưa có danh mục"}
-                  </p>
-                </div>
-
-                <div className="text-sm text-zinc-600">
-                  <p>{product.status}</p>
-                  <p>{product.type === "PREORDER" ? "Pre-order — Đặt trước" : "In-stock — Có sẵn"}</p>
-                  <ProductAvailabilityEditor productId={product.id} name={product.name} type={product.type} stock={product.stock} />
-                </div>
-
-                <div className="flex flex-col items-start gap-3 lg:items-end">
-                  <div className="lg:text-right">
-                    <ProductPrice price={product.price} />
-                    <p className="mt-1 text-sm text-zinc-500">
-                      Tồn kho: {product.stock}
-                    </p>
-                  </div>
-
-                  <div className="flex gap-2">
-                    <Link
-                      href={`/admin/products/${product.id}/edit`}
-                      className="inline-flex rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-950 transition hover:bg-zinc-100"
-                    >
-                      Sửa
-                    </Link>
-
-                    {product.status !== "ARCHIVED" ? (
-                      <ArchiveProductButton productId={product.id} />
-                    ) : null}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <EmptyState
-            className="m-5"
-            title="Chưa có sản phẩm nào"
-            description="Tạo sản phẩm đầu tiên để hiển thị trên trang cửa hàng."
-            icon={<PackageSearch size={22} aria-hidden="true" />}
-            action={{ href: "/admin/products/create", label: "Thêm sản phẩm" }}
-          />
-        )}
-      </section>
-    </main>
-  );
+  const filters: AdminProductFilters = { query: params.query, categoryId: params.categoryId, brandId: params.brandId, status: params.status === "ACTIVE" || params.status === "DRAFT" || params.status === "ARCHIVED" ? params.status : undefined, type: params.type === "IN_STOCK" || params.type === "PREORDER" ? params.type : undefined };
+  const [products, options] = await Promise.all([getAdminProducts(filters), getAdminProductFilterOptions()]);
+  const pages = Math.max(1, Math.ceil(products.length / 20));
+  const page = Math.max(1, Math.min(pages, Math.floor(Number(params.page)) || 1));
+  const visible = products.slice((page - 1) * 20, page * 20);
+  const link = (target: number) => { const query = new URLSearchParams(); Object.entries(params).forEach(([key, value]) => { if (value && key !== "page") query.set(key, value); }); query.set("page", String(target)); return `/admin/products?${query}`; };
+  return <main>
+    <div className="flex flex-wrap items-center justify-between gap-4"><div><h1 className="flex items-center gap-3 text-3xl font-bold"><Box className="text-blue-600" size={30} />Quản lý sản phẩm</h1><p className="mt-2 text-sm text-zinc-500">Quản lý danh sách figure, mô hình có sẵn và đặt trước.</p></div><Link href="/admin/products/create" className="inline-flex items-center gap-2 rounded-md bg-[var(--brand)] px-5 py-3 text-sm font-semibold text-white"><Plus size={18} />Thêm sản phẩm</Link></div>
+    <AdminProductFilter categories={options.categories} brands={options.brands} values={filters} />
+    <section className="mt-5 overflow-hidden rounded-lg border border-zinc-200 bg-white"><div className="flex items-center justify-between gap-3 border-b border-zinc-200 p-4 text-sm"><p>Tổng <strong>{products.length} sản phẩm</strong></p><span className="text-xs text-zinc-500">20 sản phẩm / trang</span></div><div className="overflow-x-auto"><table className="w-full min-w-[940px] text-left text-xs"><caption className="sr-only">Danh sách sản phẩm quản trị</caption><thead><tr>{["Hình ảnh", "Tên sản phẩm", "Danh mục", "Thương hiệu", "Giá", "Tồn kho", "Trạng thái", "Loại hàng", "Thao tác"].map(label => <th key={label} className="px-3 py-4">{label}</th>)}</tr></thead><tbody>{visible.map(product => <tr key={product.id} className="border-t border-zinc-100 hover:bg-blue-50/40">
+      <td className="p-3"><div className="relative size-16 overflow-hidden rounded bg-zinc-50">{product.images[0] && <Image src={product.images[0].url} alt={product.name} fill sizes="64px" className="object-contain" />}</div></td>
+      <td className="max-w-60 p-3"><Link href={`/admin/products/${product.id}/edit`} className="text-sm font-semibold hover:text-blue-600">{product.name}</Link><p className="mt-1 line-clamp-1 text-[10px] text-zinc-500">{product.slug}</p></td><td className="max-w-36 p-3">{product.category?.name ?? "—"}</td><td className="p-3">{product.brand?.name ?? "—"}</td><td className="whitespace-nowrap p-3"><ProductPrice price={product.price} /></td><td className={`p-3 font-bold ${product.stock ? "text-emerald-600" : "text-red-500"}`}>{product.stock}</td><td className="p-3"><span className={`rounded-md px-2 py-1.5 ${product.status === "ACTIVE" ? "bg-emerald-50 text-emerald-700" : "bg-zinc-100 text-zinc-500"}`}>{product.status}</span></td><td className="p-3"><span className={`rounded px-2 py-1 ${product.type === "PREORDER" ? "bg-violet-50 text-violet-700" : "bg-blue-50 text-blue-600"}`}>{product.type}</span><ProductAvailabilityEditor productId={product.id} name={product.name} type={product.type} stock={product.stock} /></td><td className="p-3"><div className="flex items-center gap-2"><Link href={`/admin/products/${product.id}/edit`} aria-label={`Sửa ${product.name}`} className="rounded border border-blue-100 p-2 text-blue-600"><Pencil size={15} /></Link>{product.status !== "ARCHIVED" && <ArchiveProductButton productId={product.id} />}</div></td>
+    </tr>)}{!visible.length && <tr><td colSpan={9} className="p-10 text-center text-zinc-500">Không có sản phẩm phù hợp với bộ lọc.</td></tr>}</tbody></table></div>
+    <nav aria-label="Phân trang sản phẩm quản trị" className="flex justify-between border-t border-zinc-200 p-4 text-xs"><span>Hiển thị {products.length ? (page - 1) * 20 + 1 : 0}–{Math.min(page * 20, products.length)} / {products.length}</span><div className="flex gap-4">{page > 1 && <Link href={link(page - 1)} className="text-blue-600">← Trang trước</Link>}<span>{page}/{pages}</span>{page < pages && <Link href={link(page + 1)} className="text-blue-600">Trang sau →</Link>}</div></nav></section>
+  </main>;
 }

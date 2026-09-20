@@ -62,7 +62,7 @@ export default async function ProductDetailPage({
     .slice(0, 5);
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10">
+    <main className="mx-auto max-w-[1560px] px-4 py-6 sm:px-6">
       <Breadcrumbs
         items={[
           { label: "Trang chủ", href: "/" },
@@ -71,7 +71,7 @@ export default async function ProductDetailPage({
         ]}
       />
 
-      <div className="mt-7 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(380px,0.86fr)] lg:gap-12">
+      <div className="product-detail-grid mt-6">
         <ProductGallery productName={product.name} images={product.images} />
 
         <section className="h-fit rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm lg:sticky lg:top-36">
@@ -126,14 +126,6 @@ export default async function ProductDetailPage({
             </div>
           </div>
 
-          <details className="mt-4 rounded-xl border border-zinc-200 p-4 text-sm">
-            <summary className="cursor-pointer font-semibold">Thông số và phụ kiện</summary>
-            <dl className="mt-3 grid grid-cols-2 gap-3 text-zinc-600">
-              <dt>Chiều cao</dt><dd>Đang cập nhật</dd>
-              <dt>Chất liệu</dt><dd>Đang cập nhật</dd>
-              <dt>Phụ kiện đi kèm</dt><dd>Liên hệ để xác nhận</dd>
-            </dl>
-          </details>
 
           <ProductPurchasePanel
             productId={product.id}
@@ -151,6 +143,7 @@ export default async function ProductDetailPage({
           ) : null}
           <ServiceCommitments />
         </section>
+        <aside className="product-specs overflow-hidden rounded-lg border border-zinc-200 bg-white"><h2 className="border-b border-zinc-200 bg-blue-50 p-4 text-base font-bold text-blue-600">Thông tin sản phẩm</h2><dl className="divide-y divide-zinc-100 px-4 text-xs">{[["Thương hiệu", product.brand?.name ?? "Đang cập nhật"], ["Danh mục", product.category?.name ?? "Đang cập nhật"], ["Loại hàng", product.type === "PREORDER" ? "Đặt trước" : "Có sẵn"], ["Tỷ lệ", product.name.match(/\b1\/\d+\b/)?.[0] ?? "Đang cập nhật"], ["Chiều cao", "Đang cập nhật"], ["Chất liệu", "Đang cập nhật"], ["Phụ kiện", "Liên hệ để xác nhận"]].map(([label, value]) => <div key={label} className="grid grid-cols-2 gap-3 py-3"><dt className="text-zinc-500">{label}</dt><dd>{value}</dd></div>)}</dl></aside>
       </div>
 
       <ProductTabs description={product.description} />

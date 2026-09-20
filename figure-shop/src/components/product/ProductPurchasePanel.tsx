@@ -22,7 +22,7 @@ export function ProductPurchasePanel({
   const isUnavailable = !isPreorder && stock <= 0;
 
   return (
-    <div className="mt-7 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+    <div className="purchase-panel mt-6 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <span className="text-sm font-semibold text-zinc-900">Số lượng</span>

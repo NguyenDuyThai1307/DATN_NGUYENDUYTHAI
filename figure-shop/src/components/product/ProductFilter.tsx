@@ -30,6 +30,7 @@ type ProductFilterProps = {
   layout?: "toolbar" | "sidebar";
   resetHref?: string;
   showCategory?: boolean;
+  fixedType?: "PREORDER";
   onApplied?: () => void;
 };
 
@@ -41,6 +42,7 @@ export function ProductFilter({
   layout = "toolbar",
   resetHref = action,
   showCategory = true,
+  fixedType,
   onApplied,
 }: ProductFilterProps) {
   const router = useRouter();
@@ -168,7 +170,7 @@ export function ProductFilter({
         </Select>
       </div>
 
-      <div>
+      {fixedType ? <input type="hidden" name="type" value={fixedType} /> : <div>
         <label htmlFor={`${prefix}-type`} className="text-sm font-medium">
           Loại sản phẩm
         </label>
@@ -182,7 +184,7 @@ export function ProductFilter({
           <option value="IN_STOCK">Có sẵn</option>
           <option value="PREORDER">Pre-order</option>
         </Select>
-      </div>
+      </div>}
 
       <div className="grid grid-cols-2 gap-3">
         <div>

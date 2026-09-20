@@ -1,13 +1,30 @@
 @import "tailwindcss";
+@import "./reference-theme.css";
 
 :root {
-  --background: #f7f7f8;
-  --foreground: #1d1d22;
-  --brand: #bc3440;
-  --brand-strong: #bc3440;
+  --background: #ffffff;
+  --foreground: #102457;
+  --brand: #f5223b;
+  --brand-strong: #ee1b35;
+  --primary: #0755ed;
   --brand-soft: #fff0f1;
   --header-yellow: #ffc928;
   --header-yellow-strong: #f4b400;
+}
+
+@theme {
+  --color-zinc-950: #0b2155;
+  --color-zinc-900: #132b5a;
+  --color-zinc-800: #243d6b;
+  --color-zinc-700: #3b5078;
+  --color-zinc-600: #586d92;
+  --color-zinc-500: #6d80a1;
+  --color-zinc-400: #91a0bb;
+  --color-zinc-300: #c9d5e9;
+  --color-zinc-200: #e0e8f5;
+  --color-zinc-100: #eff4fc;
+  --color-zinc-50: #f7faff;
+  --color-blue-600: #0755ed;
 }
 
 * {
@@ -69,19 +86,19 @@ button {
 .product-card-cart {
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
+  width: 34px;
+  height: 34px;
   padding: 0;
-  border: 1px solid var(--brand-strong);
-  border-radius: 10px;
-  background: #27272a;
-  color: #fb7185;
+  border: 1px solid #d7e3f8;
+  border-radius: 5px;
+  background: white;
+  color: #0755ed;
   visibility: visible;
   opacity: 1;
   box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
 }
 .product-card-cart:hover:not(:disabled) {
-  background: var(--brand-strong);
+  background: #0755ed;
   color: white;
 }
 .product-card-cart:disabled {
@@ -90,7 +107,7 @@ button {
 @media (hover: hover) and (pointer: fine) {
   .product-card:hover {
     transform: translateY(-5px);
-    border-color: #dfb9bd;
+    border-color: #abc8fa;
     box-shadow: 0 14px 30px -16px rgb(62 25 32 / 30%);
   }
   .product-card:hover .product-card-image { transform: scale(1.045); }

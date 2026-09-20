@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Temporary screenshots, browser profiles and isolated test databases.
+    ".image-work/**",
+    ".payment-test/**",
   ]),
 ]);
 

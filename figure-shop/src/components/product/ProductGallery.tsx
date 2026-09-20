@@ -44,7 +44,7 @@ export function ProductGallery({
   }
 
   return (
-    <div>
+    <div className="product-gallery">
       <div className="relative aspect-square overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100">
         <Image
           src={selectedImage.url}

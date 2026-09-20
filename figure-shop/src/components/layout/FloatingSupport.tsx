@@ -3,8 +3,10 @@ import Link from "next/link";
 import { ArrowUp, Bot, Headphones, Mail, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AIChatWidget } from "@/components/ai/AIChatWidget";
+import { usePathname } from "next/navigation";
 
 export function FloatingSupport() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -15,6 +17,7 @@ export function FloatingSupport() {
     document.addEventListener("pointerdown", close);
     return () => document.removeEventListener("pointerdown", close);
   }, []);
+  if (pathname === "/ai") return null;
   return <>
     {!chatOpen && <div ref={ref} className="fixed bottom-20 right-3 z-40 md:bottom-6 md:right-5" onKeyDown={event => {
       if (event.key === "Escape") { setOpen(false); ref.current?.querySelector<HTMLButtonElement>("[aria-controls]")?.focus(); }

@@ -77,12 +77,12 @@ export function PromoShortcutGrid() {
 
 export function FeaturedCategoryGrid({ categories }: { categories: CategoryItem[] }) {
   return (
-    <div className="grid overflow-hidden rounded-lg border border-zinc-200 bg-white grid-cols-2 lg:grid-cols-4">
+    <div className="category-strip grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
       {categories.map((category) => (
         <Link
           key={category.id}
           href={`/collections/${category.slug}`}
-          className="group flex flex-col overflow-hidden border-b border-r border-zinc-200 p-4 transition hover:bg-rose-50"
+          className="group flex flex-col items-center overflow-hidden rounded-md border border-zinc-200 bg-zinc-50 p-3 text-center transition hover:border-blue-400 hover:bg-blue-50"
         >
           {category.imageUrl ? (
             <div className="relative mx-auto mb-4 h-24 w-24 overflow-hidden rounded-2xl transition duration-200 group-hover:scale-[1.02]">

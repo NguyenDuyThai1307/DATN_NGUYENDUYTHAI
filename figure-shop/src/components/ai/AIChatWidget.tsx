@@ -105,7 +105,7 @@ function ProductResult({ product }: { product: AiProductReference }) {
   );
 }
 
-export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+export function AIChatWidget({ isOpen, onClose, embedded = false }: { isOpen: boolean; onClose?: () => void; embedded?: boolean }) {
 
   const [messages, setMessages] = useState<UiMessage[]>([initialMessage]);
   const [input, setInput] = useState("");
@@ -244,13 +244,14 @@ export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: ()
   }
 
   return (
-    <>
+    <div className={embedded ? "chat-workspace" : ""}>
+      {embedded && <aside className="chat-history"><Bot size={38} className="text-blue-600" /><h1 className="mt-3 text-xl font-bold text-blue-700">AI Figure Assistant</h1><p className="mt-2 text-xs leading-5 text-zinc-500">Tìm mô hình phù hợp, so sánh và khám phá bộ sưu tập của bạn.</p><button onClick={resetConversation} disabled={isLoading || historyLoading} className="my-5 w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white disabled:opacity-50">+ Cuộc trò chuyện mới</button><h2 className="mb-3 text-sm font-bold">Lịch sử trò chuyện</h2>{!userId && <Link href="/login?redirect=/ai" className="text-xs text-blue-600 underline">Đăng nhập để lưu lịch sử</Link>}{conversations.map(item => <button key={item.id} disabled={isLoading || historyLoading} onClick={() => void selectConversation(item.id)} className={`mb-2 block w-full rounded-lg p-3 text-left text-sm disabled:opacity-50 ${conversationId === item.id ? "bg-blue-100 font-semibold text-blue-700" : "hover:bg-blue-50"}`}>{item.title}</button>)}{userId && !conversations.length && <p className="text-xs text-zinc-500">Cuộc trò chuyện sẽ xuất hiện tại đây sau khi bạn gửi tin nhắn.</p>}</aside>}
       {isOpen ? (
         <section
           aria-label="Trợ lý mua sắm AI"
-          className="fixed inset-x-3 bottom-20 z-50 flex h-[min(36rem,calc(100dvh-6.5rem))] flex-col overflow-hidden rounded-md border border-zinc-200 bg-white shadow-2xl sm:left-auto sm:right-4 sm:w-[400px] md:bottom-6"
+          className={`chat-panel flex flex-col overflow-hidden rounded-lg border border-zinc-200 bg-white ${embedded ? "" : "fixed inset-x-3 bottom-20 z-50 h-[min(38rem,calc(100dvh-6.5rem))] shadow-2xl sm:left-auto sm:right-4 sm:w-[420px] md:bottom-6"}`}
         >
-          <header className="flex h-16 shrink-0 items-center gap-3 bg-[var(--brand-strong)] px-4 text-white">
+          <header className="flex h-16 shrink-0 items-center gap-3 bg-blue-600 px-4 text-white">
             <div className="grid h-9 w-9 place-items-center rounded-full bg-white/15">
               <Bot size={20} aria-hidden="true" />
             </div>
@@ -268,7 +269,7 @@ export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             >
               <RotateCcw size={18} aria-hidden="true" />
             </button>
-            <button
+            {!embedded && <button
               type="button"
               onClick={onClose}
               aria-label="Đóng trợ lý AI"
@@ -276,21 +277,21 @@ export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-white/15"
             >
               <X size={20} aria-hidden="true" />
-            </button>
+            </button>}
           </header>
 
-          {userId ? <div className="border-b bg-white px-3 py-2">
-            <label className="text-xs text-zinc-600">Lịch sử theo tài khoản
+          {userId ? <div className={embedded && !historyLoading && !historyError ? "hidden" : "border-b bg-white px-3 py-2"}>
+            {!embedded && <label className="text-xs text-zinc-600">Lịch sử theo tài khoản
               <select aria-label="Chọn cuộc trò chuyện" value={conversationId ?? ""} disabled={isLoading || historyLoading} onChange={event => void selectConversation(event.target.value)} className="mt-1 w-full rounded border border-zinc-200 p-2 text-sm">
                 <option value="">Cuộc trò chuyện mới</option>
                 {conversations.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}
               </select>
-            </label>
+            </label>}
             {historyLoading && <p role="status" className="text-xs">Đang tải lịch sử…</p>}
             {historyError && <p role="alert" className="text-xs text-red-600">{historyError}</p>}
-          </div> : <p className="border-b px-3 py-2 text-xs text-zinc-500"><Link href="/login" className="underline">Đăng nhập</Link> để lưu lịch sử trò chuyện theo tài khoản.</p>}
+          </div> : !embedded && <p className="border-b px-3 py-2 text-xs text-zinc-500"><Link href="/login" className="underline">Đăng nhập</Link> để lưu lịch sử trò chuyện theo tài khoản.</p>}
 
-          <div className="flex-1 space-y-4 overflow-y-auto bg-zinc-50 p-4">
+          <div className="chat-messages min-h-0 flex-1 space-y-4 overflow-y-auto bg-white p-4 sm:p-5">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -303,15 +304,15 @@ export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                 <div
                   className={
                     message.role === "user"
-                      ? "rounded-md bg-zinc-950 px-3 py-2.5 text-sm text-white"
-                      : "rounded-md border border-zinc-200 bg-white px-3 py-2.5 text-sm leading-6 text-zinc-700"
+                      ? "chat-message-user rounded-xl px-4 py-3 text-sm"
+                      : "chat-message-assistant rounded-xl border px-4 py-3 text-sm leading-6 text-zinc-700"
                   }
                 >
                   <p className="whitespace-pre-wrap">{message.content}</p>
                 </div>
 
                 {message.products?.length ? (
-                  <div className="mt-2 space-y-2">
+                  <div className="chat-products mt-2 space-y-2">
                     {message.products.map((product) => (
                       <ProductResult key={product.slug} product={product} />
                     ))}
@@ -386,6 +387,6 @@ export function AIChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: ()
           </form>
         </section>
       ) : null}
-    </>
+    </div>
   );
 }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 const figureGroups = [
   {
@@ -60,12 +61,14 @@ const navigation = [
 
 export function MegaMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
-    <nav className="mx-auto max-w-[1500px] px-6">
+    <nav aria-label="Điều hướng chính" className="main-navigation">
       <div className="flex h-12 items-center justify-center gap-1">
         <Link
           href="/"
+          aria-current={pathname === "/" ? "page" : undefined}
           className="inline-flex h-10 items-center rounded-lg px-3 text-[15px] font-bold text-zinc-950 transition hover:bg-zinc-100 hover:text-zinc-800"
         >
           Trang chủ
@@ -122,6 +125,7 @@ export function MegaMenu() {
           <Link
             key={item.label}
             href={item.href}
+            aria-current={pathname === item.href ? "page" : undefined}
             className="inline-flex h-10 items-center gap-1 rounded-lg px-3 text-[15px] font-bold text-zinc-950 transition hover:bg-zinc-100 hover:text-zinc-800"
           >
             {item.label}

@@ -44,7 +44,7 @@ export default async function CartPage() {
             Giỏ hàng của bạn
           </p>
           <h1 className="mt-1 text-3xl font-black tracking-tight text-zinc-950">
-            Kiểm tra sản phẩm
+            Giỏ hàng của bạn ({items.length} sản phẩm)
           </h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
             Cập nhật số lượng, áp dụng coupon và kiểm tra tổng tiền trước khi
@@ -62,7 +62,7 @@ export default async function CartPage() {
 
       {items.length > 0 ? (
         <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
-          <div className="space-y-4">
+          <div className="overflow-hidden rounded-lg border border-zinc-200"><div className="flex justify-between bg-zinc-100 px-5 py-3 text-sm font-semibold"><span>Sản phẩm</span><span>Số lượng / Thành tiền</span></div>
             {items.map((item) => (
               <CartItem key={item.id} item={item} />
             ))}

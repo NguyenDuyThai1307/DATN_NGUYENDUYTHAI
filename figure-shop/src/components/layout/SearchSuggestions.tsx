@@ -50,7 +50,7 @@ export function SearchSuggestions() {
         if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); setOpen(true); setActive(index => products.length ? (index < 0 ? (event.key === "ArrowDown" ? 0 : products.length - 1) : (index + (event.key === "ArrowDown" ? 1 : -1) + products.length) % products.length) : -1); }
         if (event.key === "Enter" && visible && active >= 0 && products[active]) { event.preventDefault(); setOpen(false); router.push(`/products/${products[active].slug}`); }
       }} placeholder="Tìm mô hình, nhân vật, thương hiệu…" className="h-11 w-full rounded-xl border border-zinc-200 bg-zinc-50 pl-4 pr-12 text-sm outline-none transition focus:border-[var(--brand-strong)] focus:bg-white" />
-    <button type="submit" aria-label="Tìm kiếm" className="absolute right-0 top-0 grid size-11 place-items-center rounded-xl text-zinc-600"><Search size={20} /></button>
+    <button type="submit" aria-label="Tìm kiếm" className="absolute right-0 top-0 grid size-11 place-items-center rounded-r-md bg-blue-600 text-white"><Search size={20} /></button>
     {visible && <div className="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xl">
       <p role="status" className="px-4 py-3 text-xs text-zinc-500">{loading ? "Đang tìm sản phẩm…" : result?.error ? "Chưa tải được gợi ý. Nhấn Enter để tìm kiếm." : products.length ? "Sản phẩm gợi ý" : "Không tìm thấy sản phẩm phù hợp."}</p>
       <ul id={`${id}-results`} role="listbox" aria-label="Sản phẩm gợi ý" className="max-h-[50dvh] overflow-y-auto">

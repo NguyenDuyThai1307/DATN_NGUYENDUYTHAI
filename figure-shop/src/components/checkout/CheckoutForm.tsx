@@ -4,7 +4,6 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Select } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
 
 type CheckoutField =
@@ -170,7 +169,7 @@ export function CheckoutForm({ methods }: { methods: { value: string; label: str
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="mt-5 grid gap-4">
+    <form onSubmit={handleSubmit} noValidate className="checkout-form mt-5 space-y-4">
       <div>
         <label htmlFor="receiverName" className="text-sm font-medium">
           Họ tên người nhận
@@ -216,7 +215,7 @@ export function CheckoutForm({ methods }: { methods: { value: string; label: str
 
         <div>
           <label htmlFor="district" className="text-sm font-medium">
-            Quận/Hủyện
+          Quận/Huyện
           </label>
           <Input
             id="district"
@@ -270,19 +269,9 @@ export function CheckoutForm({ methods }: { methods: { value: string; label: str
         />
       </div>
 
-      <div>
-        <label htmlFor="paymentMethod" className="text-sm font-medium">
-          Phương thức thanh toán
-        </label>
-        <Select
-          id="paymentMethod"
-          name="paymentMethod"
-          defaultValue="COD"
-          className="mt-2"
-        >
-          {methods.map((method) => <option key={method.value} value={method.value}>{method.label}</option>)}
-        </Select>
-      </div>
+      <fieldset className="space-y-3 border-t border-zinc-200 pt-5"><legend className="py-2 text-lg font-bold">Phương thức thanh toán</legend>
+        {methods.map((method, index) => <label key={method.value} className="flex cursor-pointer items-start gap-3 rounded-md border border-zinc-200 p-4 transition has-checked:border-blue-500 has-checked:bg-blue-50"><input type="radio" name="paymentMethod" value={method.value} defaultChecked={index === 0} className="mt-1 accent-blue-600" /><span className="text-sm font-semibold">{method.label}<span className="mt-1 block text-xs font-normal text-zinc-500">{method.value === "COD" ? "Thanh toán khi nhận hàng tại địa chỉ của bạn." : method.value === "DEMO" ? "Thanh toán thử nghiệm, không phát sinh giao dịch thật." : method.value === "BANK_TRANSFER" ? "Chuyển khoản theo hướng dẫn và chờ cửa hàng xác nhận." : "Tiếp tục sang cổng thanh toán để hoàn tất."}</span></span></label>)}
+      </fieldset>
 
       {error ? (
         <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">
@@ -290,7 +279,7 @@ export function CheckoutForm({ methods }: { methods: { value: string; label: str
         </p>
       ) : null}
 
-      <Button type="submit" disabled={isSubmitting} size="lg">
+      <Button type="submit" disabled={isSubmitting} size="lg" variant="danger" className="w-full py-4">
         {isSubmitting ? "Đang đặt hàng..." : "Đặt hàng"}
       </Button>
     </form>

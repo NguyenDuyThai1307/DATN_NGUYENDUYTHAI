@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import { CheckoutForm } from "@/components/checkout/CheckoutForm";
 import { paymentMethods } from "@/lib/payment-config";
@@ -59,7 +60,7 @@ export default async function CheckoutPage() {
         </p>
       </div>
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_390px]">
+      <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
         <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
           <div>
             <p className="text-xs font-bold uppercase text-zinc-500">
@@ -93,7 +94,7 @@ export default async function CheckoutPage() {
                   key={item.id}
                   className="flex justify-between gap-4 text-sm"
                 >
-                  <div className="min-w-0">
+                  <div className="relative size-16 shrink-0 overflow-hidden rounded-md bg-zinc-50">{item.product.images[0] && <Image src={item.product.images[0].url} alt="" fill sizes="64px" className="object-contain" />}</div><div className="min-w-0 flex-1">
                     <p className="font-medium">{item.product.name}</p>
                     <p className="mt-1 text-zinc-500">
                       Số lượng: {item.quantity}

@@ -11,6 +11,7 @@ import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { WishlistButton } from "@/components/product/Wishlist";
 
 type ProductCardProps = {
+  compact?: boolean;
   product: {
     id: string;
     name: string;
@@ -35,7 +36,7 @@ type ProductCardProps = {
   };
 };
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, compact = false }: ProductCardProps) {
   const firstImage = product.images[0];
 
   const activePromotion =
@@ -50,14 +51,14 @@ export function ProductCard({ product }: ProductCardProps) {
   });
 
   return (
-    <article className="product-card group relative flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white focus-within:ring-2 focus-within:ring-[var(--brand-strong)]">
+    <article className={`product-card group relative flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white focus-within:ring-2 focus-within:ring-[var(--brand-strong)] ${compact ? "home-product-card" : ""}`}>
       <Link
         href={`/products/${product.slug}`}
         className="absolute inset-0 z-10"
         aria-label={`Xem chi tiết ${product.name}`}
       />
 
-      <div className="relative aspect-square bg-zinc-100">
+      <div className="product-image-wrap relative aspect-square bg-zinc-50">
         {firstImage ? (
           <Image
             src={firstImage.url}
@@ -72,7 +73,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
 
-        <div className="absolute inset-x-2 top-2 flex flex-wrap items-start justify-between gap-1.5 sm:inset-x-3 sm:top-3">
+        <div className="absolute left-2 top-2 flex max-w-[70%] flex-wrap items-start gap-1.5">
         <Badge
           variant={product.type === "PREORDER" ? "warning" : "success"}
           className="bg-white shadow-sm"
@@ -91,34 +92,34 @@ export function ProductCard({ product }: ProductCardProps) {
           </Badge>
         ) : null}
         </div>
+        <div className="absolute right-2 top-2"><WishlistButton productId={product.id} name={product.name} /></div>
       </div>
 
-      <div className="flex flex-1 flex-col space-y-2 p-3.5 sm:p-4">
+      <div className="product-card-body flex flex-1 flex-col space-y-2 p-3">
         <p className="line-clamp-1 h-4 text-xs font-medium uppercase text-zinc-500">{product.brand?.name ?? "Figure Shop"}</p>
 
         <h3 className="line-clamp-2 min-h-10 text-sm font-bold leading-5 text-zinc-950 transition group-hover:text-[var(--brand-strong)]">
           {product.name}
         </h3>
 
-        <div className="flex min-h-24 flex-col gap-1">
+        <div className="flex flex-col gap-1 pr-8">
           <ProductPrice
             price={linePricing.finalUnitPrice}
             originalPrice={activePromotion ? product.price : undefined}
           />
 
-          {linePricing.finalUnitPrice < product.price ? (
+          {!compact && linePricing.finalUnitPrice < product.price ? (
             <span className="text-xs font-semibold text-[var(--brand-strong)]">
               Tiết kiệm {(product.price - linePricing.finalUnitPrice).toLocaleString("vi-VN")} đ
             </span>
           ) : null}
 
-          <span className="text-xs text-zinc-500">
+          {!compact && <span className="text-xs text-zinc-500">
             {product.type === "PREORDER" ? "Đặt trước" : `Còn ${product.stock}`}
-          </span>
+          </span>}
         </div>
 
-        <div className="mt-auto flex items-center justify-between pt-2">
-          <WishlistButton productId={product.id} name={product.name} />
+        <div className="absolute bottom-3 right-2 flex items-center justify-end">
           <div className="relative z-20">
             <AddToCartButton
               productId={product.id}

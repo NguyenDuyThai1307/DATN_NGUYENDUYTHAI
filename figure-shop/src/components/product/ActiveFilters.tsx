@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-export function ActiveFilters({ params, categories, brands }: {
+export function ActiveFilters({ params, categories, brands, pathname = "/products" }: {
+  pathname?: string;
   params: Record<string, string | undefined>;
   categories: { id: string; name: string }[];
   brands: { id: string; name: string }[];
@@ -18,8 +19,8 @@ export function ActiveFilters({ params, categories, brands }: {
   return <div aria-label="Bộ lọc đang áp dụng" className="mb-5 flex flex-wrap gap-2">
     {active.map(([key, label]) => {
       const query = new URLSearchParams(Object.entries(params).filter(([k,v]) => k !== key && k !== "page" && v !== undefined) as [string,string][]);
-      return <Link key={key} href={`/products?${query}`} aria-label={`Bỏ bộ lọc ${label}`} className="inline-flex min-h-10 items-center gap-3 rounded-full border border-rose-200 bg-rose-50 px-3 text-xs font-medium text-rose-800">{label}<span aria-hidden="true">×</span></Link>;
+      return <Link key={key} href={query.size ? `${pathname}?${query}` : pathname} aria-label={`Bỏ bộ lọc ${label}`} className="inline-flex min-h-10 items-center gap-3 rounded-md border border-blue-200 bg-blue-50 px-3 text-xs font-medium text-blue-800">{label}<span aria-hidden="true">×</span></Link>;
     })}
-    <Link href="/products" className="inline-flex min-h-10 items-center px-2 text-xs font-semibold underline">Bỏ tất cả</Link>
+    <Link href={pathname} className="inline-flex min-h-10 items-center px-2 text-xs font-semibold underline">Bỏ tất cả</Link>
   </div>;
 }
