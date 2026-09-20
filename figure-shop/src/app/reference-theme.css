@@ -63,7 +63,7 @@
 .chat-workspace .chat-panel > header p { color: #7083a5; }
 .chat-workspace .chat-products { display: grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap: 8px; }
 .chat-workspace .chat-products > a { flex-direction: column; }
-.chat-workspace .chat-products > a > div:first-child { width: 100%; height: 130px; }
+.chat-workspace .chat-products .chat-product-image { width: 100%; height: clamp(180px, 20vw, 260px); }
 
 /* Homepage: hero, category rail, separate product sections and a fixed-ratio poster. */
 .home-container { max-width: 1560px; margin-inline: auto; padding: 14px 24px 22px; }

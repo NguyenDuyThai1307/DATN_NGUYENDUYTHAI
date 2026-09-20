@@ -45,7 +45,7 @@ function createMessageId() {
   return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
-function ProductResult({ product }: { product: AiProductReference }) {
+function ProductResult({ product, embedded }: { product: AiProductReference; embedded: boolean }) {
   const hasDiscount = product.finalPrice < product.originalPrice;
 
   return (
@@ -53,14 +53,14 @@ function ProductResult({ product }: { product: AiProductReference }) {
       href={`/products/${product.slug}`}
       className="group flex gap-3 rounded-md border border-zinc-200 bg-white p-2.5 transition hover:border-red-200 hover:shadow-sm"
     >
-      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded bg-zinc-100">
+      <div className="chat-product-image relative h-16 w-16 shrink-0 overflow-hidden rounded bg-zinc-100">
         {product.imageUrl ? (
           <Image
             src={product.imageUrl}
             alt={product.name}
             fill
-            sizes="64px"
-            className="object-cover transition duration-300 group-hover:scale-105"
+            sizes={embedded ? "(max-width: 639px) 90vw, (max-width: 1199px) 45vw, 560px" : "64px"}
+            className="object-contain"
           />
         ) : (
           <div className="grid h-full place-items-center text-zinc-400">
@@ -314,7 +314,7 @@ export function AIChatWidget({ isOpen, onClose, embedded = false }: { isOpen: bo
                 {message.products?.length ? (
                   <div className="chat-products mt-2 space-y-2">
                     {message.products.map((product) => (
-                      <ProductResult key={product.slug} product={product} />
+                      <ProductResult key={product.slug} product={product} embedded={embedded} />
                     ))}
                   </div>
                 ) : null}
