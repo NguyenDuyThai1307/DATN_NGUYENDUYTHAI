@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { verifyJwt } from "@/lib/jwt";
+import { getSessionUser } from "@/lib/session-user";
 import { AUTH_COOKIE_NAME } from "@/constants/auth";
 
 const protectedRoutes = ["/account", "/checkout", "/cart"];
@@ -32,10 +32,14 @@ export async function proxy(request: NextRequest) {
   }
 
   try {
-    const payload = await verifyJwt(token);
+    const user = await getSessionUser(token);
+    if (!user) throw new Error("Session expired");
 
-    if (isStaffPath(pathname) && payload.role === "CUSTOMER") {
+    if (isStaffPath(pathname) && user.role === "CUSTOMER") {
       return NextResponse.redirect(new URL("/", request.url));
+    }
+    if ((pathname === "/admin/users" || pathname.startsWith("/admin/users/")) && user.role !== "ADMIN") {
+      return NextResponse.redirect(new URL("/admin", request.url));
     }
 
     return NextResponse.next();

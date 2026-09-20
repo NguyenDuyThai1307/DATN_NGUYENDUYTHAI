@@ -11,7 +11,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <div className="min-h-screen bg-zinc-50 lg:flex">
-      <AdminSidebar />
+      <AdminSidebar role={user.role === "ADMIN" ? "ADMIN" : "STAFF"} />
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="border-b border-zinc-200 bg-white">

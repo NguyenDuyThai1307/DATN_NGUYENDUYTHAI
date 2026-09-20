@@ -4,7 +4,7 @@ Tài liệu nền cho báo cáo đồ án: yêu cầu, công nghệ, phân tích
 
 Đề tài gợi ý: Xây dựng website thương mại điện tử bán mô hình sưu tầm tích hợp trợ lý tư vấn AI.
 
-Ngày đối chiếu: 13/09/2026. Mã nguồn tham chiếu: repository DATN_NGUYENDUYTHAI, bao gồm cập nhật đổi loại hàng, wishlist theo tài khoản, lịch sử chat AI và đánh giá sản phẩm sau commit 0ad0df8. Đây là bản tổng hợp kỹ thuật theo mã nguồn; cần bổ sung tên trường, chuyên ngành, sinh viên và giảng viên theo mẫu báo cáo chính thức.
+Ngày đối chiếu: 20/09/2026. Mã nguồn tham chiếu: repository DATN_NGUYENDUYTHAI, bao gồm đổi loại hàng, wishlist theo tài khoản, lịch sử chat AI, đánh giá sản phẩm và cập nhật quản trị người dùng/báo cáo sau commit a310f0b. Đây là bản tổng hợp kỹ thuật theo mã nguồn; cần bổ sung tên trường, chuyên ngành, sinh viên và giảng viên theo mẫu báo cáo chính thức.
 
 ## 1. Tổng quan và phạm vi đề tài
 
@@ -65,6 +65,8 @@ Danh sách yêu thích của tài khoản lưu trong WishlistItem; khách chưa 
 | FR16 | Đổi loại hàng | STAFF/ADMIN đổi IN_STOCK ↔ PREORDER ngay trong danh sách; nhập tồn khi chọn IN_STOCK; chuyển PREORDER tắt ưu đãi trực tiếp. |
 | FR17 | Lịch sử AI | Lưu nhiều hội thoại theo tài khoản, mở lại hội thoại gần nhất, chọn hội thoại cũ hoặc tạo mới. |
 | FR18 | Đánh giá | Chọn 1–5 sao và nhận xét 10–2.000 ký tự sau khi đơn hoàn thành; mỗi tài khoản/sản phẩm một đánh giá, được sửa/xóa của mình. Hiển thị trung bình, thống kê sao, phân trang 5 nhận xét/trang. |
+| FR19 | Quản trị người dùng | Chỉ ADMIN: tìm kiếm, lọc vai trò/trạng thái, danh sách phân trang 20 tài khoản, xem chi tiết và 10 đơn gần nhất; khóa/mở và đổi CUSTOMER/STAFF/ADMIN. |
+| FR20 | Trang báo cáo | /admin/reports dành cho STAFF/ADMIN, dùng cùng cách tính doanh thu với Dashboard; chọn 7/30/90 ngày, so sánh kỳ trước, biểu đồ và bảng theo ngày/phương thức. |
 
 ### 2.3. Quy tắc nghiệp vụ
 
@@ -84,7 +86,7 @@ Nút Mua ngay hiện thêm sản phẩm rồi chuyển sang giỏ hàng. Nó kh�
 
 | Mã | Tiêu chí | Hiện trạng và cách đánh giá |
 |---|---|---|
-| NFR01 | An toàn dữ liệu | JWT trong cookie httpOnly; bcrypt; kiểm tra quyền và chủ sở hữu ở các API tương ứng. Cần tiếp tục rà quyền ở từng Server Action. |
+| NFR01 | An toàn dữ liệu | JWT trong cookie httpOnly; bcrypt; đối chiếu phiên với database; kiểm tra quyền tại API, trang quản trị người dùng và các Server Action quản trị hiện có. |
 | NFR02 | Toàn vẹn | Khóa ngoại, unique, transaction và cập nhật có điều kiện bảo vệ quan hệ, tồn kho, lượt coupon. |
 | NFR03 | Hiệu năng | Phân trang, gợi ý tối đa 5 kết quả, debounce, hủy request cũ, Next Image và WebP. Chưa có số đo tải lớn để cam kết SLA. |
 | NFR04 | Khả dụng | Trạng thái loading, báo lỗi, retry thủ công, trang không tìm thấy và xử lý giỏ rỗng. |
@@ -148,9 +150,9 @@ Luồng chính: Trình duyệt → Next.js page/Route Handler/Server Action → 
 
 ### 4.2. Use case UC01 — Đăng ký và đăng nhập
 
-Tác nhân: khách. Tiền điều kiện: chưa có phiên hoặc phiên hết hạn. Luồng đăng nhập: nhập email/mật khẩu → API xác thực bằng Zod → tìm User theo email → bcrypt.compare → ký JWT → đặt cookie → điều hướng về trang phù hợp. JWT chứa userId, email và role, có hạn 7 ngày. Cookie dùng httpOnly, SameSite=Lax, path=/ và secure khi NODE_ENV=production.
+Tác nhân: khách. Tiền điều kiện: chưa có phiên hoặc phiên hết hạn. Luồng đăng nhập: nhập email/mật khẩu → API xác thực bằng Zod → tìm User theo email → bcrypt.compare → kiểm tra isActive → ký JWT → đặt cookie → điều hướng về trang phù hợp. JWT chứa userId, email, role và phiên bản sessionVersion khi đăng nhập, có hạn 7 ngày. Token không có phiên bản được hiểu là 0 để tương thích tài khoản chưa thu hồi phiên. Cookie dùng httpOnly, SameSite=Lax, path=/ và secure khi NODE_ENV=production.
 
-Ngoại lệ gồm dữ liệu không hợp lệ, tài khoản không tồn tại, sai mật khẩu hoặc token hết hạn. API không trả passwordHash. Các trang /account, /cart, /checkout và /admin được bảo vệ ở proxy; server còn đọc lại người dùng từ database. Hệ thống có helper requireAdmin nhưng không nên mặc định mọi thao tác nhạy cảm đã dùng helper này. Cần rà riêng từng Server Action vì việc layout bảo vệ trang không thay thế hoàn toàn kiểm tra quyền tại điểm ghi dữ liệu.
+Ngoại lệ gồm dữ liệu không hợp lệ, tài khoản không tồn tại, sai mật khẩu, bị khóa, token hết hạn hoặc sessionVersion không còn khớp. API không trả passwordHash. Proxy và getCurrentUser dùng chung getSessionUser, lấy trạng thái và vai trò hiện tại từ database. Trang quản lý người dùng gọi requireAdmin; API người dùng chỉ chấp nhận ADMIN; các Server Action quản trị hiện có gọi requireStaff ngay tại điểm xử lý. STAFF không thấy menu Người dùng và không được truy cập trực tiếp trang/API này.
 
 ### 4.3. Use case UC02 — Tìm và xem sản phẩm
 
@@ -215,6 +217,8 @@ Server tạo yêu cầu Chat Completions, cấp công cụ search_products, get_
 | GET /api/products/suggestions | Gợi ý sản phẩm khi gõ tìm kiếm, dữ liệu công khai. |
 | POST /api/auth/register, /login, /logout | Quản lý đăng ký và phiên đăng nhập. |
 | GET /api/auth/me | Đọc người dùng hiện tại. |
+| GET /api/admin/users | Danh sách có q, role, status, page; chỉ ADMIN. |
+| GET/PATCH /api/admin/users/[id] | Chi tiết hoặc đổi quyền/trạng thái; chỉ ADMIN, kiểm tra nguồn yêu cầu và phiên bản dữ liệu. |
 | GET /api/cart | Đọc giỏ theo người dùng đăng nhập. |
 | POST /api/cart/items | Thêm sản phẩm vào giỏ. |
 | /api/cart/items/[id], /api/cart/coupon | Điều chỉnh dòng giỏ và coupon theo method của route. |
@@ -381,5 +385,27 @@ Các kiểm thử có ghi dữ liệu dùng database SQLite riêng trong .paymen
 | src/components/layout/SearchSuggestions.tsx; src/app/api/products/suggestions/route.ts | Gợi ý tìm kiếm và giới hạn kết quả. |
 
 ## PHỤ LỤC A. TỪ ĐIỂN DỮ LIỆU ĐẦY ĐỦ
+
+## 9. Cập nhật quản trị người dùng và báo cáo ngày 20/09/2026
+
+Trước cập nhật này, Sidebar có liên kết Người dùng/Báo cáo nhưng chưa có trang; thống kê tổng User trên Dashboard không đồng nghĩa đã triển khai quản trị tài khoản. Sau cập nhật, /admin/users và /admin/users/[id] đã có giao diện cùng service và API thực tế. Báo cáo chỉ mô tả các chức năng đã triển khai dưới đây.
+
+### 9.1. Phân quyền, danh sách và chi tiết
+
+Chỉ ADMIN quản trị người dùng. Danh sách tìm theo tên/email/điện thoại, lọc CUSTOMER/STAFF/ADMIN và hoạt động/bị khóa, 20 tài khoản mỗi trang. Chi tiết hiển thị thông tin tài khoản, tổng số đơn/đánh giá/yêu thích và 10 đơn gần nhất. Không truy xuất passwordHash trong dữ liệu trả về, không hiển thị nội dung chat riêng tư. STAFF vẫn dùng các chức năng vận hành và báo cáo, không có quyền quản lý tài khoản.
+
+### 9.2. Đổi vai trò và khóa/mở tài khoản
+
+ADMIN chọn vai trò và trạng thái trên trang chi tiết, xác nhận trước khi lưu. Server xác thực ADMIN đang hoạt động, từ chối tự thay đổi quyền/trạng thái của bản thân, kiểm tra expectedVersion và bảo đảm ít nhất một ADMIN hoạt động. Kiểm tra và ghi được thực hiện trong transaction. Dữ liệu đã bị cập nhật từ màn hình khác trả 409 để tránh ghi đè cũ. Không có thao tác xóa cứng User; khóa không xóa đơn, đánh giá, wishlist hoặc lịch sử chat.
+
+User bổ sung isActive Boolean mặc định true và sessionVersion Int mặc định 0 qua migration 20260920114432_user_access_management. Mỗi lần quyền hoặc trạng thái thực sự thay đổi tăng sessionVersion. Phiên JWT cũ không còn khớp nên bị từ chối kể cả sau khi mở khóa; người dùng phải đăng nhập lại. Tài khoản bị khóa không đăng nhập được. Phiên còn hạn cũng phải qua kiểm tra trạng thái database; vai trò trong JWT không phải căn cứ duy nhất cho quyền hiện tại. Tổng số model vẫn là 20; thay đổi này thêm hai cột User.
+
+### 9.3. Báo cáo riêng
+
+/admin/reports dành cho STAFF/ADMIN, dùng getAdminRevenueReport và RevenueOverview với Dashboard để không phát sinh hai cách tính. Bộ lọc 7/30/90 ngày giữ người dùng ở trang báo cáo. Có tổng đã thanh toán, so sánh kỳ trước, số đơn, giá trị chờ thanh toán, biểu đồ COD/chuyển khoản-demo và bảng từng ngày. Đây là báo cáo nội bộ; tiền demo được ghi rõ là mô phỏng. Chưa có xuất Excel/PDF hoặc bộ lọc khoảng ngày tùy ý.
+
+### 9.4. Kiểm thử và giới hạn
+
+scripts/admin-users-http-test.ts dùng database riêng để kiểm tra ADMIN/STAFF/CUSTOMER, danh sách/chi tiết, lọc, không lộ mật khẩu, từ chối nguồn lạ và đầu vào sai, không tự hạ quyền/khóa, thu hồi phiên khi đổi quyền và khóa/mở, từ chối đăng nhập tài khoản khóa, truy cập trang báo cáo và bảo toàn ADMIN khi có yêu cầu hạ quyền cạnh tranh. Build và ESLint được chạy cho thay đổi này. Chưa có nhật ký ai đổi quyền, tạo tài khoản hộ, đặt lại mật khẩu hoặc chức năng nhập/xuất người dùng; đây là hướng mở rộng, không ghi là đã triển khai.
 
 Phụ lục sau được trích trực tiếp từ schema.prisma tại thời điểm tạo tài liệu. Bảng liệt kê các cột scalar; quan hệ object và chỉ mục được ghi riêng. Kiểu có ? là nullable. “Bắt buộc” nghĩa là không nullable, không đồng nghĩa người dùng phải nhập nếu có giá trị mặc định.

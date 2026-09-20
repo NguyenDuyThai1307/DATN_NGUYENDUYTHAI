@@ -31,6 +31,7 @@ $meaning = @{
 }
 $append = [Text.StringBuilder]::new()
 $fieldCount = 0
+$meaning['sessionVersion']='Phiên bản xác thực; tăng khi đổi quyền hoặc trạng thái để thu hồi token cũ'
 $meaning['title']='Tiêu đề cuộc trò chuyện'
 $meaning['conversationId']='FK cuộc trò chuyện'
 $meaning['content']='Nội dung tin nhắn'

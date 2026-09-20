@@ -3,7 +3,7 @@ import type { RevenueReport } from "@/lib/admin-revenue";
 
 const money = (value: number) => `${Math.round(value).toLocaleString("vi-VN")} đ`;
 
-export function RevenueOverview({ report: r }: { report: RevenueReport }) {
+export function RevenueOverview({ report: r, basePath = "/admin" }: { report: RevenueReport; basePath?: string }) {
   const peak = Math.max(1, ...r.daily.map((row) => row.cod + row.transfer));
   const change = r.previous > 0 ? ((r.total - r.previous) / r.previous * 100) : null;
   return (
@@ -11,7 +11,7 @@ export function RevenueOverview({ report: r }: { report: RevenueReport }) {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div><h2 id="revenue-title" className="text-xl font-bold">Theo dõi doanh thu</h2><p className="mt-1 text-sm text-zinc-500">{r.daily[0].date} – {r.daily.at(-1)?.date} · Giờ Việt Nam · Bao gồm hôm nay</p></div>
         <nav aria-label="Khoảng thời gian doanh thu" className="flex gap-1 rounded-xl border border-zinc-200 bg-white p-1">
-          {[7, 30, 90].map((days) => <Link key={days} href={`/admin?period=${days}`} aria-current={days === r.days ? "page" : undefined} className={`rounded-lg px-4 py-2 text-sm font-semibold ${days === r.days ? "bg-zinc-900 text-white" : "text-zinc-600 hover:bg-zinc-100"}`}>{days} ngày</Link>)}
+          {[7, 30, 90].map((days) => <Link key={days} href={`${basePath}?period=${days}`} aria-current={days === r.days ? "page" : undefined} className={`rounded-lg px-4 py-2 text-sm font-semibold ${days === r.days ? "bg-zinc-900 text-white" : "text-zinc-600 hover:bg-zinc-100"}`}>{days} ngày</Link>)}
         </nav>
       </div>
       <div className="grid gap-4 md:grid-cols-3">

@@ -1,3 +1,4 @@
+import { requireStaff } from "@/lib/permissions";
 import { notFound, redirect } from "next/navigation";
 import { CouponForm } from "@/components/admin/CouponForm";
 import {
@@ -24,6 +25,7 @@ export default async function AdminEditCouponPage({
 
   async function updateCouponAction(formData: FormData) {
     "use server";
+    await requireStaff();
 
     const parsed = couponSchema.safeParse({
       code: formData.get("code"),

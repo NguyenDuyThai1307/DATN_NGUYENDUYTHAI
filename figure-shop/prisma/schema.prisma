@@ -93,6 +93,8 @@ model User {
   phone        String?
   passwordHash String
   role         Role      @default(CUSTOMER)
+  isActive     Boolean   @default(true)
+  sessionVersion Int     @default(0)
   addresses    Address[]
   cart         Cart?
   orders       Order[]

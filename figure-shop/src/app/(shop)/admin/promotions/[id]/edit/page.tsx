@@ -1,3 +1,4 @@
+import { requireStaff } from "@/lib/permissions";
 import { notFound, redirect } from "next/navigation";
 import { PromotionForm } from "@/components/admin/PromotionForm";
 import {
@@ -29,6 +30,7 @@ export default async function AdminEditPromotionPage({
 
   async function updatePromotionAction(formData: FormData) {
     "use server";
+    await requireStaff();
 
     const parsed = promotionSchema.safeParse({
       scope: formData.get("scope"),

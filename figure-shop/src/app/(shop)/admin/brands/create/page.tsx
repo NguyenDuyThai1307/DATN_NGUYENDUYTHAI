@@ -1,3 +1,4 @@
+import { requireStaff } from "@/lib/permissions";
 import { redirect } from "next/navigation";
 import { TaxonomyForm } from "@/components/admin/TaxonomyForm";
 import { createAdminBrand } from "@/services/admin-brand.service";
@@ -6,6 +7,7 @@ import { taxonomySchema } from "@/validations/taxonomy.schema";
 export default function AdminCreateBrandPage() {
   async function createBrandAction(formData: FormData) {
     "use server";
+    await requireStaff();
 
     const parsed = taxonomySchema.safeParse({
       name: formData.get("name"),

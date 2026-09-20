@@ -1,3 +1,4 @@
+import { requireStaff } from "@/lib/permissions";
 import { notFound, redirect } from "next/navigation";
 import { TaxonomyForm } from "@/components/admin/TaxonomyForm";
 import {
@@ -24,6 +25,7 @@ export default async function AdminEditBrandPage({
 
   async function updateBrandAction(formData: FormData) {
     "use server";
+    await requireStaff();
 
     const parsed = taxonomySchema.safeParse({
       name: formData.get("name"),

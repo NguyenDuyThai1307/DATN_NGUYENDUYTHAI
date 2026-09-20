@@ -4,6 +4,7 @@ export type JwtPayload = {
   userId: string;
   email: string;
   role: "CUSTOMER" | "STAFF" | "ADMIN";
+  sessionVersion?: number;
 };
 
 const JWT_EXPIRES_IN = "7d";

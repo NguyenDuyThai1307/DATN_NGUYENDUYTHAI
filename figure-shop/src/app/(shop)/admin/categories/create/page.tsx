@@ -1,3 +1,4 @@
+import { requireStaff } from "@/lib/permissions";
 import { redirect } from "next/navigation";
 import { TaxonomyForm } from "@/components/admin/TaxonomyForm";
 import { createAdminCategory } from "@/services/admin-category.service";
@@ -6,6 +7,7 @@ import { taxonomySchema } from "@/validations/taxonomy.schema";
 export default function AdminCreateCategoryPage() {
   async function createCategoryAction(formData: FormData) {
     "use server";
+    await requireStaff();
 
     const parsed = taxonomySchema.safeParse({
       name: formData.get("name"),

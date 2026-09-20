@@ -12,7 +12,7 @@ const adminNavItems = [
   { href: "/admin/reports", label: "Báo cáo" },
 ];
 
-export function AdminSidebar() {
+export function AdminSidebar({ role }: { role: "STAFF" | "ADMIN" }) {
   return (
     <aside className="border-b border-zinc-200 bg-white lg:min-h-screen lg:w-64 lg:border-b-0 lg:border-r">
       <div className="px-6 py-5">
@@ -22,7 +22,7 @@ export function AdminSidebar() {
       </div>
 
       <nav className="flex gap-2 overflow-x-auto px-6 pb-4 text-sm lg:flex-col lg:overflow-visible">
-        {adminNavItems.map((item) => (
+        {adminNavItems.filter(item => item.href !== "/admin/users" || role === "ADMIN").map((item) => (
           <Link
             key={item.href}
             href={item.href}

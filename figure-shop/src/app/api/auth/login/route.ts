@@ -41,10 +41,12 @@ export async function POST(request: Request) {
     );
   }
 
+  if (!user.isActive) return NextResponse.json({ message: "Tài khoản đã bị khóa. Vui lòng liên hệ cửa hàng." }, { status: 403 });
   const token = await signJwt({
     userId: user.id,
     email: user.email,
     role: user.role,
+    sessionVersion: user.sessionVersion,
   });
 
   const response = NextResponse.json({

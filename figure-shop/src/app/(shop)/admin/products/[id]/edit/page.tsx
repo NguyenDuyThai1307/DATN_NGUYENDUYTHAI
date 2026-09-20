@@ -1,3 +1,4 @@
+import { requireStaff } from "@/lib/permissions";
 import { notFound, redirect } from "next/navigation";
 import { ProductForm } from "@/components/admin/ProductForm";
 import {
@@ -30,6 +31,7 @@ export default async function AdminEditProductPage({
 
   async function updateProductAction(formData: FormData) {
     "use server";
+    await requireStaff();
 
     const parsed = adminProductSchema.safeParse({
       name: formData.get("name"),

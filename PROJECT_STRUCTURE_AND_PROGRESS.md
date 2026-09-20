@@ -659,6 +659,9 @@ Hang muc con lai de phat trien sau moc nay:
 [ ] Lay video review/thumbnail tu nguon noi dung that thay cho du lieu tinh
 [ ] Danh gia lai nhu cau shadcn/ui, framer-motion va sonner de tranh trung lap UI primitives hien co
 [x] Bo sung WishlistItem, AiConversation, AiMessage va ProductReview; da co migration va kiem thu phan quyen
+[x] 20/09/2026: Admin users - danh sach, loc, phan trang, chi tiet, khoa/mo, doi role; chi ADMIN; thu hoi phien cu va bao ve ADMIN cuoi cung
+[x] 20/09/2026: /admin/reports - bao cao 7/30/90 ngay dung chung logic doanh thu voi dashboard; STAFF/ADMIN
+[x] 20/09/2026: Kiem tra quyen trong Server Actions quan tri; kiem thu HTTP tren database rieng
 [ ] Bo sung Series va InventoryLog neu dua vao pham vi khoa luan
 [-] Nghiem thu payOS/VNPAY: ngoai pham vi theo quyet dinh chi DEMO ngay 10/09/2026
 ```
